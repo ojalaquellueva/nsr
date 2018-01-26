@@ -5,6 +5,7 @@ if ($echo_on) echo "Inserting observations...";
 // insert the raw records
 $sql="
 INSERT INTO observation (
+batch,
 family,
 genus,
 species,
@@ -14,6 +15,7 @@ county_parish,
 user_id
 )
 SELECT 
+'$batch',
 family,
 genus,
 species,
@@ -80,26 +82,6 @@ WHEN state_province IS NOT NULL AND county_parish IS NULL THEN 'state_province'
 WHEN county_parish IS NOT NULL THEN 'county_parish'
 ELSE NULL
 END
-;
-";
-sql_execute_multiple($sql);
-
-
-
-// Index observation
-$sql="
-ALTER TABLE observation
-ADD INDEX (family),
-ADD INDEX (genus),
-ADD INDEX (species),
-ADD INDEX (country),
-ADD INDEX (state_province),
-ADD INDEX (county_parish),
-ADD INDEX (is_in_cache),
-ADD INDEX (state_province_full),
-ADD INDEX (county_parish_full),
-ADD INDEX (poldiv_full),
-ADD INDEX (poldiv_type)
 ;
 ";
 sql_execute_multiple($sql);

@@ -4,16 +4,6 @@
 
 if ($echo_on) echo "  Inferring native status...";
 
-// add remaining indices
-$sql="
-ALTER TABLE observation
-ADD INDEX (native_status_country),
-ADD INDEX (native_status_state_province),
-ADD INDEX (native_status_reason)
-;
-";
-sql_execute_multiple($sql);
-
 //echo "Inferring overall native status...";
 $sql="
 -- Country-level status
@@ -25,7 +15,8 @@ WHEN native_status_country IS NULL THEN 'UNK'
 WHEN native_status_country='P' THEN 'P'
 ELSE native_status_country
 END
-WHERE $CACHE_WHERE_NA
+WHERE $BATCH_WHERE_NA
+AND $CACHE_WHERE_NA
 ;
 
 -- State/province level status
@@ -40,6 +31,7 @@ ELSE native_status_state_province
 END
 WHERE state_province IS NOT NULL
 AND native_status_state_province IS NOT NULL
+AND $BATCH_WHERE_NA
 AND $CACHE_WHERE_NA
 ;
 ";
@@ -118,6 +110,7 @@ UPDATE observation
 SET native_status='UNK',
 native_status_reason='Status unknown, no checklists for region of observation'
 WHERE native_status='UNK' OR native_status IS NULL
+AND $BATCH_WHERE_NA
 AND $CACHE_WHERE_NA
 ;
 
@@ -180,25 +173,29 @@ sql_execute_multiple($sql);
 $sql="
 UPDATE observation
 SET isIntroduced=1
-WHERE $CACHE_WHERE_NA 
+WHERE $BATCH_WHERE_NA
+AND $CACHE_WHERE_NA 
 AND native_status IN ('I','Ie')
 ;
 UPDATE observation
 SET isIntroduced=0
-WHERE $CACHE_WHERE_NA
+WHERE $BATCH_WHERE_NA
+AND $CACHE_WHERE_NA
 AND native_status IN ('N','Ne')
 ;
 -- Assume native if present in checklist, without
 -- further information
 UPDATE observation
 SET isIntroduced=0
-WHERE $CACHE_WHERE_NA
+WHERE $BATCH_WHERE_NA
+AND $CACHE_WHERE_NA
 AND native_status='P'
 ;
 -- Assume introduced if absent from checklist
 UPDATE observation
 SET isIntroduced=1
-WHERE $CACHE_WHERE_NA
+WHERE $BATCH_WHERE_NA
+AND $CACHE_WHERE_NA
 AND native_status='A'
 ;
 ";

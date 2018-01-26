@@ -1,5 +1,8 @@
 <?php
 
+$BATCH_WHERE = " o.batch='$batch' ";
+$BATCH_WHERE_NA = " batch='$batch' ";
+
 // Names of input file for batch processing
 // This can be over-ridden by supplying -f parameter in command line
 $inputfilename = "nsr_input.csv";

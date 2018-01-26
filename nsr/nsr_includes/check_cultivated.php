@@ -1,6 +1,6 @@
 <?php
 
-////////////////////////////////////////////////////////////////
+////////////////////////////////$CACHE_WHERE////////////////////////////////
 // Updates is_cultivated_taxon
 //
 // Sets is_cultivated_taxon=1 if the taxon is listed as 
@@ -19,6 +19,7 @@ $sql="
 UPDATE observation o JOIN cultspp c
 ON o.species=c.taxon
 SET o.is_cultivated_taxon=1
+WHERE $BATCH_WHERE
 ;
 ";
 sql_execute_multiple($sql);	

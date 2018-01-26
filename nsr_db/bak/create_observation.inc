@@ -1,13 +1,20 @@
 <?php
 
-include "dbw_open.php";
+///////////////////////////////////////////////
+// Creates new observation table in nsr
+// database. Table `observation` contains
+// the raw species data to be validated against
+// the NSR reference database
+///////////////////////////////////////////////
 
+
+echo "Creating table observation...";
 $sql="
 DROP TABLE IF EXISTS observation;
 
-
 CREATE TABLE observation (
 id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT, 
+batch VARCHAR(500) NOT NULL,
 family VARCHAR(50) DEFAULT NULL,
 genus VARCHAR(50) DEFAULT NULL,
 species VARCHAR(150) DEFAULT NULL,
@@ -31,10 +38,11 @@ is_in_cache INT(11) UNSIGNED DEFAULT 0,
 user_id INT(11) UNSIGNED DEFAULT NULL,
 PRIMARY KEY (id)
 );
-
 ";
 sql_execute_multiple($sql);
-
-include "db_close.php";
+echo "done";
 
 ?>
+
+
+

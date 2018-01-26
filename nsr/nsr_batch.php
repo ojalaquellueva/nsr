@@ -30,6 +30,9 @@ Returns: tab-delimited file, "nsr_results.txt", in /var/www/bien/apps/nsr/data/
 // Parameters
 //////////////////////////////////////////////////////
 
+// Generate unique code for this batch
+$batch = date("Y-m-d-G:i:s").":".str_replace(".0","",strtok(microtime()," "));
+
 // Get db connection parameters (in ALL CAPS)
 include 'params.php';
 include $CONFIG_DIR.'db_configw.php';
@@ -147,6 +150,7 @@ Input file: $inputfilename
 File type: $filetype
 Results file: $resultsfilename
 Replace cache: $replace_cache_str
+Batch id: $batch
 
 Enter Y to proceed, N to cancel: "
 	;
@@ -169,7 +173,7 @@ if(file_exists($inputfile)) {
 	include 'db_batch_connect.php';
 	
 	// create new observation table
-	include_once $batch_includes_dir."create_observation_batch.php";	
+	//include_once $batch_includes_dir."create_observation_batch.php";	
 
 	// Import raw observations to temporary table
 	include_once $batch_includes_dir."create_observation_raw.php";	
@@ -184,17 +188,10 @@ if(file_exists($inputfile)) {
 	include_once "standardize_observations.php";
 	if ($echo_on) echo $done;	
 
-	if ($replace_cache===true) {
-		// Remove cached observations for these species+poldiv combinations
-		if ($echo_on) echo "Removing previous observations from cache...";
-		include_once "remove_observations_from_cache.php";
-		if ($echo_on) echo $done;	
-	} else {
-		// Mark records already in cache
-		if ($echo_on) echo "Marking observations already in cache...";
-		include_once "mark_observations.php";	
-		if ($echo_on) echo $done;	
-	}
+	// Mark records already in cache
+	if ($echo_on) echo "Marking observations already in cache...";
+	include_once "mark_observations.php";	
+	if ($echo_on) echo $done;	
 	
 	include 'db_batch_connect.php';
 		
@@ -203,7 +200,8 @@ if(file_exists($inputfile)) {
 	$sql="
 	SELECT COUNT(*) AS rows
 	FROM observation
-	WHERE is_in_cache=0
+	WHERE $BATCH_WHERE_NA 
+	AND is_in_cache=0
 	;
 	";
 	//$result = mysql_query($sql);	
@@ -216,11 +214,8 @@ if(file_exists($inputfile)) {
 		//if ($echo_on) echo "$done";
 	}
 		
-	if ($replace_cache===false) {
-		// update observation table from cache
-		// Not necessary if $replace_cache is true
-		include_once $batch_includes_dir."update_observations.php";		
-	}
+	// Update observation table from cache
+	include_once $batch_includes_dir."update_observations.php";		
 	
 	// dump nsr results to text file
 	include_once $batch_includes_dir."dump_nsr_results.php";			

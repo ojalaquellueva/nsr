@@ -1,42 +1,23 @@
 <?php
 
 //////////////////////////////////////////////////////
-// Make temporary copy of table observation for 
-// export, with changes.
-// Dump table as results file to data directory
+// Dump select columns of the records for this batch 
+// from table observation results file in data directory
 //////////////////////////////////////////////////////
 
 include "dbw_open.php";
 
-if ($echo_on) echo "Saving results to $resultsfile:\r\n";
+if ($echo_on) echo "Saving results to '$resultsfile'...";
 
-if ($echo_on) echo "  Creating duplicate table for export...";
-$sql="
-DROP TABLE IF EXISTS observation_temp;
-CREATE TABLE observation_temp LIKE observation;
-INSERT INTO observation_temp SELECT * FROM observation;
-ALTER TABLE observation_temp
-DROP COLUMN is_in_cache;
-";
-sql_execute_multiple($sql);
-if ($echo_on) echo "done\r\n";
-
-if ($echo_on) echo "  Setting NULLs to empty string...";
-if (!(null_to_empty_string('observation_temp'))) die("Error\r\n.");
-if ($echo_on) echo "done\r\n";
-
-
-if ($echo_on) echo "  Exporting file...";
-$cmd="mysql -u $USERW --password=$PWDW -B $DB_BATCH -e 'select * from observation_temp' > $resultsfile";
+$cmd="mysql -u $USERW --password=$PWDW -B $DB_BATCH -e \"select id, batch, family, genus, species, country, state_province, state_province_full, county_parish, county_parish_full, poldiv_full, poldiv_type, native_status_country, native_status_state_province, native_status_county_parish, native_status, native_status_reason, native_status_sources, isIntroduced, isCultivatedNSR, is_cultivated_taxon, user_id from observation where $BATCH_WHERE_NA \" > $resultsfile";
+//echo "cmd:\n$cmd\n";
 exec($cmd);
 if ($echo_on) echo $done;
 
-if ($echo_on) echo "  Cleaning up...";
-$sql="
-DROP TABLE IF EXISTS observation_temp;
-";
-sql_execute_multiple($sql);
-if ($echo_on) echo "done\r\n";
+if ($echo_on) echo "Converting NULLs to blanks...";
+$cmd="sed -i 's/NULL//g' $resultsfile";
+exec($cmd);
+if ($echo_on) echo $done;
 
 include "db_close.php";
 

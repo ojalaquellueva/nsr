@@ -1,0 +1,341 @@
+UPDATE observation o JOIN distribution d
+ON o.species=d.taxon
+AND o.country=d.country
+AND o.state_province=d.state_province
+SET 
+o.native_status_country='P',
+o.native_status_state_province='P',
+o.native_status_county_parish='P'
+FROM distribution d
+WHERE o.species=d.taxon
+AND o.county_parish IS NULL
+AND d.county_parish IS NULL
+AND d.native_status='unknown'
+;
+
+
+UPDATE observation o
+SET 
+o.native_status_country='P',
+o.native_status_state_province='P',
+o.native_status_county_parish='P'
+FROM distribution d
+WHERE o.species=d.taxon
+AND o.county_parish_full=d.county_parish_full
+AND d.native_status='unknown'
+;
+
+UPDATE observation o, distribution d
+SET 
+o.native_status_country='P',
+o.native_status_state_province='P',
+o.native_status_county_parish='P' 
+WHERE o.species=d.taxon
+AND o.county_parish_full=d.county_parish_full
+AND d.native_status='unknown'
+;
+
+
+
+DROP TABLE IF EXISTS temp_update;
+CREATE TABLE temp_update AS
+SELECT 
+o.species,
+o.county_parish_full
+FROM observation o JOIN distribution d
+ON o.species=d.taxon
+AND o.county_parish_full=d.county_parish_full
+WHERE  d.native_status='unknown'
+;
+ALTER TABLE temp_update
+ADD INDEX (species),
+ADD INDEX (county_parish_full)
+;
+UPDATE observation o JOIN temp_update d
+ON o.species=d.species
+AND o.county_parish_full=d.county_parish_full
+SET 
+o.native_status_country='P',
+o.native_status_state_province='P',
+o.native_status_county_parish='P'
+;
+
+-- ------------------
+-- Compare these two queries
+-- ------------------
+SELECT SQL_NO_CACHE
+o.species,
+o.county_parish_full
+FROM observation o JOIN distribution d
+ON o.species=d.taxon
+AND o.county_parish_full=d.county_parish_full
+WHERE  d.native_status='unknown'
+;
+
+
+SELECT SQL_NO_CACHE
+o.species,
+o.county_parish_full
+FROM observation o JOIN distribution d
+ON o.species=d.taxon
+AND o.county_parish_full=d.county_parish_full
+WHERE  d.native_status='unknown'
+;
+
+ALTER TABLE observation
+ADD COLUMN sp_c VARCHAR(500) DEFAULT NULL,
+ADD COLUMN sp_cs VARCHAR(500) DEFAULT NULL,
+ADD COLUMN sp_csc VARCHAR(500) DEFAULT NULL,
+ADD INDEX (sp_c),
+ADD INDEX (sp_cs),
+ADD INDEX (sp_csc)
+;
+UPDATE observation
+SET sp_c=CONCAT_WS(':',species,country)
+;
+UPDATE observation
+SET sp_cs=CONCAT_WS(':',species,state_province_full)
+WHERE state_province_full IS NOT NULL
+;
+UPDATE observation
+SET sp_cs=CONCAT_WS(':',species,county_parish_full)
+WHERE county_parish_full IS NOT NULL
+;
+
+
+
+ALTER TABLE distribution
+ADD COLUMN sp_c VARCHAR(500) DEFAULT NULL,
+ADD COLUMN sp_cs VARCHAR(500) DEFAULT NULL,
+ADD COLUMN sp_csc VARCHAR(500) DEFAULT NULL,
+ADD INDEX (sp_c),
+ADD INDEX (sp_cs),
+ADD INDEX (sp_csc)
+;
+UPDATE distribution
+SET sp_c=CONCAT_WS(':',taxon,country)
+;
+UPDATE distribution
+SET sp_cs=CONCAT_WS(':',taxon,state_province_full)
+WHERE state_province_full IS NOT NULL
+;
+UPDATE distribution
+SET sp_cs=CONCAT_WS(':',taxon,county_parish_full)
+WHERE county_parish_full IS NOT NULL
+;
+
+SELECT SQL_NO_CACHE
+taxon as species,
+county_parish_full
+FROM distribution
+WHERE sp_cs IN (SELECT DISTINCT sp_cs FROM observation)
+AND native_status='unknown'
+;
+
+
+UPDATE observation o JOIN distribution d
+ON o.sp_cs=d.sp_cs
+SET 
+o.native_status_country='P',
+o.native_status_state_province='P',
+o.native_status_county_parish='P'
+WHERE 
+d.native_status='unknown'
+;
+
+
+DROP TABLE IF EXISTS temp_update;
+CREATE TABLE temp_update AS
+SELECT DISTINCT SQL_NO_CACHE
+sp_cs FROM distribution
+WHERE sp_cs IN (SELECT DISTINCT sp_cs FROM observation)
+AND native_status='unknown'
+;
+ALTER TABLE temp_update
+ADD INDEX (sp_cs)
+;
+UPDATE observation o JOIN temp_update d
+ON o.sp_cs=d.sp_cs
+SET 
+o.native_status_country='P',
+o.native_status_state_province='P',
+o.native_status_county_parish='P'
+;
+
+
+------------------
+
+Using poldiv indexes
+
+-- Create table taxon
+-- All unique taxa in NSR db
+DROP TABLE IF EXISTS taxon;
+CREATE TABLE taxon (
+taxon_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+taxon VARCHAR(500) NOT NULL
+)
+;
+INSERT INTO taxon (taxon)
+SELECT DISTINCT taxon FROM distribution
+ORDER BY taxon
+;
+ALTER TABLE taxon
+ADD INDEX (taxon)
+;
+
+-- Add FK columns to distribution table
+ALTER TABLE distribution
+ADD COLUMN country_id BIGINT DEFAULT NULL,
+ADD COLUMN state_province_id BIGINT DEFAULT NULL,
+ADD COLUMN county_parish_id BIGINT DEFAULT NULL,
+ADD COLUMN taxon_id BIGINT DEFAULT NULL
+;
+
+-- Populate FK columns
+UPDATE distribution a JOIN country b
+ON a.country=b.country
+SET a.country_id=b.country_id
+;
+ALTER TABLE distribution
+ADD INDEX (country_id)
+;
+
+ALTER TABLE state_province 
+ADD COLUMN country_id INTEGER DEFAULT NULL,
+ADD INDEX (country_id)
+;
+UPDATE state_province a JOIN country b
+ON a.country_iso=b.country_iso
+SET a.country_id=b.country_id
+;
+
+UPDATE distribution a JOIN state_province b
+ON a.country_id=b.country_id
+AND a.state_province=b.state_province_std
+SET a.state_province_id=b.state_province_id
+;
+ALTER TABLE distribution
+ADD INDEX (state_province_id)
+;
+
+
+-- Not yet possible!
+-- Need to importy table county_parish!!!
+UPDATE distribution a JOIN county_parish b
+ON a.country_id=b.country_id
+AND a.state_province_id=b.state_province_id
+AND a.county_parish=b.county_parish_std
+SET a.county_parish_id=b.county_parish_id
+;
+ALTER TABLE distribution
+ADD INDEX (county_parish_id)
+;
+
+UPDATE distribution a JOIN taxon b
+ON a.taxon=b.taxon
+SET a.taxon_id=b.taxon_id
+;
+ALTER TABLE distribution
+ADD INDEX (taxon_id)
+;
+
+-- Add FK columns to observation table
+ALTER TABLE observation
+ADD COLUMN country_id BIGINT DEFAULT NULL,
+ADD COLUMN state_province_id BIGINT DEFAULT NULL,
+ADD COLUMN county_parish_id BIGINT DEFAULT NULL,
+ADD COLUMN taxon_id BIGINT DEFAULT NULL
+;
+
+-- Populate FK columns
+UPDATE observation a JOIN country b
+ON a.country=b.country
+SET a.country_id=b.country_id
+;
+ALTER TABLE observation
+ADD INDEX (country_id)
+;
+
+UPDATE observation a JOIN state_province b
+ON a.country_id=b.country_id
+AND a.state_province=b.state_province_std
+SET a.state_province_id=b.state_province_id
+;
+ALTER TABLE observation
+ADD INDEX (state_province_id)
+;
+
+UPDATE observation a JOIN taxon b
+ON a.species=b.taxon
+SET a.taxon_id=b.taxon_id
+;
+ALTER TABLE observation
+ADD INDEX (taxon_id)
+;
+
+-- Change compounds keys to use concatenated integer keys instead
+ALTER TABLE distribution
+ADD COLUMN sp_c_id VARCHAR(100) DEFAULT NULL,
+ADD COLUMN sp_cs_id VARCHAR(100) DEFAULT NULL,
+ADD COLUMN sp_csc_id VARCHAR(100) DEFAULT NULL,
+ADD INDEX (sp_c_id),
+ADD INDEX (sp_cs_id),
+ADD INDEX (sp_csc_id)
+;
+UPDATE distribution
+SET sp_c_id=CONCAT_WS(':',taxon_id,country_id)
+;
+UPDATE distribution
+SET sp_cs_id=CONCAT_WS(':',taxon_id,country_id,state_province_id)
+WHERE state_province_full IS NOT NULL
+;
+UPDATE distribution
+SET sp_cs_id=CONCAT_WS(':',taxon_id,country_id,state_province_id, county_parish_id)
+WHERE county_parish_full IS NOT NULL
+;
+
+
+ALTER TABLE observation
+ADD COLUMN sp_c_id VARCHAR(100) DEFAULT NULL,
+ADD COLUMN sp_cs_id VARCHAR(100) DEFAULT NULL,
+ADD COLUMN sp_csc_id VARCHAR(100) DEFAULT NULL,
+ADD INDEX (sp_c_id),
+ADD INDEX (sp_cs_id),
+ADD INDEX (sp_csc_id)
+;
+UPDATE observation
+SET sp_c_id=CONCAT_WS(':',taxon_id,country_id)
+;
+UPDATE observation
+SET sp_cs_id=CONCAT_WS(':',taxon_id,country_id,state_province_id)
+WHERE state_province_full IS NOT NULL
+;
+UPDATE observation
+SET sp_cs_id=CONCAT_WS(':',taxon_id,country_id,state_province_id, county_parish_id)
+WHERE county_parish_full IS NOT NULL
+;
+
+-- ------------------
+-- Compare these two queries
+-- ------------------
+
+SELECT SQL_NO_CACHE
+o.species,
+o.county_parish_full
+FROM observation o JOIN distribution d
+ON o.species=d.taxon
+AND o.state_province_full=d.state_province_full
+WHERE  d.native_status='unknown'
+;
+
+SELECT SQL_NO_CACHE
+o.species,
+o.county_parish_full
+FROM observation o JOIN distribution d
+ON o.sp_cs_id=d.sp_cs_id
+WHERE  d.native_status='unknown'
+;
+
+
+
+

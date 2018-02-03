@@ -172,9 +172,6 @@ if(file_exists($inputfile)) {
 	/* connect to the db */
 	include 'db_batch_connect.php';
 	
-	// create new observation table
-	//include_once $batch_includes_dir."create_observation_batch.php";	
-
 	// Import raw observations to temporary table
 	include_once $batch_includes_dir."create_observation_raw.php";	
 	include_once $batch_includes_dir."import_raw_observations.php";

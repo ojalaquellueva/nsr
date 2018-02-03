@@ -1,0 +1,1 @@
+php nsr_batch.php -e=true -i=true -f="testfile.csv" -l=unix -t=csv -r=false

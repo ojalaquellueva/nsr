@@ -33,6 +33,12 @@ Returns: tab-delimited file, "nsr_results.txt", in /var/www/bien/apps/nsr/data/
 // Generate unique code for this batch
 $batch = date("Y-m-d-G:i:s").":".str_replace(".0","",strtok(microtime()," "));
 
+
+//$batch = '2018-02-03-8:50:42:0.69830700';
+
+
+
+
 // Get db connection parameters (in ALL CAPS)
 include 'params.php';
 include $CONFIG_DIR.'db_configw.php';
@@ -172,6 +178,8 @@ if(file_exists($inputfile)) {
 	/* connect to the db */
 	include 'db_batch_connect.php';
 	
+	///*
+	
 	// Import raw observations to temporary table
 	include_once $batch_includes_dir."create_observation_raw.php";	
 	include_once $batch_includes_dir."import_raw_observations.php";
@@ -181,16 +189,14 @@ if(file_exists($inputfile)) {
 	
 	// perform any standardizations needed
 	
-	if ($echo_on) echo "Standardizing observations...";
-	include_once "standardize_observations.php";
-	if ($echo_on) echo $done;	
-
 	// Mark records already in cache
 	if ($echo_on) echo "Marking observations already in cache...";
 	include_once "mark_observations.php";	
 	if ($echo_on) echo $done;	
 	
 	include 'db_batch_connect.php';
+	
+	//*/
 		
 	// Process observations not in cache, if any, then add to cache
 	// Do only if >=1 observations not in cache

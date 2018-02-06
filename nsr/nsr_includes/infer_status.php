@@ -2,9 +2,9 @@
 
 // Hard-wired for now, still needs work
 
-if ($echo_on) echo "  Inferring native status...";
+if ($echo_on) echo "  Inferring native status:\r\n";
 
-//echo "Inferring overall native status...";
+if ($echo_on) echo "    Inferring overall native status...";
 $sql="
 -- Country-level status
 UPDATE observation
@@ -36,8 +36,9 @@ AND $CACHE_WHERE_NA
 ;
 ";
 sql_execute_multiple($sql);
+if ($echo_on) echo "done\r\n";
 
-//echo "Populating native status source information...";
+if ($echo_on) echo "    Populating native status source information...";
 $sql="
 
 -- Introduced due to endemism elsewhere
@@ -147,8 +148,9 @@ AND $CACHE_WHERE
 
 ";
 sql_execute_multiple($sql);
+if ($echo_on) echo "done\r\n";
 
-// Some miscellaneous corrections
+if ($echo_on) echo "    Miscellaneous corrections...";
 $sql="
 -- Set null any empty strings added by the above steps
 UPDATE observation
@@ -174,6 +176,7 @@ AND $CACHE_WHERE_NA
 ;
 ";
 sql_execute_multiple($sql);
+if ($echo_on) echo "done\r\n";
 
 // These rules should be changed as needed
 // The first two updates are uncontroversial, but second
@@ -181,7 +184,7 @@ sql_execute_multiple($sql);
 // Currently, note that:
 // 1. Absence counted as introduced
 // 2. Presence counted as native rather than NULL
-//echo "Updating isIntroduced...";
+if ($echo_on) echo "    Updating isIntroduced...";
 $sql="
 UPDATE observation
 SET isIntroduced=1
@@ -212,6 +215,6 @@ AND native_status='A'
 ;
 ";
 sql_execute_multiple($sql);
-
 if ($echo_on) echo "done\r\n";
+
 ?>

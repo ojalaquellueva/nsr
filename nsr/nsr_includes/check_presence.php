@@ -10,9 +10,9 @@
 // statuses. 
 ////////////////////////////////////////////////////////////////
 
-if ($echo_on) echo "  Checking presence...";
+if ($echo_on) echo "  Checking presence:\r\n";
 
-//echo "  Presence-only (no status)...";
+if ($echo_on) echo "    Presence-only (no status)...";
 // One query for each of the 3 political divisions
 // Inherited upwards
 $sql="
@@ -53,14 +53,14 @@ AND $CACHE_WHERE
 ;
 ";
 sql_execute_multiple($sql);	
+if ($echo_on) echo "done\r\n";
 
-
-// echo "  Introduced status based on endemism elsewhere:\r\n";
+if ($echo_on) echo "    Introduced due to endemism elsewhere:\r\n";
 // Inherited downwards
 // Replaces previous designations of present, but can be 
 // over-ridden later if checklist asserts species is native
 
-//echo "    Endemic species...";
+if ($echo_on) echo "      Endemic species...";
 $sql="
 UPDATE observation o JOIN distribution d
 ON o.species=d.taxon
@@ -104,8 +104,9 @@ AND $CACHE_WHERE
 ;
 ";
 sql_execute_multiple($sql);	
+if ($echo_on) echo "done\r\n";
 
-//echo "    Endemic genera...";
+if ($echo_on) echo "      Endemic genera...";
 $sql="
 UPDATE observation o JOIN distribution d
 ON o.genus=d.taxon
@@ -149,8 +150,9 @@ AND $CACHE_WHERE
 ;
 ";
 sql_execute_multiple($sql);	
+if ($echo_on) echo "done\r\n";
 
-//echo "    Endemic families...";
+if ($echo_on) echo "      Endemic families...";
 $sql="
 UPDATE observation o JOIN distribution d
 ON o.family=d.taxon
@@ -194,8 +196,9 @@ AND $CACHE_WHERE
 ;
 ";
 sql_execute_multiple($sql);	
+if ($echo_on) echo "done\r\n";
 
-//echo "  Native species...";
+if ($echo_on) echo "    Native species...";
 // Inherited upwards
 // Replaces present
 $sql="
@@ -237,15 +240,16 @@ AND $CACHE_WHERE
 
 ";
 sql_execute_multiple($sql);	
+if ($echo_on) echo "done\r\n";
 
-//echo "  Endemic taxa:\r\n";
+if ($echo_on) echo "    Endemic taxa:\r\n";
 // Inherited upwards.
 // Replaces present, native, introduced.
 // Doesn't try to resolve conflicts between lists, simply
 // treats conflicting status applied earlier in this
 // sequence as incomplete or wrong.
 
-//echo "    Species...";
+if ($echo_on) echo "      Species...";
 $sql="
 UPDATE observation o JOIN distribution d
 ON o.species=d.taxon
@@ -284,8 +288,9 @@ AND $CACHE_WHERE
 ;
 ";
 sql_execute_multiple($sql);	
+if ($echo_on) echo "done\r\n";
 
-//echo "    Genera...";
+if ($echo_on) echo "      Genera...";
 $sql="
 UPDATE observation o JOIN distribution d
 ON o.genus=d.taxon
@@ -324,8 +329,9 @@ AND $CACHE_WHERE
 ;
 ";
 sql_execute_multiple($sql);	
+if ($echo_on) echo "done\r\n";
 
-//echo "    Families...";
+if ($echo_on) echo "      Families...";
 $sql="
 UPDATE observation o JOIN distribution d
 ON o.family=d.taxon
@@ -363,8 +369,9 @@ AND $BATCH_WHERE
 AND $CACHE_WHERE
 ";
 sql_execute_multiple($sql);	
+if ($echo_on) echo "done\r\n";
 
-//echo "  Introduced species...";
+if ($echo_on) echo "    Introduced species...";
 // Inherited downwards
 // Replaces present, native, endemic 
 // Doesn't attempt to resolve conflicting status
@@ -416,7 +423,9 @@ AND $CACHE_WHERE
 ;
 ";
 sql_execute_multiple($sql);	
+if ($echo_on) echo "done\r\n";
 
+if ($echo_on) echo "    Special updates for USDA Plants...";
 // Special updates for USDA Plants checklist 
 // Allows UPWARD inheritance of introduced status 
 // for state or province level records, but for Canada and

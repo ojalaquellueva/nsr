@@ -34,7 +34,7 @@ Returns: tab-delimited file, "nsr_results.txt", in /var/www/bien/apps/nsr/data/
 $batch = date("Y-m-d-G:i:s").":".str_replace(".0","",strtok(microtime()," "));
 
 
-//$batch = '2018-02-03-8:50:42:0.69830700';
+$batch = '2018-02-03-8:50:42:0.69830700';
 
 
 
@@ -178,7 +178,7 @@ if(file_exists($inputfile)) {
 	/* connect to the db */
 	include 'db_batch_connect.php';
 	
-	///*
+	/*
 	
 	// Import raw observations to temporary table
 	include_once $batch_includes_dir."create_observation_raw.php";	
@@ -196,7 +196,7 @@ if(file_exists($inputfile)) {
 	
 	include 'db_batch_connect.php';
 	
-	//*/
+	*/
 		
 	// Process observations not in cache, if any, then add to cache
 	// Do only if >=1 observations not in cache

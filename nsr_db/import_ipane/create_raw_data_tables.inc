@@ -21,7 +21,7 @@ Distribution VARCHAR(150) DEFAULT NULL,
 PercentageCover VARCHAR(150) DEFAULT NULL,
 EvidenceOfReproduction VARCHAR(150) DEFAULT NULL,
 INDEX (ScientificName)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo "done";

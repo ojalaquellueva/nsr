@@ -26,7 +26,7 @@ puertoRico VARCHAR(255) DEFAULT NULL,
 virginIslands VARCHAR(255) DEFAULT NULL,
 bahamas VARCHAR(255) DEFAULT NULL,
 lesserAntillles VARCHAR(255) DEFAULT NULL
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;

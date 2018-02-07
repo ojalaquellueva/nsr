@@ -80,7 +80,7 @@ $usr_array=array(
 
 $base_dir = "/home/boyle/";
 $app_dir = $base_dir . "nsr/nsr_db/";
-$data_dir = $app_dir . "../data/db/";
+$data_dir = $base_dir . "nsr/data/db/";
 $global_utilities_path = $base_dir."global_utilities/";
 $local_utilities_path = "functions/";
 
@@ -95,7 +95,7 @@ $timer_off=$global_utilities_path."timer_off.inc";
 // Db connection file
 //////////////////////////////////////////////////
 
-$config_file = "../db_config_nsr_db.inc";
+$config_file = "../../db_config_nsr_db.inc";
 
 //////////////////////////////////////////////////
 // Replace database? (true/false)

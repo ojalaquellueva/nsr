@@ -17,7 +17,7 @@ foreach($tbl_list as $tbl) {
 	PRIMARY KEY(`tropicos_id`),
 	INDEX (species),
 	INDEX (status_verbatim)
-	)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+	)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 	";
 	sql_execute_multiple($sql);
 	echo $done;
@@ -45,7 +45,7 @@ INDEX (taxon_rank),
 INDEX (status_verbatim),
 INDEX (native_status),
 INDEX (cult_status)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo "done";

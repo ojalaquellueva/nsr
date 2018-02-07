@@ -24,7 +24,7 @@ Paraguay VARCHAR(250),
 Uruguay VARCHAR(250),
 Brazil VARCHAR(250),
 updated VARCHAR(250)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Index the tables
 ALTER TABLE $tbl_raw

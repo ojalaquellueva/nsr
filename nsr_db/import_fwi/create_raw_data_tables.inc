@@ -25,7 +25,7 @@ bahamas VARCHAR(255) DEFAULT NULL,
 lesserAntillles VARCHAR(255) DEFAULT NULL,
 editedDate VARCHAR(255) DEFAULT NULL,
 data VARCHAR(255) DEFAULT NULL
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;
@@ -65,7 +65,7 @@ country25 VARCHAR(255) DEFAULT NULL,
 country26 VARCHAR(255) DEFAULT NULL,
 UNIQUE INDEX (region),
 INDEX (is_country)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;
@@ -94,7 +94,7 @@ INDEX (taxon_rank),
 INDEX (status_verbatim),
 INDEX (native_status),
 INDEX (cult_status)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;
@@ -132,7 +132,7 @@ INDEX (native_status),
 INDEX (cult_status),
 INDEX (native_status_all),
 INDEX (cult_status_all)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;
@@ -167,7 +167,7 @@ INDEX (taxon_rank),
 INDEX (native_status),
 INDEX (native_status_details),
 INDEX (cult_status)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;
@@ -178,7 +178,7 @@ DROP TABLE IF EXISTS fwi_country;
 CREATE TABLE fwi_country (
 country VARCHAR(255) DEFAULT NULL,
 UNIQUE INDEX (country)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;
@@ -192,7 +192,7 @@ country VARCHAR(50) DEFAULT NULL,
 UNIQUE INDEX region_country (region, country),
 INDEX (region),
 INDEX (country)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;

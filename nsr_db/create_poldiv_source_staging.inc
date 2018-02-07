@@ -24,6 +24,6 @@ INDEX (poldiv_id),
 INDEX (poldiv_type),
 INDEX (source_name),
 INDEX (checklist_type)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);

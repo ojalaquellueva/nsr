@@ -12,7 +12,7 @@ taxon VARCHAR(250) DEFAULT NULL,
 stateProvinceCode VARCHAR(4) DEFAULT NULL,
 INDEX (taxon),
 INDEX (stateProvinceCode)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;
@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `$tbl_weakley_exotic_all_raw`;
 CREATE TABLE `$tbl_weakley_exotic_all_raw` (
 taxon VARCHAR(250) DEFAULT NULL,
 INDEX (taxon)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;
@@ -38,7 +38,7 @@ origin VARCHAR(50) DEFAULT NULL,
 INDEX (family),
 INDEX (taxon),
 INDEX (origin)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;
@@ -51,7 +51,7 @@ stateProvinceCode VARCHAR(4) DEFAULT NULL,
 country VARCHAR(50) DEFAULT NULL,
 INDEX (stateProvinceCode),
 INDEX (country)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;
@@ -72,7 +72,7 @@ INDEX (taxon_rank),
 INDEX (country),
 INDEX (stateProvince),
 INDEX (native_status)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;

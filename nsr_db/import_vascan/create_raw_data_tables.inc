@@ -38,7 +38,7 @@ INDEX(family),
 INDEX(genus),
 INDEX(taxonRank),
 INDEX(taxonomicStatus)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;
@@ -58,7 +58,7 @@ occurrenceRemarks VARCHAR(250) DEFAULT NULL,
 INDEX(id),
 INDEX(occurrenceStatus),
 INDEX(establishmentMeans)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;
@@ -79,7 +79,7 @@ INDEX (taxon_rank),
 INDEX (country),
 INDEX (stateProvince),
 INDEX (native_status)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;

@@ -17,7 +17,7 @@ taxon_rank VARCHAR(100) DEFAULT NULL,
 added_by VARCHAR(100) DEFAULT NULL,
 check_Fail VARCHAR(100) DEFAULT NULL,
 source VARCHAR(500) DEFAULT NULL
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;

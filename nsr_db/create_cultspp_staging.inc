@@ -19,7 +19,7 @@ INDEX (source_name),
 INDEX (taxon),
 INDEX (taxon_rank),
 INDEX (is_in_db)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
 ;
 ";
 sql_execute_multiple($sql);

@@ -12,7 +12,7 @@ country VARCHAR(150) DEFAULT NULL,
 taxon VARCHAR(250) DEFAULT NULL,
 taxon_rank VARCHAR(50) DEFAULT NULL,
 INDEX (taxon)
-)  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo "done";

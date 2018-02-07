@@ -22,7 +22,7 @@ state_province VARCHAR(100) DEFAULT NULL,
 native_status VARCHAR(50) DEFAULT NULL, 
 cult_status VARCHAR(50) DEFAULT NULL, 
 include INT(1) DEFAULT 1
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;
@@ -36,7 +36,7 @@ id BIGINT NOT NULL,
 locality VARCHAR(250) DEFAULT NULL,
 countryCode VARCHAR(250) DEFAULT NULL,
 establishmentMeans VARCHAR(250) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;
@@ -70,7 +70,7 @@ nomenclaturalStatus VARCHAR(250) DEFAULT NULL,
 modified VARCHAR(250) DEFAULT NULL,
 bibliographicCitation VARCHAR(500) DEFAULT NULL,
 `references` VARCHAR(500) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
 sql_execute_multiple($sql);
 echo $done;

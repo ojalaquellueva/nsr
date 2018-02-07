@@ -16,7 +16,7 @@ is_comprehensive INT(1) DEFAULT NULL,
 regional_scope VARCHAR(50) DEFAULT 'country',
 taxonomic_scope VARCHAR(250) DEFAULT NULL,
 PRIMARY KEY (source_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 DROP TABLE IF EXISTS distribution;
 CREATE TABLE distribution (
@@ -37,7 +37,7 @@ cult_status VARCHAR(50) DEFAULT NULL,
 is_cultivated_taxon INT(1) DEFAULT 0, 
 PRIMARY KEY(distribution_id),
 FOREIGN KEY (source_id) REFERENCES source(source_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 DROP TABLE IF EXISTS cclist;
 CREATE TABLE cclist (
@@ -47,7 +47,7 @@ county_parish VARCHAR(100) DEFAULT '',
 INDEX (country),
 INDEX (state_province),
 INDEX (county_parish)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 DROP TABLE IF EXISTS country;
 CREATE TABLE country (
@@ -61,7 +61,7 @@ INDEX (country),
 INDEX (country_iso),
 INDEX (country_iso_alpha3),
 INDEX (country_fips)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- poldiv type is also the name of the table
 -- to which FK poldiv_id points
@@ -80,7 +80,7 @@ INDEX (poldiv_type),
 INDEX (poldiv_name),
 INDEX (source_id),
 INDEX (checklist_type)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
 DROP TABLE IF EXISTS countryName;
@@ -99,7 +99,7 @@ INDEX (isoCode),
 INDEX (countryCode3Char),
 INDEX (countryNameStd),
 INDEX (isNewWorld)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 DROP TABLE IF EXISTS state_province;
 CREATE TABLE state_province (
@@ -116,7 +116,7 @@ INDEX (state_province),
 INDEX (state_province_ascii),
 INDEX (state_province_code),
 INDEX (state_province_code_unique)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 DROP TABLE IF EXISTS state_province_name;
 CREATE TABLE state_province_name (
@@ -133,7 +133,7 @@ INDEX (country),
 INDEX (state_province_id),
 INDEX (state_province),
 INDEX (state_province_ascii)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 DROP TABLE IF EXISTS cultspp;
 CREATE TABLE cultspp (
@@ -143,7 +143,7 @@ taxon VARCHAR(150) NOT NULL,
 PRIMARY KEY(cultspp_id),
 INDEX(taxon),
 FOREIGN KEY (source_id) REFERENCES source(source_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 DROP TABLE IF EXISTS cache;
 CREATE TABLE cache (
@@ -168,14 +168,15 @@ isIntroduced INT(1) DEFAULT NULL,
 isCultivatedNSR INT(1) DEFAULT 0,
 is_cultivated_taxon INT(1) DEFAULT 0, 
 PRIMARY KEY (id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
 ;
 
 -- User-submitted observations plus NSR resolution results
 DROP TABLE IF EXISTS observation;
 CREATE TABLE observation (
 id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT, 
-batch VARCHAR(500) NOT NULL,
+job VARCHAR(500) NOT NULL, 
+batch INT(11) UNSIGNED NOT NULL,
 family VARCHAR(50) DEFAULT NULL,
 genus VARCHAR(50) DEFAULT NULL,
 species VARCHAR(150) DEFAULT NULL,
@@ -209,7 +210,7 @@ genus VARCHAR(100) NOT NULL,
 family VARCHAR(100) NOT NULL,
 source VARCHAR(150) NOT NULL,
 PRIMARY KEY(gf_lookup_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
 ;
 
 ";
@@ -250,6 +251,7 @@ ADD INDEX (poldiv_type)
 ;
 
 ALTER TABLE observation
+ADD INDEX (job),
 ADD INDEX (batch),
 ADD INDEX (family),
 ADD INDEX (genus),

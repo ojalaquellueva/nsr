@@ -50,8 +50,8 @@ $shortopts .= "f::"; 	// file name, if provided will over-ride
 						// default name in params.inc
 $shortopts .= "t::"; 	// file type (csv [default], tab)
 $shortopts .= "l::"; 	// line endings (mac [default], unix, win)
-$shortopts .= "r::"; 	// replace cache and re-run all species 
-						// (true/on;false/off [default])
+$shortopts .= "r::"; 	// replace or delete cache? (keep [default];
+						// replace;delete (all records))
 
 // get command line arguments, if any
 $options = getopt($shortopts);
@@ -131,12 +131,21 @@ $resultsfile = $DATADIR.$resultsfilename;
 // Default=false
 // If true, will re-run all observations through the NSR,
 // replacing any existing values in cache
-$replace_cache = false;
 if (array_key_exists('r', $options)) {
 	$r = $options["r"];
-	if ($r === true || $r == 'true' || $r == 'on') $replace_cache = true;
+	if ($r == 'replace' ) {
+		$replace_cache = 'replace';
+	} elseif ($r == 'delete' ) {
+		$replace_cache = 'delete';
+	} elseif ($r == 'f' || $r == 'false' || $r == 'keep') {
+		$replace_cache = false;
+	} else {
+		die("ERROR: Invalid cache option -r=".$r."\r\n");	
+	}
+} else {
+	$replace_cache = false;
 }
-$replace_cache===true?$replace_cache_str='true':$replace_cache_str='false';
+$replace_cache_str=($replace_cache===false?'false':$replace_cache);
 
 //////////////////////////////////////////////////////
 // Confirm operation and connect to database
@@ -182,10 +191,15 @@ if(file_exists($inputfile)) {
 	
 	// perform any standardizations needed
 	
-	if ($replace_cache===true) {
+	if ($replace_cache=='replace') {
 		// Remove cached observations for these species+poldiv combinations
 		if ($echo_on) echo "Removing previous observations from cache...";
 		include_once "remove_observations_from_cache.php";
+		if ($echo_on) echo $done;	
+	} elseif ($replace_cache=='delete') {
+		// Remove cached observations for these species+poldiv combinations
+		if ($echo_on) echo "Deleting all observations from cache...";
+		include_once "clear_cache.php";
 		if ($echo_on) echo $done;	
 	} else {
 		// Mark records already in cache

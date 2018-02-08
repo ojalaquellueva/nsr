@@ -182,10 +182,17 @@ if(file_exists($inputfile)) {
 	
 	// perform any standardizations needed
 	
-	// Mark records already in cache
-	if ($echo_on) echo "Marking observations already in cache...";
-	include_once "mark_observations.php";	
-	if ($echo_on) echo $done;	
+	if ($replace_cache===true) {
+		// Remove cached observations for these species+poldiv combinations
+		if ($echo_on) echo "Removing previous observations from cache...";
+		include_once "remove_observations_from_cache.php";
+		if ($echo_on) echo $done;	
+	} else {
+		// Mark records already in cache
+		if ($echo_on) echo "Marking observations already in cache...";
+		include_once "mark_observations.php";	
+		if ($echo_on) echo $done;	
+	}
 	
 	include 'db_batch_connect.php';
 		
@@ -216,12 +223,13 @@ if(file_exists($inputfile)) {
 		}
 		
 		$batch = 1;
-		if ($echo_on) echo "  Batch 1 of $batches...marking...";
+		$msg1 = "  Batch 1 of $batches...marking...";
+		$msg2 = "  Batch 1 of $batches...marking...processing...";
+		if ($echo_on) echo $msg1;
 		
 		while ( $batch <= $batches ) { 
 		
-			if ($echo_on) echo "\r                                        ";
-			if ($echo_on) echo "\r  Batch $batch of $batches...marking...";
+			if ($echo_on) echo "\r" . $msg1;
 			
 			// Mark the current batch
 			include "dbw2_open.php";
@@ -236,18 +244,23 @@ if(file_exists($inputfile)) {
 			sql_execute_multiple($sql);
 			mysql_close($dbw2);
 		
-			if ($echo_on) echo "\r  Batch $batch of $batches...marking...processing...";
+			if ($echo_on) echo "\r" . $msg2;
 			
 			// Turn off echo for NSR processes
 			$echo_on = false;
 			
-			// Submit the current batch to NSR
+			// Submit the current batch to NSR, reporting time if echo on
+			$start_batch = microtime(true);
 			include "nsr.php";	
+			$end_batch = microtime(true);
+			$batch_sec = round( $end_batch - $start_batch, 2);
+			$batch_time = secondsToTime($batch_sec);
 			
 			// Turn echo back on if applicable
 			if ($e === true || $e == 'true' || $e == 'on') $echo_on = true;
 			
-			if ($echo_on) echo "done";
+			$msg2 = "  Batch $batch of $batches...marking...processing...done ($batch_sec sec)";
+			if ($echo_on) echo "\r" . $msg2;
 			
 			$batch++;
 		}
@@ -262,7 +275,7 @@ if(file_exists($inputfile)) {
 	//exit ("Exiting...\r\n\r\n");
 
 	// Clear observation table
-	//include_once "clear_observations.php";		
+	include_once "clear_observations.php";		
 
 } else {
 	die("\r\nError: file '$inputfile' not found!\r\n");

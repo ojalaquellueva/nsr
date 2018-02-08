@@ -19,7 +19,7 @@ $sql="
 UPDATE observation o JOIN cultspp c
 ON o.species=c.taxon
 SET o.is_cultivated_taxon=1
-WHERE $BATCH_WHERE
+WHERE $JOB_WHERE AND $BATCH_WHERE
 ;
 ";
 sql_execute_multiple($sql);	

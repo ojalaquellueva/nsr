@@ -5,7 +5,7 @@ if ($echo_on) echo "Inserting observations...";
 // insert the raw records
 $sql="
 INSERT INTO observation (
-batch,
+job,
 family,
 genus,
 species,
@@ -15,7 +15,7 @@ county_parish,
 user_id
 )
 SELECT 
-'$batch',
+'$job',
 family,
 genus,
 species,
@@ -32,7 +32,7 @@ UPDATE observation
 SET state_province='Newfoundland and Labrador'
 WHERE country='Canada' 
 AND state_province LIKE '%Newfoundland%' OR state_province LIKE '%Labrador%'
-AND $BATCH_WHERE_NA
+AND $JOB_WHERE_NA
 ;
 ";
 sql_execute_multiple($sql);
@@ -42,12 +42,12 @@ $sql="
 UPDATE observation 
 SET state_province=NULL
 WHERE state_province=''
-AND $BATCH_WHERE_NA
+AND $JOB_WHERE_NA
 ;
 UPDATE observation 
 SET county_parish=NULL
 WHERE county_parish=''
-AND $BATCH_WHERE_NA
+AND $JOB_WHERE_NA
 ;
 ";
 sql_execute_multiple($sql);
@@ -59,7 +59,7 @@ SET state_province_full=CONCAT_WS(':',
 country,state_province
 )
 WHERE country IS NOT NULL AND state_province IS NOT NULL
-AND $BATCH_WHERE_NA
+AND $JOB_WHERE_NA
 ;
 UPDATE observation
 SET county_parish_full=CONCAT_WS(':',
@@ -68,7 +68,7 @@ country,state_province,county_parish
 WHERE country IS NOT NULL 
 AND state_province IS NOT NULL
 AND county_parish IS NOT NULL
-AND $BATCH_WHERE_NA
+AND $JOB_WHERE_NA
 ;
 UPDATE observation
 SET poldiv_full=
@@ -78,7 +78,7 @@ WHEN state_province IS NOT NULL AND county_parish IS NULL THEN state_province_fu
 WHEN county_parish IS NOT NULL THEN county_parish_full
 ELSE NULL
 END
-WHERE $BATCH_WHERE_NA
+WHERE $JOB_WHERE_NA
 ;
 UPDATE observation
 SET poldiv_type=
@@ -88,7 +88,7 @@ WHEN state_province IS NOT NULL AND county_parish IS NULL THEN 'state_province'
 WHEN county_parish IS NOT NULL THEN 'county_parish'
 ELSE NULL
 END
-WHERE $BATCH_WHERE_NA
+WHERE $JOB_WHERE_NA
 ;
 ";
 sql_execute_multiple($sql);

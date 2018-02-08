@@ -25,7 +25,7 @@ o.native_status_state_province='P',
 o.native_status_county_parish='P'
 WHERE o.county_parish IS NOT NULL AND d.county_parish IS NOT NULL
 AND d.native_status='unknown'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -37,7 +37,7 @@ o.native_status_country='P',
 o.native_status_state_province='P'
 WHERE o.state_province IS NOT NULL AND d.state_province IS NOT NULL
 AND d.native_status='unknown'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -48,7 +48,7 @@ SET
 o.native_status_country='P'
 WHERE 
 d.native_status='unknown'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
@@ -72,7 +72,7 @@ o.native_status_county_parish='Ie'
 WHERE o.county_parish IS NOT NULL AND d.county_parish IS NOT NULL
 AND d.native_status='endemic'
 AND o.county_parish<>d.county_parish
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -86,7 +86,7 @@ o.native_status_county_parish=if(o.county_parish IS NULL, 'Ie', NULL)
 WHERE o.state_province IS NOT NULL AND d.state_province IS NOT NULL
 AND d.native_status='endemic'
 AND o.state_province<>d.state_province
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -99,7 +99,7 @@ o.native_status_county_parish=if(o.county_parish IS NOT NULL, 'Ie', NULL)
 WHERE 
 d.native_status='endemic'
 AND o.country<>d.country
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
@@ -118,7 +118,7 @@ o.native_status_county_parish='Ie'
 WHERE o.county_parish IS NOT NULL AND d.county_parish IS NOT NULL
 AND d.native_status='endemic'
 AND o.county_parish<>d.county_parish
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -132,7 +132,7 @@ o.native_status_county_parish=if(o.county_parish IS NULL, 'Ie', NULL)
 WHERE o.state_province IS NOT NULL AND d.state_province IS NOT NULL
 AND d.native_status='endemic'
 AND o.state_province<>d.state_province
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -145,7 +145,7 @@ o.native_status_county_parish=if(o.county_parish IS NOT NULL, 'Ie', NULL)
 WHERE 
 d.native_status='endemic'
 AND o.country<>d.country
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
@@ -164,7 +164,7 @@ o.native_status_county_parish='Ie'
 WHERE o.county_parish IS NOT NULL AND d.county_parish IS NOT NULL
 AND d.native_status='endemic'
 AND o.county_parish<>d.county_parish
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -178,7 +178,7 @@ o.native_status_county_parish=if(o.county_parish IS NULL, 'Ie', NULL)
 WHERE o.state_province IS NOT NULL AND d.state_province IS NOT NULL
 AND d.native_status='endemic'
 AND o.state_province<>d.state_province
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -191,7 +191,7 @@ o.native_status_county_parish=if(o.county_parish IS NOT NULL, 'Ie', NULL)
 WHERE 
 d.native_status='endemic'
 AND o.country<>d.country
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
@@ -211,7 +211,7 @@ o.native_status_state_province='N',
 o.native_status_county_parish='N'
 WHERE o.county_parish IS NOT NULL AND d.county_parish IS NOT NULL
 AND d.native_status='native'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -223,7 +223,7 @@ o.native_status_country='N',
 o.native_status_state_province='N'
 WHERE o.state_province IS NOT NULL AND d.state_province IS NOT NULL
 AND d.native_status='native'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -234,7 +234,7 @@ SET
 o.native_status_country='N'
 WHERE 
 d.native_status='native'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -260,7 +260,7 @@ o.native_status_state_province='Ne',
 o.native_status_county_parish='Ne'
 WHERE o.county_parish IS NOT NULL AND d.county_parish IS NOT NULL
 AND d.native_status='endemic'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -272,7 +272,7 @@ o.native_status_country='Ne',
 o.native_status_state_province='Ne'
 WHERE o.state_province IS NOT NULL AND d.state_province IS NOT NULL
 AND d.native_status='endemic'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -283,7 +283,7 @@ SET
 o.native_status_country='Ne'
 WHERE 
 d.native_status='endemic'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
@@ -301,7 +301,7 @@ o.native_status_state_province='Ne',
 o.native_status_county_parish='Ne'
 WHERE o.county_parish IS NOT NULL AND d.county_parish IS NOT NULL
 AND d.native_status='endemic'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -313,7 +313,7 @@ o.native_status_country='Ne',
 o.native_status_state_province='Ne'
 WHERE o.state_province IS NOT NULL AND d.state_province IS NOT NULL
 AND d.native_status='endemic'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -324,7 +324,7 @@ SET
 o.native_status_country='Ne'
 WHERE 
 d.native_status='endemic'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
@@ -342,7 +342,7 @@ o.native_status_state_province='Ne',
 o.native_status_county_parish='Ne'
 WHERE o.county_parish IS NOT NULL AND d.county_parish IS NOT NULL
 AND d.native_status='endemic'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -354,7 +354,7 @@ o.native_status_country='Ne',
 o.native_status_state_province='Ne'
 WHERE o.state_province IS NOT NULL AND d.state_province IS NOT NULL
 AND d.native_status='endemic'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -365,7 +365,7 @@ SET
 o.native_status_country='Ne'
 WHERE 
 d.native_status='endemic'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ";
 sql_execute_multiple($sql);	
@@ -393,7 +393,7 @@ o.native_status_county_parish=IF(o.county_parish IS NOT NULL, 'I', NULL)
 WHERE 
 d.native_status IN ('introduced','non-native','not native')
 AND d.state_province_full IS NULL
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -406,7 +406,7 @@ o.native_status_county_parish=IF(o.county_parish IS NOT NULL, 'I', NULL)
 WHERE o.state_province IS NOT NULL AND d.state_province IS NOT NULL
 AND d.native_status IN ('introduced','non-native','not native')
 AND d.county_parish IS NULL
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -418,7 +418,7 @@ o.native_status_county_parish='I'
 WHERE o.county_parish IS NOT NULL AND d.county_parish IS NOT NULL
 AND d.native_status IN ('introduced','non-native','not native')
 AND d.county_parish IS NULL
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
@@ -450,7 +450,7 @@ WHERE
 d.native_status IN ('introduced','non-native','not native')
 AND d.state_province IS NULL
 AND d.county_parish IS NULL
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE 
 AND $special_where
 ;
@@ -466,7 +466,7 @@ o.native_status_county_parish=IF(o.county_parish IS NOT NULL, 'I', NULL)
 WHERE o.state_province IS NOT NULL AND d.state_province IS NOT NULL
 AND d.native_status IN ('introduced','non-native','not native')
 AND d.county_parish IS NULL
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 AND $special_where
 ;

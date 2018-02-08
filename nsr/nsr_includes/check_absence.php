@@ -47,7 +47,7 @@ o.native_status_country='A'
 WHERE 
 d.state_province IS NULL
 AND d.county_parish IS NULL
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
@@ -61,7 +61,7 @@ SET
 o.native_status_state_province='A'
 WHERE o.state_province IS NOT NULL AND d.state_province IS NOT NULL
 AND d.county_parish IS NULL
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
@@ -76,7 +76,7 @@ SET
 o.native_status_county_parish='A'
 WHERE o.state_province IS NOT NULL AND d.state_province IS NOT NULL
 AND o.county_parish IS NOT NULL AND d.county_parish IS NOT NULL
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";

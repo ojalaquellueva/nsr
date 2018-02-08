@@ -15,7 +15,7 @@ WHEN native_status_country IS NULL THEN 'UNK'
 WHEN native_status_country='P' THEN 'P'
 ELSE native_status_country
 END
-WHERE $BATCH_WHERE_NA
+WHERE $JOB_WHERE_NA AND $BATCH_WHERE_NA
 AND $CACHE_WHERE_NA
 ;
 
@@ -31,7 +31,7 @@ ELSE native_status_state_province
 END
 WHERE state_province IS NOT NULL
 AND native_status_state_province IS NOT NULL
-AND $BATCH_WHERE_NA
+AND $JOB_WHERE_NA AND $BATCH_WHERE_NA
 AND $CACHE_WHERE_NA
 ;
 ";
@@ -48,7 +48,7 @@ SET
 o.native_status_reason='Introduced, species endemic to other region',
 o.native_status_sources=a.sources
 WHERE o.native_status='Ie'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -60,7 +60,7 @@ o.native_status_reason='Introduced to region, as per checklist',
 o.native_status_sources=a.sources
 WHERE o.native_status='I' AND a.native_status='introduced'
 AND o.native_status_reason IS NULL
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -72,7 +72,7 @@ o.native_status_reason='Native to region, as per checklist',
 o.native_status_sources=a.sources
 WHERE o.native_status='N' AND a.native_status='native'
 AND o.native_status_reason IS NULL
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -84,7 +84,7 @@ o.native_status_reason='Endemic to region, as per checklist',
 o.native_status_sources=a.sources
 WHERE o.native_status='Ne' AND a.native_status='endemic'
 AND o.native_status_reason IS NULL
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -96,7 +96,7 @@ o.native_status_reason='Present in one or more checklists for region, status not
 o.native_status_sources=a.sources
 WHERE o.native_status='P' AND a.native_status='unknown'
 AND o.native_status_reason IS NULL
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -108,7 +108,7 @@ SET
 o.native_status_reason='Absent from all checklists for region',
 o.native_status_sources=a.sources
 WHERE o.native_status='A'
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -117,7 +117,7 @@ UPDATE observation
 SET native_status='UNK',
 native_status_reason='Status unknown, no checklists for region of observation'
 WHERE native_status='UNK' OR native_status IS NULL
-AND $BATCH_WHERE_NA
+AND $JOB_WHERE_NA AND $BATCH_WHERE_NA
 AND $CACHE_WHERE_NA
 ;
 
@@ -132,7 +132,7 @@ ON o.genus=a.taxon
 SET o.native_status_reason='Introduced, genus endemic to other region',
 o.native_status_sources=a.sources
 WHERE o.native_status='Ie' AND native_status_reason IS NULL
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -142,7 +142,7 @@ ON o.family=a.taxon
 SET o.native_status_reason='Introduced, family endemic to other region',
 o.native_status_sources=a.sources
 WHERE o.native_status='Ie' AND native_status_reason IS NULL
-AND $BATCH_WHERE
+AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 
@@ -156,7 +156,7 @@ $sql="
 UPDATE observation
 SET native_status_reason=NULL
 WHERE native_status_reason IS NOT NULL AND trim(native_status_reason)=''
-AND $BATCH_WHERE_NA 
+AND $JOB_WHERE_NA AND $BATCH_WHERE_NA 
 AND $CACHE_WHERE_NA
 ;
 -- Fill in partial explanation for any records missed
@@ -171,7 +171,7 @@ WHEN native_status='P' THEN 'Present in region, status uncertain'
 ELSE native_status
 END
 WHERE native_status_reason IS NULL
-AND $BATCH_WHERE_NA 
+AND $JOB_WHERE_NA AND $BATCH_WHERE_NA 
 AND $CACHE_WHERE_NA
 ;
 ";
@@ -188,13 +188,13 @@ if ($echo_on) echo "    Updating isIntroduced...";
 $sql="
 UPDATE observation
 SET isIntroduced=1
-WHERE $BATCH_WHERE_NA
+WHERE $JOB_WHERE_NA AND $BATCH_WHERE_NA
 AND $CACHE_WHERE_NA 
 AND native_status IN ('I','Ie')
 ;
 UPDATE observation
 SET isIntroduced=0
-WHERE $BATCH_WHERE_NA
+WHERE $JOB_WHERE_NA AND $BATCH_WHERE_NA
 AND $CACHE_WHERE_NA
 AND native_status IN ('N','Ne')
 ;
@@ -202,14 +202,14 @@ AND native_status IN ('N','Ne')
 -- further information
 UPDATE observation
 SET isIntroduced=0
-WHERE $BATCH_WHERE_NA
+WHERE $JOB_WHERE_NA AND $BATCH_WHERE_NA
 AND $CACHE_WHERE_NA
 AND native_status='P'
 ;
 -- Assume introduced if absent from checklist
 UPDATE observation
 SET isIntroduced=1
-WHERE $BATCH_WHERE_NA
+WHERE $JOB_WHERE_NA AND $BATCH_WHERE_NA
 AND $CACHE_WHERE_NA
 AND native_status='A'
 ;

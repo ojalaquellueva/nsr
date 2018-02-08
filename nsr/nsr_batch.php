@@ -30,14 +30,9 @@ Returns: tab-delimited file, "nsr_results.txt", in /var/www/bien/apps/nsr/data/
 // Parameters
 //////////////////////////////////////////////////////
 
-// Generate unique code for this batch
-$batch = date("Y-m-d-G:i:s").":".str_replace(".0","",strtok(microtime()," "));
-
-
-$batch = '2018-02-03-8:50:42:0.69830700';
-
-
-
+// Generate unique code for this job
+$job = date("Y-m-d-G:i:s").":".str_replace(".0","",strtok(microtime()," "));
+#$job = '2018-02-03-8:50:42:0.69830700';	# Big BIEN job; save for now
 
 // Get db connection parameters (in ALL CAPS)
 include 'params.php';
@@ -156,7 +151,7 @@ Input file: $inputfilename
 File type: $filetype
 Results file: $resultsfilename
 Replace cache: $replace_cache_str
-Batch id: $batch
+Job id: $job
 
 Enter Y to proceed, N to cancel: "
 	;
@@ -178,8 +173,6 @@ if(file_exists($inputfile)) {
 	/* connect to the db */
 	include 'db_batch_connect.php';
 	
-	/*
-	
 	// Import raw observations to temporary table
 	include_once $batch_includes_dir."create_observation_raw.php";	
 	include_once $batch_includes_dir."import_raw_observations.php";
@@ -195,15 +188,13 @@ if(file_exists($inputfile)) {
 	if ($echo_on) echo $done;	
 	
 	include 'db_batch_connect.php';
-	
-	*/
 		
 	// Process observations not in cache, if any, then add to cache
 	// Do only if >=1 observations not in cache
 	$sql="
 	SELECT COUNT(*) AS rows
 	FROM observation
-	WHERE $BATCH_WHERE_NA 
+	WHERE $JOB_WHERE_NA 
 	AND is_in_cache=0
 	;
 	";
@@ -212,10 +203,56 @@ if(file_exists($inputfile)) {
 	$num_rows = sql_get_first_result($sql,'rows');
 
 	if ($num_rows>0) {
-		if ($echo_on) echo "Resolving $num_rows new observations:\r\n";
-		include_once "nsr.php";	
-		//if ($echo_on) echo "$done";
+		if ($echo_on) echo "Resolving $num_rows new observations in batches of $batch_size:\r\n";
+		
+		// Calculate number of batches
+		$batches = $num_rows / $batch_size;
+		$whole = intval( $batches );
+		
+		if ( $batches <= 1 ) {
+			$batches = 1;
+		} elseif ( $batches > $whole ) {
+			$batches = $whole + 1;
+		}
+		
+		$batch = 1;
+		if ($echo_on) echo "  Batch 1 of $batches...marking...";
+		
+		while ( $batch <= $batches ) { 
+		
+			if ($echo_on) echo "\r                                        ";
+			if ($echo_on) echo "\r  Batch $batch of $batches...marking...";
+			
+			// Mark the current batch
+			include "dbw2_open.php";
+			$sql="
+			UPDATE observation
+			SET batch=$batch
+			WHERE $JOB_WHERE_NA 
+			AND is_in_cache=0 
+			AND batch IS NULL
+			LIMIT $batch_size
+			";
+			sql_execute_multiple($sql);
+			mysql_close($dbw2);
+		
+			if ($echo_on) echo "\r  Batch $batch of $batches...marking...processing...";
+			
+			// Turn off echo for NSR processes
+			$echo_on = false;
+			
+			// Submit the current batch to NSR
+			include "nsr.php";	
+			
+			// Turn echo back on if applicable
+			if ($e === true || $e == 'true' || $e == 'on') $echo_on = true;
+			
+			if ($echo_on) echo "done";
+			
+			$batch++;
+		}
 	}
+	if ($echo_on) echo "\n";
 		
 	// Update observation table from cache
 	include_once $batch_includes_dir."update_observations.php";		
@@ -223,6 +260,10 @@ if(file_exists($inputfile)) {
 	// dump nsr results to text file
 	include_once $batch_includes_dir."dump_nsr_results.php";			
 	//exit ("Exiting...\r\n\r\n");
+
+	// Clear observation table
+	//include_once "clear_observations.php";		
+
 } else {
 	die("\r\nError: file '$inputfile' not found!\r\n");
 }

@@ -24,7 +24,7 @@ o.is_cultivated_taxon=c.is_cultivated_taxon
 WHERE
 o.state_province IS NULL AND c.state_province IS NULL
 AND o.county_parish IS NULL AND c.county_parish IS NULL
-AND $BATCH_WHERE 
+AND $JOB_WHERE 
 ;
 
 -- state-level results
@@ -46,7 +46,7 @@ o.isCultivatedNSR=c.isCultivatedNSR,
 o.is_cultivated_taxon=c.is_cultivated_taxon
 WHERE
 o.county_parish IS NULL AND c.county_parish IS NULL
-AND $BATCH_WHERE 
+AND $JOB_WHERE 
 ;
 
 -- county-level results
@@ -67,7 +67,7 @@ o.native_status_sources=c.native_status_sources,
 o.isIntroduced=c.isIntroduced,
 o.isCultivatedNSR=c.isCultivatedNSR,
 o.is_cultivated_taxon=c.is_cultivated_taxon
-AND $BATCH_WHERE 
+AND $JOB_WHERE 
 ;
 ";
 sql_execute_multiple($sql);

@@ -1,5 +1,11 @@
 <?php
 
+/*
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+*/
+
 /* 
 Native Status Resolver (NSR)
 
@@ -15,6 +21,13 @@ http://bien.nceas.ucsb.edu/bien/apps/nsr/nsr_ws.php?species=Pinus%20ponderosa&co
 stateprovince, countyparish and format are optional
 
 */ 
+
+// These parameters not needed for web service
+// Set to TRUE as included in most WHERE clauses
+$JOB_WHERE = " 1 ";
+$BATCH_WHERE = " 1 ";
+$JOB_WHERE_NA = " 1 ";
+$BATCH_WHERE_NA = " 1 ";
 
 // Get db connection parameters (in ALL CAPS)
 include 'params.php';
@@ -74,7 +87,6 @@ if(isset($_GET['country']) && isset($_GET['species'])) {
 	$fam = $tnrs_results['items'][0]['family'];	
 		
 	// Add records to new observation table
-	include_once "create_observation.php";	
 	include_once "add_observations.php";	
 	include_once "standardize_observations.php";	
 

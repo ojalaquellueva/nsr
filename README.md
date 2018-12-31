@@ -1,4 +1,4 @@
-# BIEN Native Status Resolver (NSR) batch application integrated repository
+# Native Status Resolver (NSR) batch application integrated repository
 
 ## Table of Contents
 

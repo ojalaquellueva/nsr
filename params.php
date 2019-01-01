@@ -6,7 +6,12 @@
 
 $BASE_DIR = "/home/boyle/nsr/";
 $APP_DIR = $BASE_DIR."repo/";
-$CONFIG_DIR = $BASE_DIR; // dir where db user & pwd file kept
+
+// dir where db user & pwd file kept
+// Should be outside application directory and html directory
+$CONFIG_DIR = $BASE_DIR; 
+
+// Input & output data directory
 $DATADIR = $BASE_DIR."data/user/";
 
 // general php functions

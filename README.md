@@ -8,13 +8,13 @@ Author: Brad Boyle (bboyle@email.arizona.edu)
 - [Data sources & database](#Data)
 - [Components](#Components)
 - [Installation](#Installation)
-- [Database and batch application](#Core)
-- [Web service](#wsi)
+  - [Database and batch application](#Core)
+  - [Web service](#wsi)
 - [Usage](#Usage)
-- [Batch applicaton](#Batch)
-- [Batch input format](#Input)
-- [Batch output format](#Output)
-- [Web service](#ws)
+  - [Batch applicaton](#Batch)
+  - [Batch input format](#Input)
+  - [Batch output format](#Output)
+  - [Web service](#ws)
 - [Native Status Codes](#Native)
 
 ## <a name="Overview"></a>Overview
@@ -35,16 +35,16 @@ The majority of the checklists consulted by the NSR are high-quality published s
 
 ## <a name="Components"></a>Components
 
-1. nsr_db/nsr_db.php  
+#### nsr_db/nsr_db.php  
 - Builds & populates MySQL database used by all NSR services
 - Reference data not included 
 - See separate README in nsr_db/ for details 
 
-2. nsr.php   
+#### nsr.php   
 - Core application, evaluates table of observations against reference tables and populates native status opinion columns.  
 - Called by nsr_batch.php and nsr_ws.php  
 
-3. nsr_batch.php    
+#### nsr_batch.php    
 - NSR batch processing application  
 - Calls nsr.php  
 - Processes multiple observations at once  
@@ -52,7 +52,7 @@ The majority of the checklists consulted by the NSR are high-quality published s
 - Exports NSR results as TAB delimited file to data directory  
 - Requires shell access to this server  
 
-4. nsr_ws.php   
+#### nsr_ws.php   
 - Simple NSR web service
 - Processes on observation per call  
 - Calls nsr.php
@@ -118,7 +118,9 @@ taxon,country[,state_province[,county_parish]]
 taxon,country[,state_province[,county_parish]]  
 taxon,country[,state_province[,county_parish]]  
 
-The taxon name can be at any of the following ranks: family, genus, species, subspecies, variety, forma. 
+Taxon names can be of any of the following ranks: family, genus, species, subspecies, variety, forma. Do not include author.
+
+Spellings of political division names in the NSR database are the plain ascii (unaccented) versions of English-language political division names in Geonames (www.geonames.org). Political division names in user input should therefore be standardized according to the same standard. 
 
 #### <a name="Output">Batch output format
 

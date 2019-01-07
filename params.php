@@ -15,7 +15,8 @@ $CONFIG_DIR = $BASE_DIR;
 $DATADIR = $BASE_DIR."data/user/";
 
 // general php functions
-$utilities_path=$APP_DIR."includes/php/";
+//$utilities_path=$APP_DIR."includes/php/";	// Local submodule directory
+$utilities_path="/home/boyle/global_utilities/php/"; // Master, for testing
 include $utilities_path."functions.inc";
 include $utilities_path."taxon_functions.inc";
 include $utilities_path."sql_functions.inc";

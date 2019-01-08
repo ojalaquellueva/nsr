@@ -62,15 +62,26 @@ The majority of the checklists consulted by the NSR are high-quality published s
 ## <a name="Installation"></a>Installation & setup
 
 ### <a name="Core"></a>Database and batch application
-1. Clone this repository to location of choice
+1. Clone this repository to location of choice, using recursive option to include submodules:
+```
+git clone --recursive https://github.com/ojalaquellueva/nsr.git
+```
 2. Set up MySQL database
-   * Create empty NSR database
-   * Create admin-level and read-only NSR database users
+   * Create empty NSR database.
+   * Create admin-level and select-only NSR database users, using user names and passwords of your choice.
 3. Copy read-only database config file (db_config-example.php) as db_config.php to location outside the application directory and set the parameters.
 4. Copy write-access database config file (db_configw-example.php) as db_configw.php to location outside the application directory and set the parameters.
 5. Copy or rename example parameters file (params.example.php) to params.php to same location (inside the main application directory) and set the parameters.
 6. Prepare NSR database checklist data sources and set database parameters as described in nsr_db/README.md
 7. Build NSR database
+8. [optional]. The following directories and files are not used by web service and may be deleted:
+
+```
+nsr_batch_includes/
+nsr_db/
+db_batch_connect.php
+nsr_batch.php
+```
 
 ### <a name="wsi"></a>NSR web service
 (Assume NSR database is installed and configured as described above)

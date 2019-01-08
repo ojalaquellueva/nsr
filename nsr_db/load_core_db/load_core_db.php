@@ -25,7 +25,7 @@ if ($replace===true) {
 include 'load_distribution.inc';
 
 // Load cultspp table, if this data present
-if (exists_table('cultspp_staging')) {
+if (exists_table($dbh,'cultspp_staging')) {
 	include 'load_cultspp.inc';
 }
 

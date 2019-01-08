@@ -14,9 +14,11 @@ $CONFIG_DIR = $BASE_DIR;
 // Input & output data directory
 $DATADIR = $BASE_DIR."data/user/";
 
-// general php functions
-//$utilities_path=$APP_DIR."includes/php/";	// Local submodule directory
-$utilities_path="/home/boyle/global_utilities/php/"; // Master, for testing
+// Path to general php funcions and generic include files
+//$utilities_path="/home/boyle/global_utilities/php/"; // Master, testing only
+$utilities_path=$APP_DIR."includes/php/";	// Local submodule directory
+
+// General php funcions and generic include files
 include $utilities_path."functions.inc";
 include $utilities_path."taxon_functions.inc";
 include $utilities_path."sql_functions.inc";
@@ -32,8 +34,14 @@ $batch_includes_dir="nsr_batch_includes/";	// include files specific to batch ap
 
 //////////////////////////////////////////////////
 // Set to ' o.is_in_cache=0 ' to check non-
-// cached observations only. Otherwise, set to ' 1 '
+// cached observations only. Results for cached
+// observations will be obtained from cache  
+// (faster).
+// Otherwise, set to ' 1 ' to force NSR to look up
+// resolve all observations from scratch (slower)
 //////////////////////////////////////////////////
+//$CACHE_WHERE = " 1 ";
+//$CACHE_WHERE_NA = " 1 ";	// no alias version
 $CACHE_WHERE = " o.is_in_cache=0 ";
 $CACHE_WHERE_NA = " is_in_cache=0 ";	// no alias version
 

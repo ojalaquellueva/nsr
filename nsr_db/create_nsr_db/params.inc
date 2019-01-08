@@ -10,7 +10,7 @@ $file_state_province_name="stateProvinceName.csv";
 
 
 // Include path to file in name if not in same directory as this script
-$datapath="create_nsr_db/data/";
+$datapath=$app_dir . "create_nsr_db/data/";
 
 // Import parameters for text file
 // Needed for 'LOAD DATA INFILE' statement

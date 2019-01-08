@@ -78,11 +78,14 @@ $usr_array=array(
 // Include paths and filenames
 //////////////////////////////////////////////////
 
-$base_dir = "/home/boyle/";
-$app_dir = $base_dir . "nsr/nsr_db/";
-$data_dir = $base_dir . "nsr/data/db/";
-$global_utilities_path = $base_dir."global_utilities/";
-$local_utilities_path = "functions/";
+$base_dir = "/home/boyle/nsr/repo/";
+$app_dir = $base_dir . "nsr_db/";
+$data_dir = $base_dir . "../data/db/";
+
+// Path to general php functions and other generic include files
+//$global_utilities_path = "/home/boyle/global_utilities/php/";	
+$global_utilities_path = $base_dir."includes/php/";
+//$local_utilities_path = "functions/";
 
 include $global_utilities_path."functions.inc";
 include $global_utilities_path."taxon_functions.inc";

@@ -26,8 +26,14 @@ $batch_includes_dir="nsr_batch_includes/";	// include files specific to batch ap
 
 //////////////////////////////////////////////////
 // Set to ' o.is_in_cache=0 ' to check non-
-// cached observations only. Otherwise, set to ' 1 '
+// cached observations only. Results for cached
+// observations will be obtained from cache  
+// (faster).
+// Otherwise, set to ' 1 ' to force NSR to look up
+// resolve all observations from scratch (slower)
 //////////////////////////////////////////////////
+//$CACHE_WHERE = " 1 ";
+//$CACHE_WHERE_NA = " 1 ";	// no alias version
 $CACHE_WHERE = " o.is_in_cache=0 ";
 $CACHE_WHERE_NA = " is_in_cache=0 ";	// no alias version
 

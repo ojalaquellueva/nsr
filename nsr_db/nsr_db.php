@@ -63,8 +63,11 @@ include_once "check_sources.inc";
 // Start timer and connect to mysql
 echo "\r\nBegin operation\r\n";
 include $timer_on;
+include "db_connect.inc";
+/*
 $dbh = mysqli_connect($HOST,$USER,$PWD,FALSE,128);
 if (!$dbh) die("\r\nCould not connect to database!\r\n");
+*/
 
 ////////////////////////////////////////////////////////////
 // Generate new empty database
@@ -87,6 +90,7 @@ if ($replace_db) {
 	// Replace core tables
 	include_once "create_nsr_db/params.inc";
 	include_once "create_nsr_db/create_tables.inc";
+	echo "Populating political division tables:\r\n";
 	include_once "create_nsr_db/populate_country.inc";
 	include_once "create_nsr_db/populate_countryName.inc";
 	include_once "create_nsr_db/update_country_id.inc";

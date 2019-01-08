@@ -45,7 +45,7 @@ if ($records>1) {
 			;
 			";
 		$msg_error="Failed to insert new record for source_name='$source_name' in table `source`!\r\n";
-		if (sql_execute($sql_source,TRUE,$echo_on,"",$msg_error));
+		if (sql_execute($dbh,$sql_source,TRUE,$echo_on,"",$msg_error));
 	} else {
 		// update existing record for this source
 		$sql="

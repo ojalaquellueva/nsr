@@ -68,7 +68,7 @@ The majority of the checklists consulted by the NSR are high-quality published s
    * Create admin-level and read-only NSR database users
 3. Copy read-only database config file (db_config-example.php) as db_config.php to location outside the application directory and set the parameters.
 4. Copy write-access database config file (db_configw-example.php) as db_configw.php to location outside the application directory and set the parameters.
-5. Copy parameters file (params.example.php) as params.php to same location (inside the main application directory) and set the parameters.
+5. Copy or rename example parameters file (params.example.php) to params.php to same location (inside the main application directory) and set the parameters.
 6. Prepare NSR database checklist data sources and set database parameters as described in nsr_db/README.md
 7. Build NSR database
 
@@ -77,10 +77,9 @@ The majority of the checklists consulted by the NSR are high-quality published s
 1. Clone this repository to subdirectory of choice in public_html folder
 2. Delete subdirectory nsr_db/ and contents
 3. Copy read-only database config file (db_config-example.php) as db_config.php to location outside public_html and set the parameters.
-4. Copy write-access database config file (db_configw-example.php) as db_configw.php to location public_html and set the parameters.
-5. Copy parameters file (params.example.php) as params.php to same location  and set the parameters.
-6. Move data directory (data/) and subdirectories to a location outside the main application directory. Remove directory data/db (not needed)
-7. Adjust file permissions per your server settings.
+4. Copy write-access database config file (db_configw-example.php) as db_configw.php to location outside public_html and set the parameters.
+5. Copy or rename parameters file (params.example.php) to params.php and set the parameters.
+6. Adjust file permissions per your server settings.
 
 ## <a name="Usage"></a>Usage
 

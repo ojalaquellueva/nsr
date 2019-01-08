@@ -16,7 +16,7 @@ DELETE FROM `$tbl_raw`
 WHERE country='Unknown Origin'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 // This next operation can't use function sql_execute_multiple
@@ -29,7 +29,7 @@ WHERE taxon LIKE 'Hondurodendron%'
 AND taxon_rank='Genus'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 // Converting non-standard country names
@@ -46,7 +46,7 @@ ELSE country
 END
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Splitting 'Korean Peninsula into separate records for N & S Korea...";
@@ -79,7 +79,7 @@ SET country='South Korea'
 WHERE country='Korean Peninsula'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

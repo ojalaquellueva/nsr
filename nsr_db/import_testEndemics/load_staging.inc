@@ -31,7 +31,7 @@ taxon_rank,
 FROM `$tbl_raw`
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

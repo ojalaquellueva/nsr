@@ -22,7 +22,7 @@ VALUES (
 );	
 
 ";
-sql_execute_multiple($sql_insert_obs);
+sql_execute_multiple($dbh, $sql_insert_obs);
 //	echo "<br />$sql<br />";
 
 $sql="
@@ -35,7 +35,7 @@ SET county_parish=NULL
 WHERE county_parish='';
 
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 include "db_close.php";
 

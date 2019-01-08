@@ -11,7 +11,7 @@ FROM distribution d JOIN source s
 ON d.source_id=s.source_id
 WHERE s.source_name='$source_name';
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Removing cultivated species records linked only to this source...";
@@ -21,7 +21,7 @@ FROM cultspp c JOIN source s
 ON c.source_id=s.source_id
 WHERE s.source_name='$source_name';
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 

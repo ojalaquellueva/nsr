@@ -14,7 +14,7 @@ INDEX (taxon),
 INDEX (stateProvinceCode)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  `$tbl_weakley_exotic_all_raw`...";
@@ -25,7 +25,7 @@ taxon VARCHAR(250) DEFAULT NULL,
 INDEX (taxon)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  `$tbl_weakley_origin_raw`...";
@@ -40,7 +40,7 @@ INDEX (taxon),
 INDEX (origin)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 	
 echo "  `$tbl_weakley_poldivs_raw`...";
@@ -53,7 +53,7 @@ INDEX (stateProvinceCode),
 INDEX (country)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  `$tbl_raw`...";
@@ -74,7 +74,7 @@ INDEX (stateProvince),
 INDEX (native_status)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

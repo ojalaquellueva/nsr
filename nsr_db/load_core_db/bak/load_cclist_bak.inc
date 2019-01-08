@@ -27,7 +27,7 @@ ON b.country=c.country
 WHERE c.country IS NULL
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "    state_province...";
@@ -56,7 +56,7 @@ ON b.state_province_id=c.state_province_id
 WHERE c.state_province_id IS NULL
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 // county_parish not ready!!!

@@ -28,7 +28,7 @@ strSplit(taxon_with_author,' ',4)
 END
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

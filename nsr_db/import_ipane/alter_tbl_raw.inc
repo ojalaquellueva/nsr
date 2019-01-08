@@ -14,7 +14,7 @@ ADD COLUMN id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 ADD UNIQUE INDEX(id)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Add taxon field
 $sql="
@@ -23,7 +23,7 @@ ADD COLUMN taxon VARCHAR(250) DEFAULT NULL,
 ADD INDEX (taxon)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Add taxon rank field
 $sql="
@@ -32,7 +32,7 @@ ADD COLUMN taxon_rank VARCHAR(25) DEFAULT NULL,
 ADD INDEX (taxon_rank)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Add include field
 $sql="
@@ -41,7 +41,7 @@ ADD COLUMN include INT(1) DEFAULT 1,
 ADD INDEX (include)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Add country field
 $sql="
@@ -50,7 +50,7 @@ ADD COLUMN country VARCHAR(25) DEFAULT NULL,
 ADD INDEX (country)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 echo $done;
 

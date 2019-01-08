@@ -35,7 +35,7 @@ AND $JOB_WHERE_NA AND $BATCH_WHERE_NA
 AND $CACHE_WHERE_NA
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 if ($echo_on) echo "done\r\n";
 
 if ($echo_on) echo "    Populating native status source information...";
@@ -147,7 +147,7 @@ AND $CACHE_WHERE
 ;
 
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 if ($echo_on) echo "done\r\n";
 
 if ($echo_on) echo "    Miscellaneous corrections...";
@@ -175,7 +175,7 @@ AND $JOB_WHERE_NA AND $BATCH_WHERE_NA
 AND $CACHE_WHERE_NA
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 if ($echo_on) echo "done\r\n";
 
 // These rules should be changed as needed
@@ -214,7 +214,7 @@ AND $CACHE_WHERE_NA
 AND native_status='A'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 if ($echo_on) echo "done\r\n";
 
 ?>

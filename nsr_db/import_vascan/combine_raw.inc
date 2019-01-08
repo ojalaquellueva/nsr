@@ -33,7 +33,7 @@ WHERE t.acceptedNameUsageID=t.id
 AND t.species IS NOT NULL AND species NOT LIKE '% % %'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

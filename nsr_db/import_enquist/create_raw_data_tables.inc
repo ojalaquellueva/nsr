@@ -14,7 +14,7 @@ INDEX (region),
 INDEX (taxon)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  $tbl_raw_enquist_cultspp...";
@@ -25,7 +25,7 @@ taxon VARCHAR(250) DEFAULT NULL,
 INDEX (taxon)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 
@@ -49,7 +49,7 @@ INDEX (native_status),
 INDEX (native_status_details)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

@@ -14,7 +14,7 @@ LINES TERMINATED BY '\n'
 IGNORE 1 LINES
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

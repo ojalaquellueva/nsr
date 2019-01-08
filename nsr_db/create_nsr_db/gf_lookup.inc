@@ -28,7 +28,7 @@ FROM $db_gf_lookup.genus_family
 WHERE isAccepted=1
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 echo $done;
 
 echo "  Source: tnrs (accepted)...";
@@ -51,7 +51,7 @@ AND family IS NOT NULL
 AND acceptance in ('Accepted')
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 echo $done;
 
 echo "  Source: tnrs (all)...";
@@ -72,7 +72,7 @@ AND nameRank='genus'
 AND family IS NOT NULL 
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 echo $done;
 
 echo "  Indexing...";
@@ -83,7 +83,7 @@ ADD INDEX (family),
 ADD INDEX (source)
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 echo $done;
 
 echo "  Removing duplicates...";
@@ -107,7 +107,7 @@ DELETE FROM gf_lookup
 WHERE source='duplicate'
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 echo $done;
 
 

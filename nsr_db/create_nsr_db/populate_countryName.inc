@@ -15,7 +15,7 @@ $optionally_enclosed_by
 $lines_terminated_by 
 $ignore_lines;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

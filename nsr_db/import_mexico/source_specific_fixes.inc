@@ -18,7 +18,7 @@ UPDATE `$tbl_raw`
 SET include=1
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Populating taxon...";
@@ -29,7 +29,7 @@ SET a.taxon=b.species,
 a.species=b.species
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Populating genus...";
@@ -43,7 +43,7 @@ strSplit(species, ' ',1)
 END
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 

@@ -13,9 +13,9 @@ $lines_terminated_by
 $ignore_lines;
 ";
 //echo "\r\n$sql\r\n";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
-if (!(empty_string_to_null('observation_raw'))) die("Error\r\n.");
+if (!(empty_string_to_null($dbh, 'observation_raw'))) die("Error\r\n.");
 if ($echo_on) echo "done\r\n";
 
 ?>

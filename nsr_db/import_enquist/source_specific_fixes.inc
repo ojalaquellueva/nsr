@@ -26,7 +26,7 @@ SET region='Australia'
 WHERE region='Austrailia'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "    Standardizing countries...";
@@ -36,7 +36,7 @@ ON a.region=b.countryName
 SET a.country=b.countryNameStd
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

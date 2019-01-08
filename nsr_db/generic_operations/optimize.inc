@@ -16,7 +16,7 @@ UPDATE distribution
 SET native_status=LOWER(native_status)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "    setting null native_status to 'unknown'..";
@@ -26,7 +26,7 @@ SET native_status='unknown'
 WHERE native_status IS NULL OR trim(native_status)=''
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "    Populating column state_province_full..";
@@ -39,7 +39,7 @@ country,state_province
 WHERE country IS NOT NULL AND state_province IS NOT NULL
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "    Populating column county_parish_full..";
@@ -53,7 +53,7 @@ AND state_province IS NOT NULL
 AND county_parish IS NOT NULL
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "    Populating column poldiv_full..";
@@ -68,7 +68,7 @@ ELSE NULL
 END
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "    Populating column poldiv_type..";
@@ -83,7 +83,7 @@ ELSE NULL
 END
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "    Indexing the columns..";
@@ -95,7 +95,7 @@ ADD INDEX (poldiv_full),
 ADD INDEX (poldiv_type)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 

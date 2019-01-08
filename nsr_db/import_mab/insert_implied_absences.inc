@@ -49,7 +49,7 @@ AND a.native_status='endemic'
 AND c.country IS NULL
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 echo $done;
 
 

@@ -4,7 +4,7 @@
 
 if ($echo_on) echo "  Updating source information...";
 $sql="SELECT COUNT(*) AS sources FROM `source` WHERE `source_name`='$source_name';";
-$records=sql_get_first_result($sql,'sources');
+$records=sql_get_first_result($dbh, $sql,'sources');
 If ($records===false) {
 	echo "ERROR: Offending SQL:\r\n$sql\r\n";
 	echo "Records=".$records."\r\n";
@@ -68,7 +68,7 @@ echo $msg_success;
 
 // Get ID for current source
 $sql="SELECT source_id FROM `source` WHERE `source_name`='$source_name'";
-$source_id=sql_get_first_result($sql,'source_id');
+$source_id=sql_get_first_result($dbh, $sql,'source_id');
 If ($source_id===false or $source_id==NULL) die("failed retrieve 'source_id' from table `source`");
 //echo "    Currently loading source='$source_name' (source ID=$source_id)\r\n";
 

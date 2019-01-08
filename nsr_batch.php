@@ -222,9 +222,9 @@ if(file_exists($inputfile)) {
 	AND is_in_cache=0
 	;
 	";
-	//$result = mysql_query($sql);	
-	//$num_rows = mysql_num_rows($result);
-	$num_rows = sql_get_first_result($sql,'rows');
+	//$result = mysqli_query($dbh, $sql);	
+	//$num_rows = mysqli_num_rows($result);
+	$num_rows = sql_get_first_result($dbh, $sql,'rows');
 
 	if ($num_rows>0) {
 		if ($echo_on) echo "Resolving $num_rows new observations in batches of $batch_size:\r\n";
@@ -258,8 +258,8 @@ if(file_exists($inputfile)) {
 			AND batch IS NULL
 			LIMIT $batch_size
 			";
-			sql_execute_multiple($sql);
-			mysql_close($dbw2);
+			sql_execute_multiple($dbh, $sql);
+			mysqli_close($dbw2);
 		
 			if ($echo_on) echo "\r" . $msg2;
 			

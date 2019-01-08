@@ -20,7 +20,7 @@ SET taxon=REPLACE(taxon,'  ',' ')
 WHERE taxon LIKE '%  %'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Fixing miscellaneous taxon name errors...";
@@ -30,7 +30,7 @@ SET taxon='Muhlenbergia angustata x rigida'
 WHERE taxon='Muhlenbergia angustata (J. Presl) Kunth x M. rigida'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Populating species...";
@@ -52,7 +52,7 @@ WHERE taxon LIKE '% %'
 AND taxon LIKE '% x %'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Populating genus...";
@@ -61,7 +61,7 @@ UPDATE `$tbl_raw`
 SET genus=strSplit(taxon,' ',1)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 // This is a hack. Allow country records to be appended, but
@@ -74,7 +74,7 @@ SET Chile='Chile'
 WHERE dist_string LIKE '%CHL(%'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 

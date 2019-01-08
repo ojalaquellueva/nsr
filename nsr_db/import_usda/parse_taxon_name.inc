@@ -25,7 +25,7 @@ strSplit(`$fld_scientific_name`,' ',4)
 WHERE taxon IS NULL
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

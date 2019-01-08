@@ -43,7 +43,7 @@ FROM country
 WHERE country IN ($cclist_countries_inlist)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 /* Omit other lists for now. 
@@ -73,7 +73,7 @@ WHERE a.country NOT IN ($cclist_countries_inlist)
 AND inferred=0
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 
@@ -99,7 +99,7 @@ AND a.country NOT IN ($pclist_countries_inlist)
 AND inferred=1
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 */
 

@@ -14,7 +14,7 @@ WHERE is_in_db=0
 AND taxon_rank IN ('species','var.','susp.','fo.','variety','subspecies','forma','infraspecies','subspecific');
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

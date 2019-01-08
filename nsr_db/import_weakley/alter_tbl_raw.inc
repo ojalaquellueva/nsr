@@ -13,7 +13,7 @@ ALTER TABLE `$tbl_weakley_poldivs_raw`
 ADD COLUMN stateProvince VARCHAR(50) DEFAULT NULL,
 ADD INDEX (stateProvince);
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Add isOldWorld name field to origin table
 $sql="
@@ -21,7 +21,7 @@ ALTER TABLE `$tbl_weakley_origin_raw`
 ADD COLUMN isOldWorld INT(1) DEFAULT 0,
 ADD INDEX (isOldWorld);
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 echo $done;
 

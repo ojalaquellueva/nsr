@@ -17,7 +17,7 @@ WHERE taxon NOT LIKE '% %' OR taxon IS NULL OR TRIM(taxon)='';
 DELETE FROM $tbl_raw 
 WHERE country IS NULL OR TRIM(country)='';
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

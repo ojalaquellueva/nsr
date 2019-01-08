@@ -14,8 +14,8 @@ $optionally_enclosed_by
 $lines_terminated_by 
 $ignore_lines;
 ";
-sql_execute_multiple($sql);
-if (!(empty_string_to_null($tbl_raw))) die("Error\r\n.");
+sql_execute_multiple($dbh, $sql);
+if (!(empty_string_to_null($dbh, $tbl_raw))) die("Error\r\n.");
 echo $done;
 
 echo "  Importing file $file_raw_weakley_exotic_all to table `$tbl_weakley_exotic_all_raw`...";
@@ -27,8 +27,8 @@ $optionally_enclosed_by
 $lines_terminated_by 
 $ignore_lines;
 ";
-sql_execute_multiple($sql);
-if (!(empty_string_to_null($tbl_raw))) die("Error\r\n.");
+sql_execute_multiple($dbh, $sql);
+if (!(empty_string_to_null($dbh, $tbl_raw))) die("Error\r\n.");
 echo $done;
 
 echo "  Importing file $file_raw_weakley_origin to table `$tbl_weakley_origin_raw`...";
@@ -40,8 +40,8 @@ $optionally_enclosed_by
 $lines_terminated_by 
 $ignore_lines;
 ";
-sql_execute_multiple($sql);
-if (!(empty_string_to_null($tbl_raw))) die("Error\r\n.");
+sql_execute_multiple($dbh, $sql);
+if (!(empty_string_to_null($dbh, $tbl_raw))) die("Error\r\n.");
 echo $done;
 
 echo "  Importing file $file_raw_weakley_poldivs to table `$tbl_weakley_poldivs_raw`...";
@@ -53,8 +53,8 @@ $optionally_enclosed_by
 $lines_terminated_by 
 $ignore_lines;
 ";
-sql_execute_multiple($sql);
-if (!(empty_string_to_null($tbl_raw))) die("Error\r\n.");
+sql_execute_multiple($dbh, $sql);
+if (!(empty_string_to_null($dbh, $tbl_raw))) die("Error\r\n.");
 echo $done;
 
 

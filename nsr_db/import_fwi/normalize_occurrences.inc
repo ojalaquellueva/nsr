@@ -13,10 +13,10 @@ SELECT DISTINCT region
 FROM fwi_regions_raw
 ;
 ";
-$regions = mysql_query($sql_region);
+$regions = mysqli_query($dbh, $sql_region);
 
 // Process each region
-while ($row = mysql_fetch_assoc($regions)) {	
+while ($row = mysqli_fetch_assoc($regions)) {	
 	$region = $row["region"];
 	$region_col = $region;
 
@@ -48,7 +48,7 @@ while ($row = mysql_fetch_assoc($regions)) {
 	";
 
 	// add record to new table
-	sql_execute_multiple($sql);	
+	sql_execute_multiple($dbh, $sql);	
 	echo $done;
 }
 

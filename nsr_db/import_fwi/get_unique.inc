@@ -28,7 +28,7 @@ bahamas VARCHAR(255) DEFAULT NULL,
 lesserAntillles VARCHAR(255) DEFAULT NULL
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "    Insert distinct records into $tbl_raw_2...";
@@ -70,17 +70,17 @@ FROM $tbl_raw
 DROP TABLE $tbl_raw;
 RENAME TABLE $tbl_raw_2 TO $tbl_raw;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 
 /*
 // look up state names
-$results = mysql_query("
+$results = mysqli_query($dbh, "
 SELECT DISTINCT stateCode FROM `$tbl_raw`;
 ");
 
-while ($row = mysql_fetch_assoc($results)) {
+while ($row = mysqli_fetch_assoc($results)) {
 	$stateCode = $row["stateCode"];
 	
 	$state = state_name_US($stateCode);
@@ -90,7 +90,7 @@ while ($row = mysql_fetch_assoc($results)) {
 	WHERE stateCode='$stateCode'
 	;		
 	";
-	sql_execute_multiple($sql);
+	sql_execute_multiple($dbh, $sql);
 }
 
 echo $done;

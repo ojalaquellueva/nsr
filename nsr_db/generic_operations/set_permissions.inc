@@ -29,7 +29,7 @@ foreach ($usr_array as $usr_attributes) {
 	SELECT 1 FROM mysql.user WHERE user = '$usr'
 	) AS exists_usr
 	";
-	$exists_usr = sql_get_first_result( $sql, 'exists_usr' );
+	$exists_usr = sql_get_first_result($dbh,  $sql, 'exists_usr' );
 	if ( $exists_usr == 0 ) {
 		echo "WARNING: user doesn't exist!\r\n";
 		continue;
@@ -72,7 +72,7 @@ foreach ($usr_array as $usr_attributes) {
 	";			
 	
 	// Execute the final series of commands
-	sql_execute_multiple($sql_perm);
+	sql_execute_multiple($dbh, $sql_perm);
 	echo $done;
 }
 

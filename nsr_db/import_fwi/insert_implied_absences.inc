@@ -26,10 +26,10 @@ WHERE is_country<>1
 AND region NOT IN ('hispaniola','virginIslands')
 ;
 ";
-$regions = mysql_query($sql_region);
+$regions = mysqli_query($dbh, $sql_region);
 
 // Process each region, inserting only absences
-while ($row = mysql_fetch_assoc($regions)) {	
+while ($row = mysqli_fetch_assoc($regions)) {	
 	$region = $row["region"];
 	echo "  $region...";
 		
@@ -70,7 +70,7 @@ while ($row = mysql_fetch_assoc($regions)) {
 	AND c.country IS NULL
 	;
 	";
-	sql_execute_multiple($sql);	
+	sql_execute_multiple($dbh, $sql);	
 	echo $done;
 }
 

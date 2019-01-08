@@ -27,7 +27,7 @@ foreach($tbl_list as $tbl) {
 	FROM $tbl_raw
 	WHERE species IS NOT NULL AND species<>''
 	";
-	sql_execute_multiple($sql);
+	sql_execute_multiple($dbh, $sql);
 	//echo $done;
 }
 echo $done;

@@ -46,7 +46,7 @@ state31 VARCHAR(255) DEFAULT NULL,
 state32 VARCHAR(255) DEFAULT NULL
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  $tbl_species_raw...";
@@ -59,7 +59,7 @@ bad VARCHAR(255) DEFAULT NULL,
 species VARCHAR(255) DEFAULT NULL
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "Indexing tables...";
@@ -69,7 +69,7 @@ ADD INDEX (species_id);
 ALTER TABLE $tbl_raw
 ADD INDEX (species_id); 
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 	

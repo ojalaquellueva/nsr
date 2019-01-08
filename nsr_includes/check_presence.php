@@ -52,7 +52,7 @@ AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 if ($echo_on) echo "done\r\n";
 
 if ($echo_on) echo "    Introduced due to endemism elsewhere:\r\n";
@@ -103,7 +103,7 @@ AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 if ($echo_on) echo "done\r\n";
 
 if ($echo_on) echo "      Endemic genera...";
@@ -149,7 +149,7 @@ AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 if ($echo_on) echo "done\r\n";
 
 if ($echo_on) echo "      Endemic families...";
@@ -195,7 +195,7 @@ AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 if ($echo_on) echo "done\r\n";
 
 if ($echo_on) echo "    Native species...";
@@ -239,7 +239,7 @@ AND $CACHE_WHERE
 ;
 
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 if ($echo_on) echo "done\r\n";
 
 if ($echo_on) echo "    Endemic taxa:\r\n";
@@ -287,7 +287,7 @@ AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 if ($echo_on) echo "done\r\n";
 
 if ($echo_on) echo "      Genera...";
@@ -328,7 +328,7 @@ AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 if ($echo_on) echo "done\r\n";
 
 if ($echo_on) echo "      Families...";
@@ -368,7 +368,7 @@ d.native_status='endemic'
 AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 if ($echo_on) echo "done\r\n";
 
 if ($echo_on) echo "    Introduced species...";
@@ -422,7 +422,7 @@ AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 if ($echo_on) echo "done\r\n";
 
 if ($echo_on) echo "    Special updates for USDA Plants...";
@@ -472,7 +472,7 @@ AND $special_where
 ;
 
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 if ($echo_on) echo "done\r\n";
 
 ?>

@@ -27,7 +27,7 @@ editedDate VARCHAR(255) DEFAULT NULL,
 data VARCHAR(255) DEFAULT NULL
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  fwi_regions_raw...";
@@ -67,7 +67,7 @@ UNIQUE INDEX (region),
 INDEX (is_country)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  fwi_occurrences...";
@@ -96,7 +96,7 @@ INDEX (native_status),
 INDEX (cult_status)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 
@@ -134,7 +134,7 @@ INDEX (native_status_all),
 INDEX (cult_status_all)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  fwi_raw_final...";
@@ -169,7 +169,7 @@ INDEX (native_status_details),
 INDEX (cult_status)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  fwi_country...";
@@ -180,7 +180,7 @@ country VARCHAR(255) DEFAULT NULL,
 UNIQUE INDEX (country)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  fwi_region_country...";
@@ -194,7 +194,7 @@ INDEX (region),
 INDEX (country)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 	
 ?>

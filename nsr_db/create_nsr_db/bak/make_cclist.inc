@@ -21,7 +21,7 @@ ADD INDEX(country),
 ADD INDEX(state_province),
 ADD INDEX(county_parish);
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 
 // Add US and Canada as country-level checklists
 // Necessary because database only includes state- 
@@ -41,7 +41,7 @@ INSERT INTO cclist2 SELECT DISTINCT * FROM cclist;
 DROP TABLE cclist;
 RENAME TABLE cclist2 TO cclist;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 echo $done;
 
 

@@ -10,7 +10,7 @@ ADD INDEX (country),
 ADD INDEX (state_province),
 ADD INDEX (county_parish)
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

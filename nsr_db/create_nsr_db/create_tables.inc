@@ -214,7 +214,7 @@ PRIMARY KEY(gf_lookup_id)
 ;
 
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "Indexing tables...";
@@ -276,7 +276,7 @@ ADD INDEX (is_in_cache)
 ;
 
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 

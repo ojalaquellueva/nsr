@@ -39,7 +39,7 @@ user_id INT(11) UNSIGNED DEFAULT NULL,
 PRIMARY KEY (id)
 );
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo "done";
 
 ?>

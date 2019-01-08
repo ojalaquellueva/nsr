@@ -5,7 +5,7 @@ if ($echo_on) echo "Creating table observation_raw...";
 $sql="
 DROP TABLE IF EXISTS observation_raw;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 $sql="
 CREATE TABLE observation_raw (
@@ -19,7 +19,7 @@ user_id INT(11) UNSIGNED DEFAULT NULL
 );
 
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 if ($echo_on) echo $done;
 

@@ -72,7 +72,7 @@ WHERE isInCache=1
 ;
 
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

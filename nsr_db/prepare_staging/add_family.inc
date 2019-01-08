@@ -17,7 +17,7 @@ ON a.genus=b.genus
 SET a.family=b.family
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "      Updating family + poldiv combinations...";
@@ -57,7 +57,7 @@ DELETE FROM temp_missing_family
 WHERE del='DELETE' OR family IS NULL OR TRIM(family)=''
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Insert missing families
 $sql="
@@ -85,13 +85,13 @@ family
 FROM temp_missing_family
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Drop temporary table
 $sql="
 DROP TABLE temp_missing_family;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

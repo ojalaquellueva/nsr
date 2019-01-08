@@ -35,7 +35,7 @@ AND state_province LIKE '%Newfoundland%' OR state_province LIKE '%Labrador%'
 AND $JOB_WHERE_NA
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Convert empty strings to null
 $sql="
@@ -50,7 +50,7 @@ WHERE county_parish=''
 AND $JOB_WHERE_NA
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Populate the optimization columns
 $sql="
@@ -91,13 +91,13 @@ END
 WHERE $JOB_WHERE_NA
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Drop the raw table
 $sql="
 DROP TABLE IF EXISTS observation_raw;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 if ($echo_on) echo "done\r\n";
 

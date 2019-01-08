@@ -51,7 +51,7 @@ foreach ($poldiv_arr as $poldiv) {
 		o.cult_status_".$poldiv."='not in list'
 		;	
 	";
-	sql_execute_multiple($sql);	
+	sql_execute_multiple($dbh, $sql);	
 	//echo $done;
 } 
 echo $done;
@@ -93,7 +93,7 @@ foreach ($poldiv_arr as $poldiv) {
 		o.cult_status_".$poldiv."=d.cult_status
 		;	
 	";
-	sql_execute_multiple($sql);	
+	sql_execute_multiple($dbh, $sql);	
 } 
 echo $done;
 
@@ -133,7 +133,7 @@ foreach ($poldiv_arr as $poldiv) {
 		AND $poldiv_where
 		;	
 	";
-	sql_execute_multiple($sql);	
+	sql_execute_multiple($dbh, $sql);	
 } 
 echo $done;
 

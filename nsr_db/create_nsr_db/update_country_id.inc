@@ -14,7 +14,7 @@ ON a.countryNameStd=b.country
 SET countryID=country_id
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 echo $done;
 
 ?>

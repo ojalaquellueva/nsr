@@ -26,12 +26,12 @@ echo "\r\n********* Begin operation *********\r\n";
 include $timer_on;
 
 // connect to mysql
-$dbh = mysql_connect($HOST,$USER,$PWD,FALSE,128);
+$dbh = mysqli_connect($HOST,$USER,$PWD,FALSE,128);
 if (!$dbh) die("\r\nCould not connect to database!\r\n");
 
 // Connect to database
 $sql="USE `".$DB."`;";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 //////////////////////////////////////////////////////////////////
 // Main script
@@ -47,7 +47,7 @@ include $appdir."validate_observations.inc";
 // Close connection and report total time elapsed 
 //////////////////////////////////////////////////////////////////
 
-mysql_close($dbh);
+mysqli_close($dbh);
 include $timer_off;
 $msg = "\r\nTotal time elapsed: " . $tsecs . " seconds.\r\n"; 
 $msg = $msg . "********* Operation completed " . $curr_time . " *********";

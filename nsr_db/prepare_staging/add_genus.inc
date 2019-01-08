@@ -13,7 +13,7 @@ UPDATE distribution_staging
 SET genus=TRIM(strSplit(taxon,' ',1))
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Create temporary table of missing country+genus combinations
 $sql="
@@ -52,7 +52,7 @@ DELETE FROM temp_missing_genus
 WHERE del='DELETE' OR genus IS NULL OR TRIM(genus)=''
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Insert missing genera...";
 $sql="
@@ -80,13 +80,13 @@ genus
 FROM temp_missing_genus
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Drop temporary table
 $sql="
 DROP TABLE temp_missing_genus;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

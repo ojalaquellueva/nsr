@@ -28,7 +28,7 @@ UPDATE cultspp_staging s JOIN cultspp c
 ON s.taxon=c.taxon
 SET s.is_in_db=1; 
 ";	
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 echo $done;
 

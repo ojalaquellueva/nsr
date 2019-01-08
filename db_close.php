@@ -1,6 +1,5 @@
 <?php
 
-mysql_close($dbh);
-
+mysqli_close($dbh);
 
 ?>

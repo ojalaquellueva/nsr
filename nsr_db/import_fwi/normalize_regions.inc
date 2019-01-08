@@ -13,15 +13,15 @@ DROP TABLE IF EXISTS rc_temp;
 CREATE TABLE rc_temp LIKE fwi_region_country;
 ALTER TABLE rc_temp DROP INDEX region_country;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Loop through each record of raw table
 $sql_native_status="
 SELECT * FROM fwi_regions_raw;
 ";
-$result = mysql_query($sql_native_status);
+$result = mysqli_query($dbh, $sql_native_status);
 
-while ($row = mysql_fetch_assoc($result)) {	
+while ($row = mysqli_fetch_assoc($result)) {	
 	$region = $row["region"];
 
 	// Insert observation for each non-empty country column
@@ -46,7 +46,7 @@ while ($row = mysql_fetch_assoc($result)) {
 		";
 		
 		// add record to new table
-		sql_execute_multiple($sql);					
+		sql_execute_multiple($dbh, $sql);					
 	}
 }
 echo $done;
@@ -57,7 +57,7 @@ INSERT INTO fwi_region_country SELECT DISTINCT * FROM rc_temp
 WHERE country IS NOT NULL;
 DROP TABLE rc_temp;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Extracting countries....";
@@ -68,7 +68,7 @@ FROM fwi_region_country
 WHERE country IS NOT NULL
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

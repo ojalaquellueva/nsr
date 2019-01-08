@@ -25,7 +25,7 @@ SET `$fld_scientific_name`=REPLACE(`$fld_scientific_name`,'$encoded_x','$plain_x
 ";
 //echo "\r\nSQL=\r\n$sql\r\n";
 
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

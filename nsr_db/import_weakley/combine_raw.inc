@@ -13,9 +13,9 @@ SELECT DISTINCT stateProvinceCode
 FROM `$tbl_weakley_poldivs_raw`
 WHERE stateProvinceCode IS NOT NULL AND stateProvinceCode<>'';
 ";
-$result = mysql_query($sql_poldivcodes);
+$result = mysqli_query($dbh, $sql_poldivcodes);
 
-while ($row = mysql_fetch_assoc($result)) {
+while ($row = mysqli_fetch_assoc($result)) {
 	$poldivcode = $row["stateProvinceCode"];
 	$poldiv = get_poldivname($poldivcode);
 	$sql="
@@ -23,7 +23,7 @@ while ($row = mysql_fetch_assoc($result)) {
 	SET stateProvince='$poldiv'
 	WHERE stateProvinceCode='$poldivcode';
 	";
-	sql_execute_multiple($sql);	
+	sql_execute_multiple($dbh, $sql);	
 }
 echo $done;
 
@@ -44,7 +44,7 @@ FROM `$tbl_weakley_exotic_part_raw` w JOIN `$tbl_weakley_poldivs_raw` p
 ON w.stateProvinceCode=p.stateProvinceCode
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Inserting records for species exotic to all of E. North America...";
@@ -65,7 +65,7 @@ p.stateProvince,
 FROM `$tbl_weakley_exotic_all_raw` w, `$tbl_weakley_poldivs_raw` p
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Inserting Old World species as exotic to all New World countries...";
@@ -108,7 +108,7 @@ WHERE isNewWorld=1
 ) AS c
 WHERE w.isOldWorld=1
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Inserting introduced records for species endemic to eastern N. America...";
@@ -132,7 +132,7 @@ WHERE countryNameStd NOT IN ('Canada','United States')
 WHERE w.origin='Endemic' 
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

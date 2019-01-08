@@ -13,9 +13,9 @@ if ($drop_raw_force) {
     AS statement FROM information_schema.tables 
     WHERE table_schema = '$DB' AND table_name LIKE '%_raw';
     ";
-    $qy=sql_get_first_result($sql,'statement');
+    $qy=sql_get_first_result($dbh, $sql,'statement');
     //echo "SQL:\r\n".$qy."\r\n";
-	sql_execute_multiple($qy);	
+	sql_execute_multiple($dbh, $qy);	
 	echo $done;	
 }
 
@@ -27,9 +27,9 @@ if ($drop_staging_force) {
     AS statement FROM information_schema.tables 
     WHERE table_schema = '$DB' AND table_name LIKE '%_staging';
     ";
-    $qy=sql_get_first_result($sql,'statement');
+    $qy=sql_get_first_result($dbh, $sql,'statement');
     //echo "SQL:\r\n".$qy."\r\n";
-	sql_execute_multiple($qy);	
+	sql_execute_multiple($dbh, $qy);	
 	echo $done;	
 }
 

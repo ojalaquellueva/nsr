@@ -40,7 +40,7 @@ INDEX(taxonRank),
 INDEX(taxonomicStatus)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  $tbl_vascan_distribution_raw...";
@@ -60,7 +60,7 @@ INDEX(occurrenceStatus),
 INDEX(establishmentMeans)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  $tbl_raw...";
@@ -81,7 +81,7 @@ INDEX (stateProvince),
 INDEX (native_status)
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

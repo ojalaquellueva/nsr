@@ -41,7 +41,7 @@ foreach ( $all_countries as $country ) {
 	WHERE $country IS NOT NULL
 	;
 	";
-	sql_execute_multiple($sql);
+	sql_execute_multiple($dbh, $sql);
 	echo $done;
 	
 	if ( ! ($country=='Chile') ) {  // hack to skip Chile
@@ -56,11 +56,11 @@ foreach ( $all_countries as $country ) {
 		;
 		";
 
-		$result = mysql_query($sql_all);
-		$nrows = mysql_num_rows($result);
+		$result = mysqli_query($dbh, $sql_all);
+		$nrows = mysqli_num_rows($result);
 		$curr_row = 1;
 
-		while ($row = mysql_fetch_assoc($result)) {	
+		while ($row = mysqli_fetch_assoc($result)) {	
 			echo "\r    Inserting state records...row $curr_row of $nrows        ";
 			$taxon = $row["taxon"];
 			$taxon_rank = $row["taxon_rank"];
@@ -95,7 +95,7 @@ foreach ( $all_countries as $country ) {
 				";
 	
 				// add the record
-				sql_execute_multiple($sql);					
+				sql_execute_multiple($dbh, $sql);					
 			}
 			$curr_row++;
 		}
@@ -179,7 +179,7 @@ ELSE state_province
 END
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "Standardizing native_status...";
@@ -198,7 +198,7 @@ ELSE NULL
 END
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 

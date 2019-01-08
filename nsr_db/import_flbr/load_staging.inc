@@ -41,7 +41,7 @@ FROM `$tbl_raw`
 ORDER BY family, taxon
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Inserting state occurrences...";
@@ -76,7 +76,7 @@ WHERE state_province IS NOT NULL
 ORDER BY state_province, family, taxon
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

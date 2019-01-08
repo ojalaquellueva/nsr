@@ -62,7 +62,7 @@ GROUP BY region, country, family, taxon
 ORDER BY region, country, family, taxon
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Region occurrences...";
@@ -106,7 +106,7 @@ GROUP BY region, family, taxon
 ORDER BY region, family, taxon
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 // This next part is tricky. The logic here is based on the fact
@@ -170,7 +170,7 @@ ELSE native_status
 END
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Inferring final cultivated status...";
@@ -181,7 +181,7 @@ SET cult_status='cultivated'
 WHERE cult_status_all LIKE '%cult%'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

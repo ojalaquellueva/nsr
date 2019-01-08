@@ -24,7 +24,7 @@ WHERE genus IS NOT NULL AND specificEpithet IS NOT NULL
 AND infraspecificEpithet IS NULL
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 echo $done;
 

@@ -28,6 +28,6 @@ SET a.poldiv_name=b.state_province_std
 WHERE a.poldiv_type='state_province'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 ?>

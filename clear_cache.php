@@ -9,8 +9,8 @@ include "dbw2_open.php";
 $sql="
 TRUNCATE cache;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
-mysql_close($dbw2);
+mysqli_close($dbw2);
 
 ?>

@@ -533,7 +533,7 @@ INDEX (native_status),
 INDEX (cult_status)
 );
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 //////////////////////////////////////////////////////////
@@ -548,12 +548,12 @@ SELECT Family, Genus, ScientificName, StateAndProvince, NativeStatus
 FROM $tbl_raw;
 ";
 
-$result = mysql_query($sql_native_status);
-$nrows = mysql_num_rows($result);
+$result = mysqli_query($dbh, $sql_native_status);
+$nrows = mysqli_num_rows($result);
 $curr_row = 1;
 echo "    Processing row $curr_row of $nrows     ";
 
-while ($row = mysql_fetch_assoc($result)) {
+while ($row = mysqli_fetch_assoc($result)) {
 	$family = $row["Family"];
 	$genus = $row["Genus"];
 	$scientificName = $row["ScientificName"];
@@ -696,7 +696,7 @@ while ($row = mysql_fetch_assoc($result)) {
 					$sql=$sql_insert."\r\n ".$sql_select;
 	
 					// add record to new table
-					sql_execute_multiple($sql);					
+					sql_execute_multiple($dbh, $sql);					
 					
 				}
 			}
@@ -720,12 +720,12 @@ SELECT Family, Genus, ScientificName, StateAndProvince, NativeStatus
 FROM $tbl_raw;
 ";
 
-$result = mysql_query($sql_native_status);
-$nrows = mysql_num_rows($result);
+$result = mysqli_query($dbh, $sql_native_status);
+$nrows = mysqli_num_rows($result);
 $curr_row = 1;
 echo "    Processing row $curr_row of $nrows     ";
 
-while ($row = mysql_fetch_assoc($result)) {
+while ($row = mysqli_fetch_assoc($result)) {
 	$family = $row["Family"];
 	$genus = $row["Genus"];
 	$scientificName = $row["ScientificName"];
@@ -869,7 +869,7 @@ while ($row = mysql_fetch_assoc($result)) {
 								$sql=$sql_insert."\r\n ".$sql_select;
 	
 								// add record to new table
-								sql_execute_multiple($sql);
+								sql_execute_multiple($dbh, $sql);
 							}
 						}
 						
@@ -907,7 +907,7 @@ while ($row = mysql_fetch_assoc($result)) {
 								$sql=$sql_insert."\r\n ".$sql_select;
 	
 								// add record to new table
-								sql_execute_multiple($sql);
+								sql_execute_multiple($dbh, $sql);
 							}
 						}					
 					}					
@@ -928,7 +928,7 @@ echo "  Removing old table...";
 $sql="
 DROP TABLE $tbl_raw;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Removing duplicate records from new table...";
@@ -937,7 +937,7 @@ CREATE TABLE $tbl_raw LIKE $tbl_raw2;
 INSERT INTO $tbl_raw SELECT DISTINCT * FROM $tbl_raw2;
 DROP TABLE $tbl_raw2;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

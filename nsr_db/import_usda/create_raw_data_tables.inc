@@ -17,7 +17,7 @@ CREATE TABLE $tbl_raw (
 `NativeStatus`VARCHAR(500) DEFAULT NULL
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo "done";
 	
 ?>

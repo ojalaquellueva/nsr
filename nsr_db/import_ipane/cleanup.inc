@@ -11,7 +11,7 @@ echo "Deleting temporary tables...";
 $sql="
 DROP TABLE IF EXISTS $tbl_raw;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;	
 
 

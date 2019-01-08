@@ -38,4 +38,4 @@ INDEX (native_status_details),
 INDEX (cult_status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);

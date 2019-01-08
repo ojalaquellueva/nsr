@@ -31,7 +31,7 @@ UPDATE tropicos_raw
 SET native_status='unknown'
 WHERE native_status IS NULL;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 //echo $done;
 
 //echo "  Cultivated status...";
@@ -45,7 +45,7 @@ SET cult_status='unknown'
 WHERE  cult_status IS NULL
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

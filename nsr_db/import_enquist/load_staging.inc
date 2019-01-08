@@ -33,7 +33,7 @@ native_status,
 FROM `$tbl_raw`
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Inserting cultivated species records...";
@@ -48,7 +48,7 @@ taxon
 FROM `$tbl_raw_enquist_cultspp`
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

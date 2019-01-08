@@ -18,7 +18,7 @@ ADD COLUMN state_code VARCHAR(50) DEFAULT NULL,
 ADD INDEX (state_code)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 
@@ -46,7 +46,7 @@ NULL
 FROM `$tbl_raw`
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Inserting state observations:\r\n";
@@ -56,12 +56,12 @@ SELECT *
 FROM $tbl_raw;
 ";
 
-$result = mysql_query($sql_native_status);
-$nrows = mysql_num_rows($result);
+$result = mysqli_query($dbh, $sql_native_status);
+$nrows = mysqli_num_rows($result);
 $curr_row = 1;
 echo "    Processing species $curr_row of $nrows";
 
-while ($row = mysql_fetch_assoc($result)) {	
+while ($row = mysqli_fetch_assoc($result)) {	
 	$taxon = $row["species"];
 	$taxon_rank = $row["taxon_rank"];
 	echo "\r    Processing species $curr_row of $nrows                           ";
@@ -107,7 +107,7 @@ while ($row = mysql_fetch_assoc($result)) {
 		";
 		
 		// add record to new table
-		sql_execute_multiple($sql);					
+		sql_execute_multiple($dbh, $sql);					
 		
 	}
 	$curr_row++;
@@ -139,7 +139,7 @@ WHEN state_province='VER.ZAC' THEN 'Veracruz'
 ELSE state_province
 END;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 // The following best done *after* update full state name
@@ -157,7 +157,7 @@ SET native_status='endemic'
 WHERE a.state_province IS NOT NULL
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Removing temporary column state_code...";
@@ -166,7 +166,7 @@ ALTER TABLE distribution_staging
 DROP COLUMN state_code 
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

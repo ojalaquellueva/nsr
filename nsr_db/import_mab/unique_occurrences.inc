@@ -32,7 +32,7 @@ DROP TABLE mab_raw;
 RENAME table mab_raw_temp to mab_raw
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

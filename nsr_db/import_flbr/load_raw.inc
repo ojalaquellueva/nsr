@@ -66,7 +66,7 @@ AND phylum IS NULL
 AND taxonRank IN ('ESPECIE','SUB_ESPECIE','VARIEDADE')
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "Fixing infraspecific rank indicator...";
@@ -76,7 +76,7 @@ SET taxon=REPLACE(taxon,'subsp.','var.')
 WHERE taxon_rank='variety'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

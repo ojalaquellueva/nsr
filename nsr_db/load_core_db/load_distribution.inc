@@ -26,7 +26,7 @@ cult_status
 FROM distribution_staging
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

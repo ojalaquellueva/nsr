@@ -11,7 +11,7 @@ state_province=IFNULL(state_province,''),
 county_parish=IFNULL(county_parish,'')
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

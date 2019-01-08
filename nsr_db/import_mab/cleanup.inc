@@ -16,7 +16,7 @@ DROP TABLE IF EXISTS fwi_country;
 DROP TABLE IF EXISTS fwi_temp;
 DROP TABLE IF EXISTS fwi;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;	
 
 

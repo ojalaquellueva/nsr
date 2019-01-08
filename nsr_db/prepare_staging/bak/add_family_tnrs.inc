@@ -18,12 +18,12 @@ WHERE genus IS NOT NULL AND genus<>''
 AND native_status IN ('native','endemic') 
 ;
 ";
-$result = mysql_query($sql_genera);
-$totgen = mysql_num_rows($result);
+$result = mysqli_query($dbh, $sql_genera);
+$totgen = mysqli_num_rows($result);
 $currgen = 0;
 
 echo "performing TNRS lookups...";
-while ($row = mysql_fetch_assoc($result)) {
+while ($row = mysqli_fetch_assoc($result)) {
 	$gen = $row["genus"];
 	$fam = '';
 	$currgen++;
@@ -42,7 +42,7 @@ while ($row = mysql_fetch_assoc($result)) {
 			SET family='$fam'
 			WHERE genus='$gen';
 		";
-		sql_execute_multiple($sql_update_family);
+		sql_execute_multiple($dbh, $sql_update_family);
 	}
 }
 
@@ -76,7 +76,7 @@ DELETE FROM temp_missing_family
 WHERE family='DELETE' OR family IS NULL OR TRIM(family)=''
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Insert missing families
 $sql="
@@ -104,13 +104,13 @@ family
 FROM temp_missing_family
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Drop temporary table
 $sql="
 DROP TABLE temp_missing_family;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

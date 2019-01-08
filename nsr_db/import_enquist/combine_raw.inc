@@ -22,7 +22,7 @@ FROM $tbl_raw_enquist_ow_endemics
 WHERE country IS NOT NULL
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Inserting Old World endemics as exotics in each New World country...";
@@ -53,7 +53,7 @@ WHERE isNewWorld=1
 ) AS b
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

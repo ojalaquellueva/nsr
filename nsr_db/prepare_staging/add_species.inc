@@ -17,7 +17,7 @@ strSplit(taxon,' ',2)
 )
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Create temporary table of missing country+species combinations
 $sql="
@@ -61,7 +61,7 @@ DELETE FROM temp_missing_species
 WHERE del='DELETE'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Insert missing species
 $sql="
@@ -89,13 +89,13 @@ species
 FROM temp_missing_species
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Drop temporary table
 $sql="
 DROP TABLE temp_missing_species;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

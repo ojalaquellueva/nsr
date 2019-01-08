@@ -25,7 +25,7 @@ ADD INDEX (native_status),
 ADD INDEX (sources)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

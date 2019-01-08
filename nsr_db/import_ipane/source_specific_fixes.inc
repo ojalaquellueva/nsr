@@ -15,7 +15,7 @@ OR `$fld_scientific_name` LIKE '% sp.%'
 OR `$fld_scientific_name`='Other other'
 OR `$fld_scientific_name` NOT LIKE '% %';
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Populating column `country`...";
@@ -24,7 +24,7 @@ UPDATE `$tbl_raw`
 SET country='United States'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Translating state abbreviations...";
@@ -37,14 +37,14 @@ ADD INDEX (stateCode),
 ADD INDEX (state)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // look up state names
-$results = mysql_query("
+$results = mysqli_query($dbh, "
 SELECT DISTINCT stateCode FROM `$tbl_raw`;
 ");
 
-while ($row = mysql_fetch_assoc($results)) {
+while ($row = mysqli_fetch_assoc($results)) {
 	$stateCode = $row["stateCode"];
 	
 	$state = state_name_US($stateCode);
@@ -54,7 +54,7 @@ while ($row = mysql_fetch_assoc($results)) {
 	WHERE stateCode='$stateCode'
 	;		
 	";
-	sql_execute_multiple($sql);
+	sql_execute_multiple($dbh, $sql);
 }
 
 echo $done;

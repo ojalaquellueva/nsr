@@ -15,7 +15,7 @@ ADD COLUMN country VARCHAR(100) DEFAULT NULL,
 ADD INDEX (country)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 echo $done;
 

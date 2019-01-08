@@ -42,7 +42,7 @@ SET `$fld_scientific_name`= REPLACE(`$fld_scientific_name`,'  ',' ')
 ";
 //echo "\r\nSQL=\r\n$sql\r\n";
 
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

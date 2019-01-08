@@ -36,7 +36,7 @@ ON r.id=nodupes.first_id
 SET include=1
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Inserting unique records...";
@@ -60,7 +60,7 @@ FROM tropicos_raw
 WHERE include=1
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

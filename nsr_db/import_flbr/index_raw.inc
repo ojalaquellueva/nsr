@@ -15,7 +15,7 @@ ADD INDEX (countryCode),
 ADD INDEX (establishmentMeans)
 ; 
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  $tbl_taxon_raw...";
@@ -40,7 +40,7 @@ ADD INDEX (taxonRank),
 ADD INDEX (taxonomicStatus),
 ADD INDEX (nomenclaturalStatus)
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

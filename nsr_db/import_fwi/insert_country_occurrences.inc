@@ -35,7 +35,7 @@ WHERE country IS NOT NULL
 ;
 
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 echo $done;
 
 ?>

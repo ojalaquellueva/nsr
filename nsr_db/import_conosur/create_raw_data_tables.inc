@@ -39,7 +39,7 @@ ADD INDEX (Uruguay),
 ADD INDEX (Brazil)
 ; 
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 	
 ?>

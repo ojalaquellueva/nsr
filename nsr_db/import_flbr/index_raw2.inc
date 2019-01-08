@@ -21,7 +21,7 @@ ADD INDEX (native_status),
 ADD INDEX (cult_status),
 ADD INDEX (include);
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

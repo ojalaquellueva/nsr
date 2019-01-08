@@ -63,7 +63,7 @@ include_once "check_sources.inc";
 // Start timer and connect to mysql
 echo "\r\nBegin operation\r\n";
 include $timer_on;
-$dbh = mysql_connect($HOST,$USER,$PWD,FALSE,128);
+$dbh = mysqli_connect($HOST,$USER,$PWD,FALSE,128);
 if (!$dbh) die("\r\nCould not connect to database!\r\n");
 
 ////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@ if ($replace_db) {
 		CREATE DATABASE `".$DB."`;
 		USE `".$DB."`;
 	";
-	sql_execute_multiple($sql_create_db);
+	sql_execute_multiple($dbh, $sql_create_db);
 	echo "done\r\n";
 	
 	// Replace core tables
@@ -100,7 +100,7 @@ if ($replace_db) {
 
 // Re-connect to database, in case previous step skipped
 $sql="USE `".$DB."`;";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Check that required custom functions are present in target db, 
 // and install them if missing. This check is essential if database 
@@ -144,7 +144,7 @@ include_once "cleanup_final.inc";
 // Close connection and report total time elapsed 
 //////////////////////////////////////////////////////////////////
 
-mysql_close($dbh);
+mysqli_close($dbh);
 include $timer_off;
 $msg = "\r\nTotal time elapsed: " . $tsecs . " seconds.\r\n"; 
 $msg = $msg . "********* Operation completed " . $curr_time . " *********";

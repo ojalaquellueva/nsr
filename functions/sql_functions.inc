@@ -108,7 +108,7 @@ function db_connect($host,$user,$pwd,$db,$echo_on) {
 	// in LOAD DATA INFILE command (workaround of MySQL bug)
 
 	// connect to database server; $HOST as specified in config.inc
-	if (!($dbh = mysql_connect($host,$user,$pwd,FALSE,128))) {
+	if (!($dbh = mysqli_connect($host,$user,$pwd,FALSE,128))) {
 		if ($echo_on) {
 			echo "\r\nCould not connect to MySQL on $host.\r\n";
 			return FALSE;
@@ -131,19 +131,19 @@ function copy_tbl($src_tbl, $dest_tbl, $src_db, $dest_db) {
 // WARNING: will delete original version of table $dest_tbl in $dest_db if it exists!
 
 	$sql="DROP TABLE IF EXISTS $dest_db.$dest_tbl;";
-	if (!mysql_query($sql)) {
+	if (!mysqli_query($dbh, $sql)) {
 		//Return "ERROR: Offending SQL: \r\n$sql\r\n".mysql_error()."\r\n";
 		Return FALSE; 
 	}
 
 	$sql = "CREATE TABLE $dest_db.$dest_tbl LIKE $src_db.$src_tbl;";
-	if (!mysql_query($sql)) {
+	if (!mysqli_query($dbh, $sql)) {
 		//Return "ERROR: Offending SQL: \r\n$sql\r\n".mysql_error()."\r\n";
 		Return FALSE; 
 	}
 
 	$sql = "INSERT INTO $dest_db.$dest_tbl SELECT * FROM $src_db.$src_tbl;";
-	if (!mysql_query($sql)) {
+	if (!mysqli_query($dbh, $sql)) {
 		//Return "ERROR: Offending SQL: \r\n$sql\r\n".mysql_error()."\r\n";
 		Return FALSE; 
 	}
@@ -173,20 +173,20 @@ function copy_tbl_warn($src_tbl, $dest_tbl, $src_db, $dest_db, $warn) {
 		}
 
 		$sql="DROP TABLE $dest_db.$dest_tbl;";
-		if (!mysql_query($sql)) {
+		if (!mysqli_query($dbh, $sql)) {
 			//Return "ERROR: Offending SQL: \r\n$sql\r\n".mysql_error()."\r\n";
 			Return FALSE; 
 		}
 	}
 
 	$sql = "CREATE TABLE $dest_db.$dest_tbl LIKE $src_db.$src_tbl;";
-	if (!mysql_query($sql)) {
+	if (!mysqli_query($dbh, $sql)) {
 		//Return "ERROR: Offending SQL: \r\n$sql\r\n".mysql_error()."\r\n";
 		Return FALSE; 
 	}
 
 	$sql = "INSERT INTO $dest_db.$dest_tbl SELECT * FROM $src_db.$src_tbl;";
-	if (!mysql_query($sql)) {
+	if (!mysqli_query($dbh, $sql)) {
 		//Return "ERROR: Offending SQL: \r\n$sql\r\n".mysql_error()."\r\n";
 		Return FALSE; 
 	}
@@ -201,23 +201,23 @@ function move_tbl($src_tbl, $dest_tbl, $src_db, $dest_db) {
 // WARNING: will delete original version of table $dest_tbl if it already exists!
 // WARNING: deletes $src_tbl in $src_db
 
-	if (!mysql_query("DROP TABLE IF EXISTS $dest_db.$dest_tbl;")) {
+	if (!mysqli_query($dbh, "DROP TABLE IF EXISTS $dest_db.$dest_tbl;")) {
 		Return FALSE; 
 	}
 
 	$SQL_CREATE = "CREATE TABLE $dest_db.$dest_tbl LIKE $src_db.$src_tbl;";
 
-	if (!mysql_query($SQL_CREATE)) {
+	if (!mysqli_query($dbh, $SQL_CREATE)) {
 		Return FALSE; 
 	}
 
 	$SQL_INSERT = "INSERT INTO $dest_db.$dest_tbl SELECT * FROM $src_db.$src_tbl;";
 
-	if (!mysql_query($SQL_INSERT)) {
+	if (!mysqli_query($dbh, $SQL_INSERT)) {
 		Return FALSE; 
 	}
 
-	if (!mysql_query("DROP TABLE IF EXISTS $src_db.$src_tbl;")) {
+	if (!mysqli_query($dbh, "DROP TABLE IF EXISTS $src_db.$src_tbl;")) {
 		Return FALSE; 
 	}	
 	
@@ -232,7 +232,7 @@ function delete_tbl($tbl, $db) {
 	// Database name must be included; avoids accidentally deleting
 	// table with the same name in wrong database
 
-	if (!mysql_query("DROP TABLE IF EXISTS $db.$tbl;")) {
+	if (!mysqli_query($dbh, "DROP TABLE IF EXISTS $db.$tbl;")) {
 		Return FALSE; 
 	} else {
 		Return TRUE;
@@ -246,7 +246,7 @@ function sql_add_field($tbl,$fldname,$fldtype) {
 
 	$SQL = "ALTER TABLE $tbl ADD COLUMN $fldname $fldtype;";
 	
-	if (!mysql_query($SQL)) {
+	if (!mysqli_query($dbh, $SQL)) {
 		Return FALSE; 
 	} else {
 		Return TRUE;
@@ -270,7 +270,7 @@ function sql_add_indexed_field($tbl,$fldname,$fldtype) {
 		;
 	";
 	
-	if (!mysql_query($SQL)) {
+	if (!mysqli_query($dbh, $SQL)) {
 		Return false; 
 	} else {
 		Return true;
@@ -283,7 +283,7 @@ function sql_remove_field($tbl,$fldname) {
 
 	$SQL = "ALTER TABLE $tbl DROP COLUMN $fldname;";
 	
-	if (!mysql_query($SQL)) {
+	if (!mysqli_query($dbh, $SQL)) {
 		Return FALSE; 
 	} else {
 		Return TRUE;
@@ -294,8 +294,8 @@ function exists_table($tbl) {
 	// Returns TRUE if table $tbl exists in current db
 	// Requires existing connection to db
 	$sql="SHOW TABLES LIKE '$tbl';";
-	$tables = (mysql_query($sql));
-	$num_rows = mysql_num_rows($tables);
+	$tables = (mysqli_query($dbh, $sql));
+	$num_rows = mysqli_num_rows($tables);
 	if ($num_rows < 1) {
 		return FALSE;
 	} else {
@@ -307,8 +307,8 @@ function exists_table_in_db($tbl,$db) {
 	// Returns TRUE if table exists in current $db 
 	// Requires existing connection to this server
 	$sql="SHOW TABLES IN `$db` LIKE '$tbl';";
-	$tables = (mysql_query($sql));
-	$num_rows = mysql_num_rows($tables);
+	$tables = (mysqli_query($dbh, $sql));
+	$num_rows = mysqli_num_rows($tables);
 	if ($num_rows < 1) {
 		return FALSE;
 	} else {
@@ -334,8 +334,8 @@ function exists_index($tbl_name,$index_name) {
 	// else false
 	
 	$sql="SHOW INDEX FROM `$tbl_name` WHERE Key_name = '$index_name';";
-	$results = (mysql_query($sql));
-	$num_rows = mysql_num_rows($results);
+	$results = (mysqli_query($dbh, $sql));
+	$num_rows = mysqli_num_rows($results);
 	if ($num_rows < 1) {
 		return FALSE;
 	} else {
@@ -362,7 +362,7 @@ function sql_execute($sql,$die_on_fail,$echo_on,$msg_success,$msg_error) {
 	// Returns TRUE if success
 	// Generates success or error message if echo on
 
-	if (!mysql_query($sql)) {
+	if (!mysqli_query($dbh, $sql)) {
 		echo "$msg_error.\r\n
 			Offending SQL: '$sql'\r\n
 			MYSQL error: ".mysql_error()."\r\n\r\n";
@@ -383,7 +383,7 @@ function sql_field_type_list($tbl,$delim) {
 	// Name and type separated by $delim
 	
 	$sql = "SHOW COLUMNS FROM $tbl;";
-	$fld_list_sql = mysql_query($sql);
+	$fld_list_sql = mysqli_query($dbh, $sql);
 	
 	if (!$fld_list_sql) die("\r\nBAD QUERY\r\n");
 	
@@ -400,7 +400,7 @@ function sql_field_type_list($tbl,$delim) {
 function sql_field_list($tbl) {
 	// Returns a unidimensional array containing the name of each field in table $tbl
 
-	$fld_list_sql = mysql_query("SHOW COLUMNS FROM $tbl;");
+	$fld_list_sql = mysqli_query($dbh, "SHOW COLUMNS FROM $tbl;");
 
 	while ($row = mysql_fetch_array($fld_list_sql, MYSQL_ASSOC)) {
 		$fld  = $row{'Field'};
@@ -538,9 +538,9 @@ function convert_utf8($tbl) {
 
 		// Toggle through each distinct string in $fld
 		$sql = "SELECT DISTINCT `$fld` FROM $tbl ORDER BY `$fld` ASC;";
-		$result = mysql_query($sql);
+		$result = mysqli_query($dbh, $sql);
 
-		while ($row = mysql_fetch_assoc($result)) {
+		while ($row = mysqli_fetch_assoc($result)) {
 			$str = $row{$fld};
 		
 			//if (!(is_utf8($str))) {
@@ -549,7 +549,7 @@ function convert_utf8($tbl) {
 				// Update all instances of this string in field $fld
 				$sql_update_str = "UPDATE $tbl SET `$fld`=\"$str_utf8\" WHERE `$fld`=\"$str\";";
 	
-				if (!mysql_query($sql_update_str)) {
+				if (!mysqli_query($dbh, $sql_update_str)) {
 					$msg_fail = "Failed to convert `$fld`='$str' to utf8.\r\n" . mysql_error() . "\r\n";
 					if (sql_execute($sql_update_str,true,true,'',$msg_fail));
 				}
@@ -561,7 +561,7 @@ function convert_utf8($tbl) {
 }
 
 
-function empty_string_to_null($tbl) {
+function empty_string_to_null($dbh, $tbl) {
 	// Converts empty strings to NULL for all columns in table
 
 	if (exists_table($tbl)===false) return "Failed to fix quotes: table '$tbl' doesn't exist!";
@@ -636,15 +636,15 @@ function is_select_query($sql) {
 	return $is_select;
 }
 
-function sql_get_first_result($sql,$field_name) {
+function sql_get_first_result($dbh, $sql,$field_name) {
 	// Returns value of $field in first row of $sql
 	// Used for cases where you know query will return only one result
 	
-	if (!($result=mysql_query($sql))) {
+	if (!($result=mysqli_query($dbh, $sql))) {
 		//echo "OUCH!\r\n$sql\r\n";
 		return false;
 	} else {
-		$num_rows = mysql_num_rows($result);
+		$num_rows = mysqli_num_rows($result);
 		if ($num_rows==0) {
 			return NULL;
 		} else {
@@ -660,7 +660,7 @@ function sql_get_first_result($sql,$field_name) {
 function sql_get_first_result_bynum($sql,$col) {
 	// returns column $col of first row of result of $sql
 	// $col must be an integer; starts at 0
-	$result = mysql_query($sql);
+	$result = mysqli_query($dbh, $sql);
 	if (!$result) {
 	    echo 'Could not run query: ' . mysql_error();
 	    return false;
@@ -671,11 +671,11 @@ function sql_get_first_result_bynum($sql,$col) {
 
 function sql_returns_records($sql) {
 	// returns true if sql returns records, else false
-	$result = mysql_query($sql);
+	$result = mysqli_query($dbh, $sql);
 	if (!$result) {
 	    die ('Could not run query: ' . mysql_error() . '\r\n');
 	}
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows>0){
 		return true;
 	}else{
@@ -690,10 +690,10 @@ function sql_get_cols ($sql,$field_names) {
 
 	$delim=",";
 
-	if (!($result=mysql_query($sql))) {
+	if (!($result=mysqli_query($dbh, $sql))) {
 		return false;
 	} else {
-		$num_rows = mysql_num_rows($result);
+		$num_rows = mysqli_num_rows($result);
 		if ($num_rows==0) {
 			return null;
 		} elseif (is_null($field_names)) {
@@ -719,10 +719,10 @@ function sql_get_results($sql,$field_name,$delim) {
 	// returned by query $sql, separated by delimiter $delim
 
 	if ($delim==null) $delim=",";	// Comma is default delimiter
-	if (!($result=mysql_query($sql))) {
+	if (!($result=mysqli_query($dbh, $sql))) {
 		die("Error - Offending SQL:\r\n$sql\r\n".mysql_error()."\r\n");
 	} else {
-		$num_rows = mysql_num_rows($result);
+		$num_rows = mysqli_num_rows($result);
 		if ($num_rows==0) {
 			return NULL;
 		} else {
@@ -769,7 +769,7 @@ function alter_collation_utf8($tbl) {
 	if (!(stristr($collation, "utf8"))) {
 		$sql = "ALTER TABLE `$tbl` CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;";
 
-		if ($result=mysql_query($sql)) {
+		if ($result=mysqli_query($dbh, $sql)) {
 			return 1;
 		} else {
 			return 0;
@@ -782,7 +782,7 @@ function alter_collation_utf8($tbl) {
 function get_collation($tbl) {
 	// returns collation of $tbl
 	$sql = "SHOW TABLE STATUS LIKE '$tbl';";
-	if($collation=sql_get_first_result($sql,'Collation')) {
+	if($collation=sql_get_first_result($dbh, $sql,'Collation')) {
 		return $collation;
 	} else {
 		return false;
@@ -808,7 +808,7 @@ function rename_tbl($tbl1,$tbl2) {
 		return false;
 	} else {
 		$sql = "RENAME TABLE `$tbl1` TO `$tbl2`;";
-		if (!mysql_query($sql)) {
+		if (!mysqli_query($dbh, $sql)) {
 			$error_msg = "Error: Failed to rename '$tbl1' to '$tbl2'.\r\nOffending SQL: $sql.\r\n";
 			echo $error_msg;
 			return false;
@@ -1051,12 +1051,12 @@ function sql_execute_multiple_bak($sqlmultiple) {
 	$queries = explode(';', $sqlmultiple);
 	foreach($queries as $sql){
 		$sql=$sql.";";
-		mysql_query($sql);
+		mysqli_query($dbh, $sql);
 	}
 }
 */
 
-function sql_execute_multiple($sqlmultiple) {
+function sql_execute_multiple($dbh, $sqlmultiple) {
 	// executes one or more sql queries by exploding on ";"
 	// if any query fails, dies and reports error
 	// Note that there no need to wrap this in an error handler; it 
@@ -1066,7 +1066,7 @@ function sql_execute_multiple($sqlmultiple) {
 		$sql=trim($sql).";";
 		
 		if (trim($sql<>";")) {
-			$result = mysql_query($sql);
+			$result = mysqli_query($dbh, $sql);
 			if (!$result) {
 				$msg = 'Invalid query: ' . mysql_error() . "\n";
 				$msg .= 'Offending SQL: ' . $sql;

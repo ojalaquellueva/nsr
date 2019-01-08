@@ -14,7 +14,7 @@ ADD COLUMN id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 ADD UNIQUE INDEX(id)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 // Add taxon, rank and include columns
 $sql="
@@ -45,7 +45,7 @@ ADD COLUMN include INT(1) DEFAULT 1,
 ADD INDEX (include)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

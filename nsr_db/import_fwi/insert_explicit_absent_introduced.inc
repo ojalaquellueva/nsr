@@ -44,7 +44,7 @@ AND b.country NOT IN ($cclist_countries)
 AND a.native_status IN ('absent','introduced')
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 echo $done;
 
 ?>

@@ -15,7 +15,7 @@ WHERE a.poldiv_type='country'
 AND a.checklist_type='comprehensive'
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 
 $sql="
 DROP TABLE IF EXISTS cclist_temp;
@@ -24,7 +24,7 @@ INSERT INTO cclist_temp SELECT DISTINCT * FROM cclist;
 DROP TABLE cclist;
 RENAME TABLE cclist_temp TO cclist;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 //echo $done;
 
 // Setting empty strings to null for state and county
@@ -39,7 +39,7 @@ SET county_parish=NULL
 WHERE trim(county_parish)=''
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 echo $done;
 
 

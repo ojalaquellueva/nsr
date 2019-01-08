@@ -1,15 +1,8 @@
 <?php
 
-// old-style mysql connection
-// use for legacy scripts until can get around to updating them
-// connect to mysql
-$dbh = mysql_connect($HOST,$USERW,$PWDW,FALSE,128);
-if (!$dbh) die("\r\nCould not connect to database!\r\n");
-
-// Connect to database
-$sql="USE `".$DB_BATCH."`;";
-sql_execute_multiple($sql);
-
-
+// MYSQLI_OPT_LOCAL_INFILE required to enable LOAD LOCAL option
+$dbh = mysqli_init();
+mysqli_options($dbh, MYSQLI_OPT_LOCAL_INFILE, true);
+mysqli_real_connect($dbh, $HOST, $USERW, $PWDW, $DB_BATCH);
 
 ?>

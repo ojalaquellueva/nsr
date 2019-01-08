@@ -25,7 +25,7 @@ SET taxon_with_author=REPLACE(taxon_with_author,'$encoded_x','$plain_x');
 ";
 //echo "\r\nSQL=\r\n$sql\r\n";
 
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

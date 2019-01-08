@@ -15,7 +15,7 @@ DROP TABLE IF EXISTS $tbl_weakley_exotic_part_raw;
 DROP TABLE IF EXISTS $tbl_weakley_origin_raw;
 DROP TABLE IF EXISTS $tbl_weakley_poldivs_raw;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;	
 
 

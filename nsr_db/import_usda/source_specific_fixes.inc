@@ -22,7 +22,7 @@ state_province=NULL
 WHERE state_province='Virgin Islands'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

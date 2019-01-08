@@ -28,4 +28,4 @@ INDEX (native_status),
 INDEX (cult_status)
 );
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);

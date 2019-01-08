@@ -108,7 +108,7 @@ FROM temp_NL;
 DROP TABLE temp_NL;
 
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 

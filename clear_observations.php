@@ -12,9 +12,9 @@ DELETE FROM observation
 WHERE $JOB_WHERE_NA 
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbw2, $sql);
 if ($echo_on) echo $done;
 
-mysql_close($dbw2);
+mysqli_close($dbw2);
 
 ?>

@@ -85,7 +85,7 @@ WHERE $JOB_WHERE_NA AND $BATCH_WHERE_NA
 AND is_in_cache=0
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 if ($echo_on) echo "done\r\n";
 

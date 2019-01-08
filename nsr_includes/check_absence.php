@@ -51,7 +51,7 @@ AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 
 $sql="
 UPDATE observation o JOIN cclist d
@@ -65,7 +65,7 @@ AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 
 $sql="
 UPDATE observation o JOIN cclist d
@@ -80,7 +80,7 @@ AND $JOB_WHERE AND $BATCH_WHERE
 AND $CACHE_WHERE
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 
 if ($echo_on) echo "done\r\n";
 

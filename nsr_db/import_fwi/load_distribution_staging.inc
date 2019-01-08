@@ -30,7 +30,7 @@ cult_status
 FROM fwi_raw_final
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

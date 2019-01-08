@@ -18,7 +18,7 @@ SET taxon=NULL
 WHERE taxon=''
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 // Fix entries for Musa and Eucalyptus
@@ -39,7 +39,7 @@ author=''
 WHERE genus='Musa' 
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

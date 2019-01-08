@@ -35,7 +35,7 @@ PRIMARY KEY (id)
 );
 
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 if ($echo_on) echo $done;
 
 ?>

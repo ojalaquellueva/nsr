@@ -29,7 +29,7 @@ ELSE native_status
 END
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  absent...";
@@ -48,7 +48,7 @@ ELSE native_status
 END
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  native/endemic...";
@@ -68,7 +68,7 @@ ELSE native_status
 END
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "Standardizing cultivated status...";
@@ -81,7 +81,7 @@ ELSE NULL
 END
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "Adjusting native status for cultivated species...";
@@ -98,7 +98,7 @@ AND (
 )
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

@@ -70,7 +70,7 @@ o.is_cultivated_taxon=c.is_cultivated_taxon
 AND $JOB_WHERE 
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 if ($echo_on)  echo $done;
 
 include "db_close.php";

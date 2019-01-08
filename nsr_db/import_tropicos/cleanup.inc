@@ -7,13 +7,13 @@ foreach($tbl_list as $tbl) {
 	$sql="
 	DROP TABLE $tbl_raw;	
 	";
-	sql_execute_multiple($sql);
+	sql_execute_multiple($dbh, $sql);
 }
 
 $sql="
 DROP TABLE tropicos_raw;	
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;	
 
 

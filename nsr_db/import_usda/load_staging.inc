@@ -39,7 +39,7 @@ ON r.id=nodupes.first_id
 SET include=1
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 */
 
@@ -68,7 +68,7 @@ FROM `$tbl_raw`
 WHERE include=1
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

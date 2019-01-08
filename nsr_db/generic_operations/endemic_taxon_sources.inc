@@ -22,7 +22,7 @@ ADD PRIMARY KEY (taxon),
 ADD INDEX (sources)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

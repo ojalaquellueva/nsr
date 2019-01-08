@@ -67,7 +67,7 @@ VALUES
 )
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 
@@ -95,7 +95,7 @@ WHERE country_iso='MX'
 AND state_province_ascii='Estado de Coahuila de Zaragoza'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  state_province_name...";
@@ -122,7 +122,7 @@ WHERE country_iso='MX'
 AND state_province_ascii='Estado de Coahuila de Zaragoza'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

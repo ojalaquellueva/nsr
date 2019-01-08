@@ -108,7 +108,7 @@ UPDATE state_province
 SET state_province_std=TRIM(state_province_std)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 
@@ -210,7 +210,7 @@ UPDATE state_province_name
 SET state_province_std=TRIM(state_province_std)
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 

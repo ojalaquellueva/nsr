@@ -42,7 +42,7 @@ DELETE FROM cache
 WHERE native_status_reason='remove'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 include "db_close.php";
 

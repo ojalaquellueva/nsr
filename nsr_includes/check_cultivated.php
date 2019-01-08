@@ -22,7 +22,7 @@ SET o.is_cultivated_taxon=1
 WHERE $JOB_WHERE AND $BATCH_WHERE
 ;
 ";
-sql_execute_multiple($sql);	
+sql_execute_multiple($dbh, $sql);	
 
 if ($echo_on) echo "done\r\n";
 

@@ -12,7 +12,7 @@ echo "  Source-specific corrections...";
 // Fix non-standard stateProvince codes
 $sql="
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 
 echo $done;

@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS $tbl_vascan_taxon_raw;
 DROP TABLE IF EXISTS $tbl_vascan_distribution_raw;
 DROP TABLE IF EXISTS $tbl_raw;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;	
 
 

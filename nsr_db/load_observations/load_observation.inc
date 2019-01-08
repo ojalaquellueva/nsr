@@ -13,11 +13,11 @@ $optionally_enclosed_by
 $lines_terminated_by 
 $ignore_lines;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "Converting empty strings to NULL...";
-if (!(empty_string_to_null('observation'))) die("\r\nFailed to set empty strings to NULL!\r\n");
+if (!(empty_string_to_null($dbh, 'observation'))) die("\r\nFailed to set empty strings to NULL!\r\n");
 echo $done;
 
 

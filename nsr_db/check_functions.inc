@@ -11,7 +11,7 @@ $sql="
 	WHERE ROUTINE_TYPE='FUNCTION' AND SPECIFIC_NAME='strSplit'
 	AND ROUTINE_SCHEMA='".$DB."';
 ";
-$strSplitExists=sql_get_first_result($sql,'strSplitExists');
+$strSplitExists=sql_get_first_result($dbh, $sql,'strSplitExists');
 
 if(!$strSplitExists) {
 	// install the missing function:
@@ -19,7 +19,7 @@ if(!$strSplitExists) {
 	
 	// set database, just in case
 	$sql="USE `".$DB."`;";
-	sql_execute_multiple($sql);
+	sql_execute_multiple($dbh, $sql);
 	
 	// create function in current database
 	$sql = "
@@ -27,7 +27,7 @@ if(!$strSplitExists) {
 		RETURNS varchar(255) CHARSET utf8
 		RETURN replace(SUBSTRING(SUBSTRING_INDEX(str, delim, tokenNo), LENGTH(SUBSTRING_INDEX(str, delim, tokenNo - 1)) + 1), delim, '');
 	";
-	$exec_query=mysql_query($sql);
+	$exec_query=mysqli_query($dbh, $sql);
 	$msg_error="Failed to install function 'strSplit'!\r\n" . mysql_error() . "\r\n";
 	if (!$exec_query) die($msg_error);
 	echo "done\r\n";

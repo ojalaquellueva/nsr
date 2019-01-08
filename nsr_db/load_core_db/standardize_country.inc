@@ -12,7 +12,7 @@ SET d.country=c.countryNameStd
 WHERE d.country<>c.countryNameStd
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

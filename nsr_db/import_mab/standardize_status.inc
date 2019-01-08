@@ -13,7 +13,7 @@ UPDATE $tbl_raw
 SET native_status='endemic'
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

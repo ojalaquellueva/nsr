@@ -35,7 +35,7 @@ AND o.county_parish IS NULL AND c.county_parish IS NULL
 AND o.state_province IS NULL AND c.state_province IS NULL
 ;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 
 include "db_close.php";
 

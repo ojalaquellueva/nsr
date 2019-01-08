@@ -24,7 +24,7 @@ cult_status VARCHAR(50) DEFAULT NULL,
 include INT(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 
@@ -38,7 +38,7 @@ countryCode VARCHAR(250) DEFAULT NULL,
 establishmentMeans VARCHAR(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  $tbl_taxon_raw...";
@@ -72,7 +72,7 @@ bibliographicCitation VARCHAR(500) DEFAULT NULL,
 `references` VARCHAR(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 ";
-sql_execute_multiple($sql);
+sql_execute_multiple($dbh, $sql);
 echo $done;
 
 ?>

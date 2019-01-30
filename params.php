@@ -49,7 +49,7 @@ $CACHE_WHERE_NA = " is_in_cache=0 ";	// no alias version
 // Default batch size
 // Recommend 10000
 //////////////////////////////////////////////////
-$batch_size=10;
+$batch_size=10000;
 
 //////////////////////////////////////////////////
 // MySQL import parameters for raw observation text file

@@ -2,10 +2,18 @@
 
 if ($echo_on) echo "Inserting observations...";
 
+// Assign dummy batch number if not in batch mode
+if (isset($batch)) {
+	$curr_batch=$batch;
+} else {
+	$curr_batch=1;
+}
+
 // insert the raw records
 $sql="
 INSERT INTO observation (
 job,
+batch,
 family,
 genus,
 species,
@@ -16,6 +24,7 @@ user_id
 )
 SELECT 
 '$job',
+$curr_batch,
 family,
 genus,
 species,

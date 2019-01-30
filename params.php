@@ -46,10 +46,15 @@ $CACHE_WHERE = " o.is_in_cache=0 ";
 $CACHE_WHERE_NA = " is_in_cache=0 ";	// no alias version
 
 //////////////////////////////////////////////////
+// Default batch size
+// Recommend 10000
+//////////////////////////////////////////////////
+$batch_size=10;
+
+//////////////////////////////////////////////////
 // MySQL import parameters for raw observation text file
 // Set any variable to empty string to remove entirely
 //////////////////////////////////////////////////
-
 $local = " LOCAL ";	// LOCAL keyword
 
 $fields_terminated_by = " FIELDS TERMINATED BY ',' ";

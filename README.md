@@ -61,7 +61,7 @@ The majority of the checklists consulted by the NSR are high-quality published s
 
 ## <a name="Installation"></a>Installation & setup
 
-The following steps assume two installations: one in public_html for the web service, and a second installation elsewhere in the file system for creating the database and running the batch applications. Other configurations my be more useful, depending on the user.
+The following steps assume two installations: one in public_html for the web service, and a second installation elsewhere in the file system for creating the database and running the batch applications. Other configurations may be used as well.
 
 ### <a name="Core"></a>Database and batch application
 1. Clone this repository to location of choice, using recursive option to include submodules:
@@ -77,13 +77,10 @@ git clone --recursive https://github.com/ojalaquellueva/nsr.git
 5. Copy or rename example parameters file (params.example.php) to params.php to same location (inside the main application directory) and set the parameters.
 6. Prepare NSR database checklist data sources and set database parameters as described in nsr_db/README.md
 7. Build NSR database
-8. [optional]. The following files, directories and their contents are not used by web service and may be removed:
+8. The following files is used only by the web service and may be removed:
 
 ```
-rm -rf nsr_batch_includes/
-rm -rf nsr_db/
-rm db_batch_connect.php
-rm nsr_batch.php
+rm nsr_ws.php
 ```
 
 ### <a name="wsi"></a>NSR web service
@@ -93,11 +90,18 @@ rm nsr_batch.php
 ```
 git clone --recursive https://github.com/ojalaquellueva/nsr.git
 ```
-2. Delete subdirectory nsr_db/ and contents
-3. Copy read-only database config file (db_config-example.php) as db_config.php to location outside public_html and set the parameters.
-4. Copy write-access database config file (db_configw-example.php) as db_configw.php to location outside public_html and set the parameters.
-5. Copy or rename parameters file (params.example.php) to params.php and set the parameters.
-6. Adjust file permissions per your server settings.
+2. Copy read-only database config file (db_config-example.php) as db_config.php to location outside public_html and set the parameters.
+3. Copy write-access database config file (db_configw-example.php) as db_configw.php to location outside public_html and set the parameters.
+4. Copy or rename parameters file (params.example.php) to params.php and set the parameters.
+5. Adjust file permissions per your server settings.
+6. The following files, directories and their contents are not used by web service and may be removed:
+
+```
+rm -rf nsr_batch_includes/
+rm -rf nsr_db/
+rm db_batch_connect.php
+rm nsr_batch.php
+```
 
 ## <a name="Usage"></a>Usage
 

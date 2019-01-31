@@ -105,7 +105,17 @@ rm nsr_batch.php
 
 ## <a name="Usage"></a>Usage
 
-### <a name="Batch"></a>Batch applicaton
+### <a name="DB"></a>Build NSR database
+
+Syntax:  
+```
+php nsr_db.php
+
+```
+
+See separate README in nsr_db/ for details.
+
+### <a name="Batch"></a>Batch application
 
 Syntax:  
 ```

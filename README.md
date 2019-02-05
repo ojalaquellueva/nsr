@@ -85,8 +85,12 @@ rm nsr_ws.php
 ```
 
 ### <a name="wsi"></a>NSR web service
-(Assume NSR database is installed and configured as described above)
-1. Clone this repository to subdirectory of choice in public_html folder, using recursive option to include submodules:
+
+The following instructions assumes:
+* NSR database is installed and configured as described above
+* Valid virtual host and port have been configured for the API root directory
+
+1. Clone this repository to API root directory of your choice (e.g., /var/www/public_html/nsr/), using recursive option to include submodules:
 
 ```
 git clone --recursive https://github.com/ojalaquellueva/nsr.git

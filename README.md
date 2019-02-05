@@ -86,7 +86,7 @@ rm nsr_ws.php
 
 ### <a name="wsi"></a>NSR web service
 
-The following instructions assumes:
+The following instructions assume:
 * NSR database is installed and configured as described above
 * Valid virtual host and port have been configured for the API root directory
 
@@ -98,7 +98,7 @@ git clone --recursive https://github.com/ojalaquellueva/nsr.git
 2. Copy read-only database config file (db_config-example.php) as db_config.php to location outside public_html and set the parameters.
 3. Copy write-access database config file (db_configw-example.php) as db_configw.php to location outside public_html and set the parameters.
 4. Copy or rename parameters file (params.example.php) to params.php and set the parameters.
-5. Adjust file permissions per your server settings.
+5. Adjust file system permissions as per your server settings.
 6. The following files, directories and their contents are not used by web service and should be removed:
 
 ```

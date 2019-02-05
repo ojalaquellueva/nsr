@@ -78,7 +78,7 @@ git clone --recursive https://github.com/ojalaquellueva/nsr.git
 5. Copy or rename example parameters file (params.example.php) to params.php to same location (inside the main application directory) and set the parameters.
 6. Prepare NSR database checklist data sources and set database parameters as described in nsr_db/README.md
 7. Build NSR database
-8. The following files is used only by the web service and may be removed:
+8. The following file is used only by the web service and may be removed:
 
 ```
 rm nsr_ws.php
@@ -95,7 +95,7 @@ git clone --recursive https://github.com/ojalaquellueva/nsr.git
 3. Copy write-access database config file (db_configw-example.php) as db_configw.php to location outside public_html and set the parameters.
 4. Copy or rename parameters file (params.example.php) to params.php and set the parameters.
 5. Adjust file permissions per your server settings.
-6. The following files, directories and their contents are not used by web service and may be removed:
+6. The following files, directories and their contents are not used by web service and should be removed:
 
 ```
 rm -rf nsr_batch_includes/

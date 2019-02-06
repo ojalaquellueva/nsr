@@ -47,13 +47,15 @@ include $batch_includes_dir.'batch_params.php';
 //////////////////////////////////////////////////////
 
 $shortopts  = "";
-$shortopts .= "e::"; 	// command line echo (true/on;false/off [default])
-$shortopts .= "i::"; 	// interactive mode (true/on;false/off [default])
-$shortopts .= "f::"; 	// file name, if provided will over-ride 
-						// default name in params.inc
-$shortopts .= "t::"; 	// file type (csv [default], tab)
-$shortopts .= "l::"; 	// line endings (mac [default], unix, win)
-$shortopts .= "r::"; 	// replace cache?
+$shortopts .= "e::"; 	// command line Echo (true/on;false/off [default])
+$shortopts .= "i::"; 	// Interactive mode (true/on;false/off [default])
+$shortopts .= "f::"; 	// File name, if provided will over-ride 
+						// default name in params.php
+$shortopts .= "d::"; 	// custom Data directory, if omitted defaults to
+						// value of $DATADIR set in params.php
+$shortopts .= "t::"; 	// file Type (csv [default], tab)
+$shortopts .= "l::"; 	// Line endings (mac [default], unix, win)
+$shortopts .= "r::"; 	// Replace cache?
 						// 	false|keep [default]: keep cache
 						// 	replace: replace records for same taxon+locality
 						// 	delete: all records; clear entire cache
@@ -79,6 +81,24 @@ if (array_key_exists('i', $options)) {
 	if ($i === true || $i == 'true' || $i == 'on') $interactive = true;
 }
 if ($interactive===true) $echo_on=true;	// If interactive mode, echo MUST be on
+
+// Data directory
+$data_dir = $DATADIR;	// Default as set in params.php
+if (array_key_exists('d', $options)) {
+	// Over-ride default input file name from params file
+	$data_dir_custom = $options["d"];
+	if ($data_dir_custom<>false) {
+		if (file_exists($data_dir_custom)) {
+			$data_dir = $data_dir_custom;
+		} else {
+			// Bad directory
+			die("ERROR: Directory '$data_dir_custom' does not exist\r\n");
+		}
+	} else {
+		// No directory value supplied
+		die("ERROR: No value supplied for data directory option -d\r\n");
+	}
+}
 
 // Input file name
 if (array_key_exists('f', $options)) {
@@ -119,7 +139,7 @@ if (array_key_exists('l', $options)) {
 
 // parameters $inputfilename and $resultsfilename in 
 // batch_params.php, but can
-$inputfile = $DATADIR.$inputfilename;
+$inputfile = $data_dir.$inputfilename;
 
 // Set name of result file based on input file
 $pizza = explode('.',$inputfilename);
@@ -130,7 +150,7 @@ if (count($pizza)>1) {
 	$ext = '';
 }
 $resultsfilename = str_replace($ext,'',$inputfilename) . "_nsr_results.txt";
-$resultsfile = $DATADIR.$resultsfilename;
+$resultsfile = $data_dir.$resultsfilename;
 
 // Replace cache?
 // Default=false

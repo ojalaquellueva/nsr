@@ -9,6 +9,11 @@ $APP_DIR = $BASE_DIR."nsr/";
 $CONFIG_DIR = $BASE_DIR; // dir where db user & pwd file kept
 $DATADIR = $BASE_DIR."nsr_data/user_data/";
 
+// Path and name of log file
+$LOGFILE_NAME = "log.txt";
+$LOGFILE_PATH = $APP_DIR . "log/";
+$LOGFILE = $LOGFILE_PATH . $LOGFILE_NAME;
+
 // general php functions
 $utilities_path=$BASE_DIR."global_utilities/";
 include $utilities_path."functions.inc";

@@ -5,6 +5,10 @@
 // nsr_batch.php
 ////////////////////////////////////////////////////////
 
+///////////////////////////////////
+// Receive the JSON data
+///////////////////////////////////
+
 include 'params.php';
 //$msg = "Processing batch api request\r\n\r\n";
 //file_put_contents($LOGFILE, $msg)
@@ -31,11 +35,30 @@ if (!is_array($decoded)) {
     throw new Exception('Received content contained invalid JSON!');
 }
 
-/*
-Do some stuff here to process the request
-*/
+///////////////////////////////////
+// Inspect the JSON data and run 
+// safety/security checks
+///////////////////////////////////
 
-// Return the response
+
+///////////////////////////////////
+// Convert JSON and save to data 
+// directory as CSV file
+///////////////////////////////////
+
+
+
+///////////////////////////////////
+// Process the file in batch mode
+///////////////////////////////////
+
+
+
+///////////////////////////////////
+// Retrieve the file, convert to
+// JSON and return the response
+///////////////////////////////////
+
 header('Content-type: application/json');
 //echo json_encode(array('nsr_results'=>$nsr_results));
 //echo $nsr_results;

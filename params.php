@@ -14,6 +14,11 @@ $CONFIG_DIR = $BASE_DIR;
 // Input & output data directory
 $DATADIR = $BASE_DIR."data/user/";
 
+// Path and name of log file
+$LOGFILE_NAME = "log.txt";
+$LOGFILE_PATH = $APP_DIR;
+$LOGFILE = $LOGFILE_PATH . $LOGFILE_NAME;
+
 // Path to general php funcions and generic include files
 //$utilities_path="/home/boyle/global_utilities/php/"; // Master, testing only
 $utilities_path=$APP_DIR."includes/php/";	// Local submodule directory

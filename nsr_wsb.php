@@ -5,6 +5,9 @@
 // nsr_batch.php
 ////////////////////////////////////////////////////////
 
+$msg = "Processing batch api request\r\n\r\n";
+file_put_contents($LOGFILE, $msg)
+
 //Make sure that it is a POST request.
 if(strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') != 0){
     throw new Exception('Request method must be POST!');

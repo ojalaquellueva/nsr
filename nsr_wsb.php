@@ -5,13 +5,19 @@
 // nsr_batch.php
 ////////////////////////////////////////////////////////
 
-///////////////////////////////////
-// Receive the JSON data
-///////////////////////////////////
-
 include 'params.php';
 //$msg = "Processing batch api request\r\n\r\n";
 //file_put_contents($LOGFILE, $msg)
+
+// Temporary data directory
+$data_dir_tmp = "/tmp/nsr/data";
+
+// Temporary input file name
+$filename_tmp = uniqid(rand(), true) . '.csv';
+
+///////////////////////////////////
+// Receive & validate the POST request
+///////////////////////////////////
 
 //Make sure that it is a POST request.
 if (strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') != 0) {
@@ -46,7 +52,14 @@ if (!is_array($decoded)) {
 // directory as CSV file
 ///////////////////////////////////
 
+// Make temporary data directory in /tmp
+if (!exec('mkdir -p $data_dir_tmp')) die("ERROR: Unable to create temp data directory");
 
+// Convert array to CSV
+$file_tmp = $data_dir_tmp . $filename_tmp;
+$fp = fopen($file_tmp, "w");
+fputcsv($fp, $decoded);
+fclose($fp);
 
 ///////////////////////////////////
 // Process the file in batch mode

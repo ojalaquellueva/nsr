@@ -152,7 +152,7 @@ if(isset($_GET['country']) && isset($_GET['species'])) {
 		}
 	}
 
-	// output in necessary format
+	// output in chosen format
 	if($format == 'json') {
 		header('Content-type: application/json');
 		echo json_encode(array('nsr_results'=>$nsr_results));
@@ -167,8 +167,6 @@ if(isset($_GET['country']) && isset($_GET['species'])) {
 					if(is_array($value)) {
 						foreach($value as $tag => $val) {
 							echo '<',$tag,'>',$val,'</',$tag,'>';
-							//echo '<',$tag,'>',htmlentities(urlencode($val)),'</',$tag,'>';
-							//echo '<',$tag,'>',htmlentities($val),'</',$tag,'>';
 						}
 					}
 					echo '</',$key,'>';

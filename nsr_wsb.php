@@ -64,13 +64,13 @@ if (strcasecmp($contentType, 'application/json') != 0) {
 }
  
 //Receive the RAW post data.
-$content = trim(file_get_contents("php://input"));
+$input_json = trim(file_get_contents("php://input"));
  
 //Attempt to decode the incoming RAW post data from JSON.
-$decoded = json_decode($content, true);
+$input_array = json_decode($input_json, true);
 
 //If json_decode failed, the JSON is invalid.
-if (!is_array($decoded)) {
+if (!is_array($input_array)) {
     throw new Exception('Received content contained invalid JSON!');
 }
 
@@ -94,7 +94,7 @@ $file_tmp = $data_dir_tmp . "/" . $filename_tmp;
 // Convert array to CSV & save
 $fp = fopen($file_tmp, "w");
 $i = 0;
-foreach ($decoded as $row) {
+foreach ($input_array as $row) {
     if($i === 0) fputcsv($fp, array_keys($row));	// header
     fputcsv($fp, array_values($row));				// data
     $i++;
@@ -102,7 +102,7 @@ foreach ($decoded as $row) {
 fclose($fp);
 
 ///////////////////////////////////
-// Process the file in batch mode
+// Process the CSV file in batch mode
 ///////////////////////////////////
 
 $data_dir_tmp_full = $data_dir_tmp . "/";
@@ -111,18 +111,20 @@ exec($cmd, $output, $status);
 if ($status) die("ERROR: php_batch non-zero exit status");
 
 ///////////////////////////////////
-// Retrieve the file, convert to
-// JSON and return the response
+// Retrieve the tab-delimited results
+// file and convert to JSON
 ///////////////////////////////////
 
-// Import the results file (tabl-delimitted)
+// Import the results file (tab-delimitted)
 $results_file = $data_dir_tmp . "/" . $results_filename;
 $results_array = load_tabbed_file($results_file, true);
 $results_json = json_encode($results_array);
 
+///////////////////////////////////
+// Echo the results
+///////////////////////////////////
+
 header('Content-type: application/json');
-//echo json_encode(array('nsr_results'=>$nsr_results));
-//echo $nsr_results;
 echo $results_json;
 
 ?>

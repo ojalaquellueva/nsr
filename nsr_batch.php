@@ -7,7 +7,7 @@ Native Status Resolver (NSR)
 Basic NSR batch processing service
 For each valid combination of species+country+state_province+county_parish
 Returns and evaluation of native status
-Return format is csv
+Return format is tab-delimitted
 
 To execute, run /var/www/bien/apps/nsr/nsr_batch.php
 

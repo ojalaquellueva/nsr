@@ -287,7 +287,7 @@ if ($num_rows>0) {
 		if ($echo_on) echo "\r" . $msg2;
 		
 		// Turn off echo for NSR processes
-		//$echo_on = false;
+		$echo_on = false;
 		
 		// Submit the current batch to NSR, reporting time if echo on
 		$start_batch = microtime(true);

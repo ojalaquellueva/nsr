@@ -19,8 +19,9 @@ $inputfilename = "testfile.csv";
 $format="json";
 
 // Number of lines to import
+// Start with a very small number for testing
 // Set to large number to impart entire file
-$lines = 100000;
+$lines = 5;
 
 // api base url 
 $base_url = "http://bien.nceas.ucsb.edu/bien/apps/nsr/nsr_wsb.php";
@@ -29,8 +30,12 @@ $base_url = "http://bien.nceas.ucsb.edu/bien/apps/nsr/nsr_wsb.php";
 // Functions
 /////////////////////
 
-function csvtojson($file,$delimiter,$lines)
-{
+function csvtoarray($file,$delimiter,$lines) {
+	///////////////////////////////////////////////
+	// Import CSV to array, keeping only the 
+	// specified number of lines
+	///////////////////////////////////////////////
+	
     if (($handle = fopen($file, "r")) === false) {
     	die("can't open the file.");
     }
@@ -47,8 +52,7 @@ function csvtojson($file,$delimiter,$lines)
     // Get subset of array
     $f_array = array_slice($f_array, 0, $lines);
     
-    // Convert and return the JSON
-    return json_encode($f_array);
+    return $f_array;
 }
 
 /////////////////////
@@ -59,13 +63,24 @@ function csvtojson($file,$delimiter,$lines)
 // NOT USED YET
 $format_array = array("format"=>"$format");
 
-// Import the csv data and convert a sample of it to JSON
+// Import the csv data as an array
 $inputfile = $DATADIR.$inputfilename;
-$json_data = csvtojson($inputfile, ",",$lines);
+$data = csvtoarray($inputfile, ",",$lines);
 
-// Echo the input
-//echo "The JSON input data:\r\n";
-//echo $json_data . "\r\n";
+# Convert to JSON
+$json_data = json_encode($data);	
+
+// Echo the raw data
+echo "The raw data:\r\n";
+foreach($data[0] as $key => $value) echo "$key\t"; echo "\r\n";
+foreach($data as $row) {
+	foreach($row as $key => $value) echo "$value\t"; echo "\r\n";
+}
+echo "\r\n\r\n";
+
+// Echo the JSON
+echo "The JSON input for the API:\r\n";
+echo $json_data . "\r\n\r\n";
 
 // Call the batch api
 $url = $base_url;    

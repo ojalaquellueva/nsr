@@ -57,8 +57,14 @@ The majority of the checklists consulted by the NSR are high-quality published s
 
 ## <a name="Software"></a>Software requirements
 * OS: Runs on a unix or unix-like environment
-* PHP 7.0 or greater (may work on earlier versions, but not tested)
 * MySQL 5.5 or greater
+* PHP 7.0 or greater (may work on earlier versions, but not tested)
+  * To allow use of LOCAL keyword when importing   files to database, make sure the following line in php.ini is uncommented:  
+  
+    	```
+    	mysqli.allow_local_infile = On
+    	```
+    
 
 ## <a name="Installation"></a>Installation & setup
 
@@ -113,6 +119,7 @@ rm nsr_batch.php
 ### <a name="DB"></a>Build NSR database
 
 Syntax:  
+
 ```
 php nsr_db.php
 
@@ -123,9 +130,9 @@ See separate README in nsr_db/ for details.
 ### <a name="Batch"></a>Batch application
 
 Syntax:  
+
 ```
 php nsr_batch.php -e=<echo> -i=<interactive_mode_on> -f=<inputfile> -l=<line_endings> -t=<inputfile_type> -r=<replace_cache>
-
 ```
 
 Options (default in __bold__):  
@@ -136,19 +143,21 @@ Options (default in __bold__):
 -t: inputfile type [__csv__,tab]  
 -r: replace the cache [true,__false__]  
 
-Example:  
+Example: 
+ 
 ```
 php nsr_batch.php -i=true -f='my_observations.txt' -l=unix -t=tab
-
 ```
+
 
 Notes:  
 * Use -r=false to retain all previously cached results. Option -r=true is used only when NSR reference database has changed and previous results may not be valid.  
 * When the NSR has finished running, results file will be saved to the NSR data directeory
 * Results file has same base name as input file, plus suffix "_nsr_results.txt" 
-* Results file is tab-delimitted, regardless of the format of the input file
+* Results file is tab-delimitted, regardless of the format of the input file  
 
-#### <a name="Input">Batch input format
+#### <a name='Input'>Batch input format</a>  
+
 
 The NSR accepts as input a plain text file containing one or more observations of taxon in political division, formatted as follows (optional values in square brackets; if county_parish is included, state_province must be included as well):  
 
@@ -160,23 +169,23 @@ Taxon names can be of any of the following ranks: family, genus, species, subspe
 
 Spellings of political division names in the NSR database are the plain ascii (unaccented) versions of English-language political division names in Geonames (www.geonames.org). Political division names in user input should therefore be standardized according to the same standard. 
 
-#### <a name="Output">Batch output format
+#### <a name="Output">Batch output format</a>
 
 The NSR batch application returns original rows and values as submitted, plus columns indicating whether taxon is native in each level of observation within the political division hierarchy, an overall assessment of native status within the lowest political division of observation, a short explanation of how the decision was reached, and a list of checklist sources consulted.   
 
 
 | Column	| Meaning (values)
 | --------- | -------------------
-| native_status_country	| Native status in country (see native status values, below)
-| native_status_state_province	| Native status in state_province, if any (see native status values, below)
-| native_status_county_parish	| Native status in county_parish, if any (see native status values, below)
-| native_status	| Overall native status in lowest declared political division (see native status values, below)
-| native_status_reason	| Reason native status was assigned
-| native_status_sources	| Checklists used to determine native status
+| native\_status\_country	| Native status in country (see native status values, below)
+| native\_status\_state\_province	| Native status in state\_province, if any (see native status values, below)
+| native\_status\_county\_parish	| Native status in county\_parish, if any (see native status values, below)
+| native\_status	| Overall native status in lowest declared political division (see native status values, below)
+| native\_status\_reason	| Reason native status was assigned
+| native\_status\_sources	| Checklists used to determine native status
 | isIntroduced	| Simplified overall native status (1=introduced;  0=native; blank=status unknown)
 | isCultivatedNSR	| Species is known to be cultivated in declared region  (1=cultivated;  0=wild or status unknown)
 
-###  <a name="ws">Web service
+###  <a name="ws">Web service</a>
 
 Syntax:  
 ```
@@ -193,7 +202,7 @@ Notes:
 * Parameters stateprovince, county parish and format are optional  
 * Output format: xml (default),  json   
 
-## <a name="Native">Native Status Codes
+## <a name="Native">Native Status Codes</a>
 
 | Native status code	| Meaning 
 | --------- | -------------------

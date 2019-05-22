@@ -10,6 +10,7 @@ if (isset($batch)) {
 }
 
 // insert the raw records
+/*
 $sql="
 INSERT INTO observation (
 job,
@@ -34,9 +35,35 @@ county_parish,
 user_id
 FROM observation_raw
 ;
+";
+*/
+$sql="
+INSERT INTO observation (
+job,
+batch,
+species,
+country,
+state_province,
+county_parish,
+user_id
+)
+SELECT 
+'$job',
+$curr_batch,
+species,
+country,
+state_province,
+county_parish,
+user_id
+FROM observation_raw
+;
+";
 
--- HACK
--- Merge Newfoundland and Labrador
+sql_execute_multiple($dbh, $sql);
+
+
+// HACK: Merge Newfoundland and Labrador
+$sql="
 UPDATE observation
 SET state_province='Newfoundland and Labrador'
 WHERE country='Canada' 

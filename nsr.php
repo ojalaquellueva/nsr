@@ -37,6 +37,7 @@ if ($use_batch==true) {
 // Process the observations [by batch if specified]
 //////////////////////////////////////////////////////
 
+include $nsr_includes_dir."prepare_observations.php";
 include $nsr_includes_dir."check_absence.php";
 include $nsr_includes_dir."check_presence.php";
 include $nsr_includes_dir."check_cultivated.php";

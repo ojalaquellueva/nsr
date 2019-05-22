@@ -1,0 +1,15 @@
+id	job	family	genus	species	country	state_province	state_province_full	county_parish	county_parish_full	poldiv_full	poldiv_type	native_status_country	native_status_state_province	native_status_county_parish	native_status	native_status_reason	native_status_sources	isIntroduced	isCultivatedNSR	is_cultivated_taxon	user_id
+16	2019-05-21-16:14:31:0.56936500		Abrothallus	Abrothallus bertianus	Australia	Western Australia	Australia:Western Australia			Australia:Western Australia	state_province				UNK	Status unknown, no checklists for region of observation			0	0	1
+17	2019-05-21-16:14:31:0.56936500		Abrothallus	Abrothallus bertianus	Austria					Austria	country				UNK	Status unknown, no checklists for region of observation			0	0	2
+18	2019-05-21-16:14:31:0.56936500		Abrothallus	Abrothallus bertianus	Austria	Salzburg	Austria:Salzburg			Austria:Salzburg	state_province				UNK	Status unknown, no checklists for region of observation			0	0	3
+19	2019-05-21-16:14:31:0.56936500		Abrothallus	Abrothallus bertianus	Canada	Alberta	Canada:Alberta			Canada:Alberta	state_province	A			A	Absent from all checklists for region	usda, vascan	1	0	0	4
+20	2019-05-21-16:14:31:0.56936500		Abrothallus	Abrothallus bertianus	Czech Republic					Czech Republic	country				UNK	Status unknown, no checklists for region of observation			0	0	5
+21	2019-05-21-16:14:31:0.56936500		Abrothallus	Abrothallus bertianus	France					France	country				UNK	Status unknown, no checklists for region of observation			0	0	6
+22	2019-05-21-16:14:31:0.56936500		Abrothallus	Abrothallus bertianus	Germany					Germany	country				UNK	Status unknown, no checklists for region of observation			0	0	7
+23	2019-05-21-16:14:31:0.56936500		Abrothallus	Abrothallus bertianus	Greenland					Greenland	country				UNK	Status unknown, no checklists for region of observation			0	0	8
+24	2019-05-21-16:14:31:0.56936500		Abrothallus	Abrothallus bertianus	Italy					Italy	country				UNK	Status unknown, no checklists for region of observation			0	0	9
+25	2019-05-21-16:14:31:0.56936500		Eucalyptus	Eucalyptus	Italy					Italy	country	Ie			Ie	Introduced, species endemic to other region	enquist	1	0	0	14
+26	2019-05-21-16:14:31:0.56936500		Abrothallus	Abrothallus bertianus	Spain					Spain	country				UNK	Status unknown, no checklists for region of observation			0	0	10
+27	2019-05-21-16:14:31:0.56936500		Ceiba	Ceiba pentandra	Peru					Peru	country	N			N	Native to region, as per checklist	tropicos	0	0	0	11
+28	2019-05-21-16:14:31:0.56936500		Pinus	Pinus ponderosa	Peru					Peru	country	A			A	Absent from all checklists for region	tropicos	1	0	0	12
+29	2019-05-21-16:14:31:0.56936500		Pinus	Pinus ayacahuite	Peru					Peru	country	A			A	Absent from all checklists for region	tropicos	1	0	0	13

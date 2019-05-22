@@ -110,6 +110,28 @@ WHERE source='duplicate'
 sql_execute_multiple($dbh, $sql);	
 echo $done;
 
+echo "  Adding family counts per genus...";
+$sql="
+ALTER TABLE gf_lookup 
+ADD COLUMN fams INTEGER DEFAULT 1
+;
+UPDATE gf_lookup a JOIN (
+SELECT genus, COUNT(*) AS fams
+FROM gf_lookup
+GROUP BY genus
+HAVING fams>1
+) AS b
+ON a.genus=b.genus
+SET a.fams=b.fams
+;
+ALTER TABLE gf_lookup
+ADD INDEX (fams)
+;
+";
+sql_execute_multiple($dbh, $sql);	
+echo $done;
+
+
 
 
 ?>

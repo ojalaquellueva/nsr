@@ -1,8 +1,0 @@
-id	job	family	genus	species	country	state_province	state_province_full	county_parish	county_parish_full	poldiv_full	poldiv_type	native_status_country	native_status_state_province	native_status_county_parish	native_status	native_status_reason	native_status_sources	isIntroduced	isCultivatedNSR	is_cultivated_taxon	user_id
-73	2019-05-21-16:55:34:0.35988900			Abrothallus bertianus	Australia	Western Australia	Australia:Western Australia			Australia:Western Australia	state_province				UNK	Status unknown, no checklists for region of observation			0	0	1
-74	2019-05-21-16:55:34:0.35988900			Abrothallus bertianus	France					France	country				UNK	Status unknown, no checklists for region of observation			0	0	6
-75	2019-05-21-16:55:34:0.35988900			Eucalyptus	Italy					Italy	country	Ie			Ie	Introduced, species endemic to other region	enquist	1	0	0	14
-76	2019-05-21-16:55:34:0.35988900			Ceiba	Peru					Peru	country	N			N	Native to region, as per checklist	tropicos	0	0	0	0
-77	2019-05-21-16:55:34:0.35988900			Rubiaceae	Peru					Peru	country	N			N	Native to region, as per checklist	mab, tropicos	0	0	0	0
-78	2019-05-21-16:55:34:0.35988900			Pinus ponderosa	Peru					Peru	country	A			A	Absent from all checklists for region	tropicos	1	0	0	0
-79	2019-05-21-16:55:34:0.35988900			Pinus ayacahuite	Peru					Peru	country	A			A	Absent from all checklists for region	tropicos	1	0	0	13

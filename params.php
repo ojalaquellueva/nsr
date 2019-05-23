@@ -72,8 +72,8 @@ $optionally_enclosed_by = " OPTIONALLY ENCLOSED BY '\"' ";
 // whichever of the following works will depend on the operating system
 // the input file was created or modified on
 //$lines_terminated_by = " LINES TERMINATED BY '\r\n' "; 	// windows line-endings
-$lines_terminated_by = " LINES TERMINATED BY '\r' "; 	// mac line-endings
-//$lines_terminated_by = " LINES TERMINATED BY '\n' ";	// unix line-endings
+//$lines_terminated_by = " LINES TERMINATED BY '\r' "; 	// mac line-endings
+$lines_terminated_by = " LINES TERMINATED BY '\n' ";	// unix line-endings
 
 $ignore_lines = " IGNORE 1 LINES ";	// Ignore header line?
 //$ignore_lines = "";	// Ignore header line?

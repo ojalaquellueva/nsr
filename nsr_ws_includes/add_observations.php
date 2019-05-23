@@ -5,6 +5,8 @@ include "dbw_open.php";
 $sql_insert_obs="
 TRUNCATE observation;
 INSERT INTO observation (
+job,
+batch,
 family,
 genus,
 species,
@@ -13,6 +15,8 @@ state_province,
 county_parish
 )
 VALUES (
+'$job',
+1,
 '$fam',
 '$genus',
 '$species',

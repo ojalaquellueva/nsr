@@ -12,7 +12,7 @@ $inputfilename = "nsr_input.csv";
 $local = " LOCAL ";	// LOCAL keyword
 $fields_terminated_by = " FIELDS TERMINATED BY ',' ";
 $optionally_enclosed_by = " OPTIONALLY ENCLOSED BY '\"' ";  
-$lines_terminated_by = " LINES TERMINATED BY '\r' "; 	// Legacy Mac
+$lines_terminated_by = " LINES TERMINATED BY '\n' "; 	// Unix
 $ignore_lines = " IGNORE 1 LINES ";	// Ignore header line
 
 ?>

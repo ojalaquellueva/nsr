@@ -122,13 +122,13 @@ if (array_key_exists('t', $options)) {
 
 // Input file line endings
 if (array_key_exists('l', $options)) {
-	// By default assumes mac line endings,
+	// By default assumes unix line endings,
 	// as set in params file
 	$l = $options["l"];
 	switch ($l) {
-		case "unix":
-			// Unix
-			$lines_terminated_by = " LINES TERMINATED BY '\n' ";
+		case "mac":
+			// Mac
+			$lines_terminated_by = " LINES TERMINATED BY '\r' ";
 			break;
 		case "win":
 			// Windows

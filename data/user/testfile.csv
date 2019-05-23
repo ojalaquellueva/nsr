@@ -1,8 +1,12 @@
-family,genus,species,country,state_province,county_parish,user_id
-,Abrothallus,Abrothallus bertianus,Australia,Western Australia,,1
-,Abrothallus,Abrothallus bertianus,Austria,,,2
-,Eucalyptus,Eucalyptus,Italy,,,14
-,Abrothallus,Abrothallus bertianus,Spain,,,10
-,Ceiba,Ceiba pentandra,Peru,,,11
-,Pinus,Pinus ponderosa,Peru,,,12
-,Pinus,Pinus ayacahuite,Peru,,,13
+﻿Family,Taxon,country,state,county,user_id
+Pinaceae,Pinus ponderosa,United States,Arizona,Pima,
+,Sphaeralcea ambigua var. rosacea,United States,Arizona,,
+,Umbellularia californica,United States,,,
+,Umbellularia californica,United States,California,,
+,Umbellularia californica,United States,Florida,,
+Nepenthaceae,Nepenthaceae,United States,Florida,,
+,Stenocereus thurberi,Mexico,Sonora,Aconchi,
+,Stenocereus thurberi,France,,,
+,Eucalyptus,Peru,,,
+,Eucalyptus,Australia,,,
+,Eucalyptus,France,,,

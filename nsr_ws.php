@@ -25,6 +25,8 @@ stateprovince, countyparish and format are optional
 
 */ 
 
+$ws_includes_dir = "nsr_ws_includes";
+
 // These parameters not needed for web service
 // Set to TRUE as included in most WHERE clauses
 $JOB_WHERE = " 1 ";
@@ -88,10 +90,13 @@ if(isset($_GET['country']) && isset($_GET['species'])) {
 	$json=file_get_contents($url_tnrs);
 	$tnrs_results = json_decode($json,true);
 	$fam = $tnrs_results['items'][0]['family'];	
-		
+	
+	// Generate unique job #
+	$job = "nsr_ws_" . date("Y-m-d-G:i:s").":".str_replace(".0","",strtok(microtime()," "));
+
 	// Add records to new observation table
-	include_once "add_observations.php";	
-	include_once "standardize_observations.php";	
+	include_once $ws_includes_dir."/"."add_observations.php";	
+	include_once $ws_includes_dir."/"."standardize_observations.php";	
 
 	// Mark results already in cache
 	include_once "mark_observations.php";	

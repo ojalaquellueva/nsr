@@ -41,7 +41,7 @@ include_once $CONFIG_DIR.'db_config.php';
 //echo "<br />Exiting @ db_config...<br />";  exit();	
 
 // Get type of request
-if(isset($_GET['do'])) {
+if (isset($_GET['do'])) {
 	$do = $_GET['do'];
 } else {
 	$do = "resolve";
@@ -49,7 +49,7 @@ if(isset($_GET['do'])) {
 
 if ($do == "poldivlist") {
 	// Return list of politcal divisions
-	echo "<strong>do='poldivlist'<\strong>"
+	echo "<strong>do='poldivlist'<\strong>";
 
 } elseif ($do == "resolve") {
 	if(isset($_GET['country']) && isset($_GET['species'])) {
@@ -196,6 +196,8 @@ if ($do == "poldivlist") {
 	}
 
 } else {
+	echo "<strong>BAD REQUEST</strong>";
+/*
 	// Bad request
 	if($format == 'json') {
 		header('Content-type: application/json');
@@ -209,6 +211,7 @@ if ($do == "poldivlist") {
 		echo "<error_details>Unknown value, parameter 'do'<\errortype>";
 		echo '</nsr_results>';
 	}
+*/
 }
 
 ?>

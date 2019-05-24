@@ -41,15 +41,26 @@ include_once $CONFIG_DIR.'db_config.php';
 //echo "<br />Exiting @ db_config...<br />";  exit();	
 
 // Get type of request
-if (isset($_GET['do'])) {
-	$do = $_GET['do'];
+// Assume resolve if not set
+isset($_GET['do']) ? $do = $_GET['do'] : $do = "resolve";
+
+if ($do == "poldivlist" || $do == "resolve" ) {
+	// connect to the db
+	$link = mysqli_connect($HOST,$USER,$PWD,$DB);
+	
+	// check connection
+	if (mysqli_connect_errno()) {
+		echo "Connection failed: ". mysqli_connect_error();
+		exit();
+	}
 } else {
-	$do = "resolve";
+	echo "<strong>BAD REQUEST</strong>";
 }
 
-if ($do == "poldivlist") {
+if ($do == "poldivlist" ) {
 	// Return list of politcal divisions
 	echo "<strong>do='poldivlist'<\strong>";
+
 
 } elseif ($do == "resolve") {
 	if(isset($_GET['country']) && isset($_GET['species'])) {
@@ -58,17 +69,9 @@ if ($do == "poldivlist") {
 		$format = strtolower($_GET['format']) == 'json' ? 'json' : 'xml'; //xml is the default
 		$species = $_GET['species'];
 		$country = $_GET['country'];
-		$stateprovince = $_GET['stateprovince'];
-		$countyparish = $_GET['countyparish'];
+		isset($_GET['stateprovince']) ? $stateprovince = $_GET['stateprovince'] : $stateprovince = "";
+		isset($_GET['countyparish']) ? $countyparish = $_GET['countyparish'] : $countyparish = "";
 	
-		/* connect to the db */
-		$link = mysqli_connect($HOST,$USER,$PWD,$DB);
-		/* check connection */
-		if (mysqli_connect_errno()) {
-			echo "Connection failed: ". mysqli_connect_error();
-			exit();
-		}
-
 		/* activate to check starting character set
 		$chrst = mysqli_character_set_name($link);
 		echo "<br />Character set: $chrst<br />";
@@ -94,12 +97,15 @@ if ($do == "poldivlist") {
 		$genus = $nameparts[0];
 		
 		// get the APGIII family from TNRS lookup
-		$url_tnrs_base='http://tnrs.iplantc.org/tnrsm-svc/matchNames?retrieve=best&names=';
+		$fam = "";
+		$url_tnrs_base = 'http://tnrs.iplantc.org/tnrsm-svc/matchNames?retrieve=best&names=';
 		$name=urlencode($species);
 		$url_tnrs=$url_tnrs_base.$name;	
-		$json=file_get_contents($url_tnrs);
-		$tnrs_results = json_decode($json,true);
-		$fam = $tnrs_results['items'][0]['family'];	
+		$json = @file_get_contents($url_tnrs);
+		if ( ! $json === false) {
+			$tnrs_results = json_decode($json,true);
+			$fam = $tnrs_results['items'][0]['family'];	
+		}
 	
 		// Generate unique job #
 		$job = "nsr_ws_" . date("Y-m-d-G:i:s").":".str_replace(".0","",strtok(microtime()," "));

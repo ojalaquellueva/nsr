@@ -48,8 +48,8 @@ if(isset($_GET['country']) && isset($_GET['species'])) {
 	$format = strtolower($_GET['format']) == 'json' ? 'json' : 'xml'; //xml is the default
 	$species = $_GET['species'];
 	$country = $_GET['country'];
-	$stateprovince = $_GET['stateprovince'];
-	$countyparish = $_GET['countyparish'];
+	isset($_GET['stateprovince']) ? $stateprovince = $_GET['stateprovince'] : $stateprovince = "";
+	isset($_GET['countyparish']) ? $countyparish = $_GET['countyparish'] : $countyparish = "";
 	
 	/* connect to the db */
 	$link = mysqli_connect($HOST,$USER,$PWD,$DB);

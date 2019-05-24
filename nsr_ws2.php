@@ -44,7 +44,7 @@ include_once $CONFIG_DIR.'db_config.php';
 // Assume resolve if not set
 isset($_GET['do']) ? $do = $_GET['do'] : $do = "resolve";
 
-if ($do == "poldivlist" || $do == "resolve" ) {
+if ($do == "poldivs" || $do == "resolve" ) {
 	// connect to the db
 	$link = mysqli_connect($HOST,$USER,$PWD,$DB);
 	
@@ -55,15 +55,21 @@ if ($do == "poldivlist" || $do == "resolve" ) {
 	}
 } else {
 	echo "<strong>BAD REQUEST</strong>";
+	exit();
 }
 
-if ($do == "poldivlist" ) {
+if ($do == "poldivs" ) {
 	// Return list of politcal divisions
-	echo "<strong>do='poldivlist'<\strong>";
-
+	//echo "<strong>do='poldivlist'<\strong>";
+	$sql="
+	SELECT DISTINCT country 
+	FROM distribution
+	ORDER BY country
+	;
+	";
 
 } elseif ($do == "resolve") {
-	if(isset($_GET['country']) && isset($_GET['species'])) {
+	if( isset($_GET['country']) && isset($_GET['species'])) {
 	
 		/* get the passed variable or set our own */
 		$format = strtolower($_GET['format']) == 'json' ? 'json' : 'xml'; //xml is the default
@@ -159,65 +165,49 @@ if ($do == "poldivlist" ) {
 		AND $where_stateprovince
 		AND $where_countyparish
 		";
+	} else {
+		echo "<strong>Required parameters species and/or country missing!</strong>";
+	}
+}
 	
-		//echo "<br />SQL:<br />$sql<br />";
+//echo "<br />SQL:<br />$sql<br />";
 
 
-		$result = mysqli_query($link,$sql) or die('Offending query:  '.$sql);
+$result = mysqli_query($link,$sql) or die('Offending query:  '.$sql);
 
-		// create one master array of the records
-		$nsr_results = array();
-		if(mysqli_num_rows($result)) {
-			while($nsr_result = mysqli_fetch_assoc($result)) {
-				$nsr_results[] = array('nsr_result'=>$nsr_result);
-			}
-		}
+// create one master array of the records
+$nsr_results = array();
+if(mysqli_num_rows($result)) {
+	while($nsr_result = mysqli_fetch_assoc($result)) {
+		$nsr_results[] = array('nsr_result'=>$nsr_result);
+	}
+}
 
-		// output in chosen format
-		if($format == 'json') {
-			header('Content-type: application/json');
-			echo json_encode(array('nsr_results'=>$nsr_results));
-		}
-		else {
-			header('Content-type: text/xml');
-			echo '<nsr_results>';
-			foreach($nsr_results as $index => $nsr_result) {
-				if(is_array($nsr_result)) {
-					foreach($nsr_result as $key => $value) {
-						echo '<',$key,'>';
-						if(is_array($value)) {
-							foreach($value as $tag => $val) {
-								echo '<',$tag,'>',$val,'</',$tag,'>';
-							}
-						}
-						echo '</',$key,'>';
+// output in chosen format
+if($format == 'json') {
+	header('Content-type: application/json');
+	echo json_encode(array('nsr_results'=>$nsr_results));
+}
+else {
+	header('Content-type: text/xml');
+	echo '<nsr_results>';
+	foreach($nsr_results as $index => $nsr_result) {
+		if(is_array($nsr_result)) {
+			foreach($nsr_result as $key => $value) {
+				echo '<',$key,'>';
+				if(is_array($value)) {
+					foreach($value as $tag => $val) {
+						echo '<',$tag,'>',$val,'</',$tag,'>';
 					}
 				}
+				echo '</',$key,'>';
 			}
-			echo '</nsr_results>';
 		}
-
-		/* disconnect from the db */
-		@mysqli_close($link);
 	}
-
-} else {
-	echo "<strong>BAD REQUEST</strong>";
-/*
-	// Bad request
-	if($format == 'json') {
-		header('Content-type: application/json');
-		$myObj->error_type = "Bad request";
-		$myObj->error_details = "Unknown value, parameter 'do'";
-		echo json_encode($myObj);
-	} else {
-		header('Content-type: text/xml');
-		echo '<nsr_results>';
-		echo '<error_type>Bad request<\errortype>';
-		echo "<error_details>Unknown value, parameter 'do'<\errortype>";
-		echo '</nsr_results>';
-	}
-*/
+	echo '</nsr_results>';
 }
+
+/* disconnect from the db */
+@mysqli_close($link);
 
 ?>

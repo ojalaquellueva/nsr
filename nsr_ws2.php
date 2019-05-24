@@ -45,6 +45,8 @@ include_once $CONFIG_DIR.'db_config.php';
 isset($_GET['do']) ? $do = $_GET['do'] : $do = "resolve";
 
 if ($do == "poldivs" || $do == "resolve" ) {
+	$format = strtolower($_GET['format']) == 'json' ? 'json' : 'xml'; //xml is the default
+
 	// connect to the db
 	$link = mysqli_connect($HOST,$USER,$PWD,$DB);
 	
@@ -59,20 +61,74 @@ if ($do == "poldivs" || $do == "resolve" ) {
 }
 
 if ($do == "poldivs" ) {
-	// Return list of politcal divisions
-	//echo "<strong>do='poldivlist'<\strong>";
-	$sql="
-	SELECT DISTINCT country 
-	FROM distribution
-	ORDER BY country
-	;
-	";
+	// Defaults
+	$filter_by_checklist=false;
+	$where_country="";
 
+	// Get optional parameters, if any
+	if ( isset($_GET['country']) || isset($_GET['checklist']) ) {
+		// Preparing for security checks
+		if (!mysqli_set_charset($link, 'latin1')) {
+			echo ("<br />Error loading character set utf8<br />");
+		}
+		
+		if ( isset($_GET['country']) ) {
+			$country = $_GET['country'];
+			
+			// Security
+			$country = mysqli_real_escape_string($link, $country);
+			$country = addcslashes($country, '%_');
+
+			// Form where criteria for country
+			// The same no matter which query used
+			$where_country=strlen($country)<1 ? "" : " AND country='$country' ";
+		}
+		
+		if ( isset($_GET['checklist']) ) {
+			$checklist = $_GET['checklist'];
+
+			// security
+			$checklist = mysqli_real_escape_string($link, $checklist);
+			$checklist = addcslashes($checklist, '%_');
+		
+			if ( $checklist=='true' ) {
+				$filter_by_checklist=true;
+			} elseif ( ! $checklist=='false' ) {			
+				echo ("<br />Error: invalid option parameter 'checklist', must be true or false<br />");		
+			}
+		}
+	}
+	
+	if ( $filter_by_checklist===false ) {
+		// Get list of political divisions with any information at all
+		// GQueries table distribution
+		$sql="
+		SELECT DISTINCT country, state_province, county_parish 
+		FROM distribution
+		WHERE 1 $where_country
+		ORDER BY country, state_province, county_parish 
+		;
+		";
+	} else {
+		// Get list of politcal divisions with comprehensive checklists only
+		// Queries table poldiv_source
+		
+		// Currently returns countries only
+		// Temporary solution until change table to support poldivs 
+		// at all levels
+		$sql="
+		SELECT poldiv_name AS country, '' AS state_province, '' AS county_parish 
+		FROM poldiv_source
+		WHERE 1 $where_country
+		ORDER BY country, state_province, county_parish 
+		;
+		";	
+	}
 } elseif ($do == "resolve") {
-	if( isset($_GET['country']) && isset($_GET['species'])) {
+	if ( isset($_GET['country']) && isset($_GET['species'])) {
 	
 		/* get the passed variable or set our own */
-		$format = strtolower($_GET['format']) == 'json' ? 'json' : 'xml'; //xml is the default
+
 		$species = $_GET['species'];
 		$country = $_GET['country'];
 		isset($_GET['stateprovince']) ? $stateprovince = $_GET['stateprovince'] : $stateprovince = "";
@@ -165,13 +221,13 @@ if ($do == "poldivs" ) {
 		AND $where_stateprovince
 		AND $where_countyparish
 		";
+		
 	} else {
-		echo "<strong>Required parameters species and/or country missing!</strong>";
+		echo "<strong>Parameters species and/or country missing!</strong>";
 	}
 }
 	
 //echo "<br />SQL:<br />$sql<br />";
-
 
 $result = mysqli_query($link,$sql) or die('Offending query:  '.$sql);
 
@@ -184,11 +240,10 @@ if(mysqli_num_rows($result)) {
 }
 
 // output in chosen format
-if($format == 'json') {
+if ($format == 'json') {
 	header('Content-type: application/json');
 	echo json_encode(array('nsr_results'=>$nsr_results));
-}
-else {
+} else {
 	header('Content-type: text/xml');
 	echo '<nsr_results>';
 	foreach($nsr_results as $index => $nsr_result) {

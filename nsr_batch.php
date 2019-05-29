@@ -158,10 +158,8 @@ $resultsfile = $data_dir.$resultsfilename;
 // replacing any existing values in cache
 if (array_key_exists('r', $options)) {
 	$r = $options["r"];
-	if ($r == 'replace' ) {
-		$replace_cache = 'replace';
-	} elseif ($r == 'delete' ) {
-		$replace_cache = 'delete';
+	if ($r == 'replace' || $r == 't' || $r == 'true' ) {
+		$replace_cache = true;
 	} elseif ($r == 'f' || $r == 'false' || $r == 'keep') {
 		$replace_cache = false;
 	} else {
@@ -213,19 +211,14 @@ include_once $batch_includes_dir."create_observation_raw.php";
 include_once $batch_includes_dir."import_raw_observations.php";
 
 // insert raw observations
-include_once $batch_includes_dir."insert_observations.php";					
+include_once $batch_includes_dir."insert_observations.php";		
 
 // perform any standardizations needed
 
-if ($replace_cache=='replace') {
+if ($replace_cache===true) {
 	// Remove cached observations for these species+poldiv combinations
 	if ($echo_on) echo "Removing previous observations from cache...";
 	include_once "remove_observations_from_cache.php";
-	if ($echo_on) echo $done;	
-} elseif ($replace_cache=='delete') {
-	// Remove cached observations for these species+poldiv combinations
-	if ($echo_on) echo "Deleting all observations from cache...";
-	include_once "clear_cache.php";
 	if ($echo_on) echo $done;	
 } else {
 	// Mark records already in cache

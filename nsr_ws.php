@@ -94,8 +94,11 @@ if ($do == "meta" ) {
 			$country = addcslashes($country, '%_');
 
 			// Form where criteria for country
-			// The same no matter which query used
-			$where_country=strlen($country)<1 ? "" : " AND country='$country' ";
+			if ( isset($_GET['checklist']) ) {
+				$where_country=strlen($country)<1 ? "" : " AND poldiv_name='$country' ";
+			} else {
+				$where_country=strlen($country)<1 ? "" : " AND country='$country' ";
+			}
 		}
 		
 		if ( isset($_GET['checklist']) ) {
@@ -115,7 +118,7 @@ if ($do == "meta" ) {
 	
 	if ( $filter_by_checklist===false ) {
 		// Get list of political divisions with any information at all
-		// GQueries table distribution
+		// Queries table distribution
 		$sql="
 		SELECT DISTINCT country, state_province, county_parish 
 		FROM distribution
@@ -131,10 +134,10 @@ if ($do == "meta" ) {
 		// Temporary solution until change table to support poldivs 
 		// at all levels
 		$sql="
-		SELECT poldiv_name AS country, NULL AS state_province, NULL AS county_parish 
+		SELECT DISTINCT poldiv_name AS country, NULL AS state_province, NULL AS county_parish 
 		FROM poldiv_source
 		WHERE 1 $where_country
-		ORDER BY country, state_province, county_parish 
+		ORDER BY poldiv_name, state_province, county_parish 
 		;
 		";	
 	}

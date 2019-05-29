@@ -222,8 +222,8 @@ if ($do == "meta" ) {
 		$sql = "
 		SELECT 
 		family,
-		IF(genus LIKE '%aceae',NULL,genus) AS genus,
-		IF(species NOT LIKE '% %',NULL,species) AS species,
+		IF(genus LIKE '%aceae','',genus) AS genus,
+		IF(species NOT LIKE '% %','',species) AS species,
 		country,
 		state_province,
 		county_parish,

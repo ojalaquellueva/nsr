@@ -223,6 +223,7 @@ if ($replace_cache===true) {
 } else {
 	// Mark records already in cache
 	if ($echo_on) echo "Marking observations already in cache...";
+	include_once "prepare_observations.php";
 	include_once "mark_observations.php";	
 	if ($echo_on) echo $done;	
 }

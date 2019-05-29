@@ -52,7 +52,7 @@ function load_tabbed_file($filepath, $load_keys=false) {
 // Receive & validate the POST request
 ///////////////////////////////////
 
-//Make sure that it is a POST request.
+//Make sure that request is a POST
 if (strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') != 0) {
     throw new Exception('Request method must be POST!');
 }
@@ -114,6 +114,11 @@ if ($status) die("ERROR: php_batch non-zero exit status");
 // Retrieve the tab-delimited results
 // file and convert to JSON
 ///////////////////////////////////
+
+/*
+header('Content-type: application/json');echo "\r\n\$data_dir_tmp: " . $data_dir_tmp . "\r\n\r\n";
+die();
+*/
 
 // Import the results file (tab-delimitted)
 $results_file = $data_dir_tmp . "/" . $results_filename;

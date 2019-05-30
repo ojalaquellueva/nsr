@@ -36,9 +36,7 @@ $BATCH_WHERE_NA = " 1 ";
 
 // Get db connection parameters (in ALL CAPS)
 include 'params.php';
-//echo "<br />Exiting @ params...<br />";  exit(); 
 include_once $CONFIG_DIR.'db_config.php';
-//echo "<br />Exiting @ db_config...<br />";  exit();	
 
 // Get type of request
 // Assume resolve if not set
@@ -86,21 +84,6 @@ if ($do == "meta" ) {
 			echo ("<br />Error loading character set utf8<br />");
 		}
 		
-		if ( isset($_GET['country']) ) {
-			$country = $_GET['country'];
-			
-			// Security
-			$country = mysqli_real_escape_string($link, $country);
-			$country = addcslashes($country, '%_');
-
-			// Form where criteria for country
-			if ( isset($_GET['checklist']) ) {
-				$where_country=strlen($country)<1 ? "" : " AND poldiv_name='$country' ";
-			} else {
-				$where_country=strlen($country)<1 ? "" : " AND country='$country' ";
-			}
-		}
-		
 		if ( isset($_GET['checklist']) ) {
 			$checklist = $_GET['checklist'];
 
@@ -112,6 +95,21 @@ if ($do == "meta" ) {
 				$filter_by_checklist=true;
 			} elseif ( ! $checklist=='false' ) {			
 				echo ("<br />Error: invalid option parameter 'checklist', must be true or false<br />");		
+			}
+		}
+
+		if ( isset($_GET['country']) ) {
+			$country = $_GET['country'];
+			
+			// Security
+			$country = mysqli_real_escape_string($link, $country);
+			$country = addcslashes($country, '%_');
+
+			// Form where criteria for country
+			if ( $filter_by_checklist===true ) {
+				$where_country=strlen($country)<1 ? "" : " AND poldiv_name='$country' ";
+			} else {
+				$where_country=strlen($country)<1 ? "" : " AND country='$country' ";
 			}
 		}
 	}

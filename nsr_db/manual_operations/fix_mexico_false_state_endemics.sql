@@ -1,5 +1,6 @@
 -- ------------------------------------------------------------------------
 -- Fix false state endemics in Mexico list in production database
+-- 2019-05-29
 -- -------------------------------------------------------------------------
 
 USE nsr;
@@ -42,7 +43,7 @@ SET native_status_bak=native_status
 -- Update the new column
 UPDATE distribution a JOIN 
 (
-SELECT DISTINCT state_end.taxon, state_end.country
+SELECT DISTINCT state_end.taxon, state_end.country, state_end.state_province
 FROM 
 (
 SELECT DISTINCT taxon, country, state_province FROM distribution where source_id=7 AND native_status='endemic' AND state_province IS NOT NULL
@@ -60,7 +61,7 @@ WHERE a.source_id=7
 ;
 
 -- Index it
-ALTER distribution
+ALTER TABLE distribution
 ADD INDEX (native_status_new);
 
 -- Inspect before updating
@@ -68,6 +69,14 @@ SELECT source_id, taxon, country, state_province, native_status, native_status_n
 FROM distribution
 WHERE source_id=7 AND native_status='endemic'
 ORDER BY taxon, country, state_province 
+;
+
+-- compare to:
+SELECT source_id, taxon, country, state_province, native_status, native_status_new 
+FROM distribution
+WHERE native_status_new IS NOT NULL
+ORDER BY taxon, country, state_province 
+;
 
 -- Make the final update
 UPDATE distribution
@@ -76,5 +85,7 @@ WHERE native_status_new IS NOT NULL
 ;
 
 -- Remove temporary column
-
+ALTER TABLE distribution
+DROP native_status_new, DROP native_status_bak
+;
 

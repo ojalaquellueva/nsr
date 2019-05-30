@@ -46,6 +46,34 @@ WHERE country IN ($cclist_countries_inlist)
 sql_execute_multiple($dbh, $sql);
 echo $done;
 
+if (isset($cclist_states_from_country)) {
+	echo "  Loading comprehensive state checklists...";
+	
+	if ($cclist_states_from_country===true) {
+		// Extract comprehensive state checklists from country
+		$sql="
+		INSERT INTO poldiv_source_staging (
+		poldiv_id, 
+		poldiv_type, 
+		source_name, 
+		checklist_type,
+		checklist_details
+		)
+		SELECT DISTINCT
+		state_province_id, 
+		'state_province', 
+		'$src', 
+		'comprehensive',
+		'$source_name_full'
+		FROM state_province
+		WHERE country IN ($cclist_countries_inlist)
+		;
+		";
+		sql_execute_multiple($dbh, $sql);
+		echo $done;
+	}
+}
+
 /* Omit other lists for now. 
 // Fragile code will take too long to fix
 // Changes needed to activate: 

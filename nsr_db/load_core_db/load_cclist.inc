@@ -2,7 +2,7 @@
 
 echo "  Loading metadata on comprehensive checklists...";
 
-// Process each region, inserting only absences
+// country
 $sql="
 INSERT INTO cclist (
 country
@@ -16,6 +16,38 @@ AND a.checklist_type='comprehensive'
 ;
 ";
 sql_execute_multiple($dbh, $sql);	
+
+// state_province
+$sql="
+INSERT INTO cclist (
+country, state_province
+)
+SELECT DISTINCT
+country, state_province
+FROM poldiv_source_staging a JOIN state_province b
+ON a.poldiv_id=b.state_province_id
+WHERE a.poldiv_type='state_province'
+AND a.checklist_type='comprehensive'
+;
+";
+sql_execute_multiple($dbh, $sql);	
+
+/* Not yet supported
+// county/parish
+$sql="
+INSERT INTO cclist (
+country, state_province, county_parish
+)
+SELECT DISTINCT
+country, state_province, county_parish
+FROM poldiv_source_staging a JOIN , county_parish b
+ON a.poldiv_id=b., county_parish_id
+WHERE a.poldiv_type=', county_parish'
+AND a.checklist_type='comprehensive'
+;
+";
+sql_execute_multiple($dbh, $sql);
+*/	
 
 $sql="
 DROP TABLE IF EXISTS cclist_temp;

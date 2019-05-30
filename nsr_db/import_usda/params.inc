@@ -51,6 +51,11 @@ $cclist_countries="
 'Puerto Rico'
 ";
 
+// Set true if country checklist also contains comprehensive
+// state checklists, else false. If true will cause all states to
+// be loaded to cclist under this source.
+$cclist_states_from_country=true;
+
 // Regional scope (political division level) of this source. For comprehensive sources, 
 // lower political divisions will also be treated as comprehensive, but but higher 
 // political divisions will not. For example, for a comprehensive checklist at the 

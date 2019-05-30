@@ -221,17 +221,17 @@ if ($do == "meta" ) {
 		// form the sql	
 		$sql = "
 		SELECT 
-		family,
-		IF(genus LIKE '%aceae','',genus) AS genus,
-		IF(species NOT LIKE '% %','',species) AS species,
+		IFNULL(family,'') AS family,
+		IFNULL(IF(genus LIKE '%aceae','',genus),'') AS genus,
+		IFNULL(IF(species NOT LIKE '% %','',species),'') AS species,
 		country,
 		IFNULL(state_province,'') AS state_province,
 		IFNULL(county_parish,'') AS county_parish,
-		native_status,
-		native_status_reason,
-		native_status_sources,
-		isIntroduced,
-		isCultivatedNSR AS isCultivated
+		IFNULL(native_status,'') AS native_status,
+		IFNULL(native_status_reason,'') AS native_status_reason,
+		IFNULL(native_status_sources,'') AS native_status_sources,
+		IFNULL(isIntroduced,'') AS isIntroduced,
+		IFNULL(isCultivatedNSR,'') AS isCultivated
 		FROM cache
 		WHERE species='$species'
 		AND country='$country'

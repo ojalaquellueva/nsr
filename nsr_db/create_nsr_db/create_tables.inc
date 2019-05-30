@@ -2,6 +2,17 @@
 
 echo "Creating tables...";
 $sql="
+DROP TABLE IF EXISTS nsr_metadata;
+CREATE TABLE nsr_metadata (
+nsr_metadata_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT, 
+db_version VARCHAR(50) DEFAULT NULL,
+code_version VARCHAR(50) DEFAULT NULL,
+date_added timestamp,
+date_retired datetime,
+PRIMARY KEY (nsr_metadata_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
+;
+
 DROP TABLE IF EXISTS source;
 CREATE TABLE source (
 source_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT, 

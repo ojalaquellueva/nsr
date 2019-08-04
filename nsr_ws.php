@@ -75,7 +75,8 @@ if ($do == "meta" ) {
 } elseif ($do == "poldivs" ) {
 	// Defaults
 	$filter_by_checklist=false;
-	$where_country="";
+	//$where_country="";
+	$where_country_poldivs="";
 
 	// Get optional parameters, if any
 	if ( isset($_GET['country']) || isset($_GET['checklist']) ) {
@@ -134,11 +135,12 @@ if ($do == "meta" ) {
 		$sql="
 		SELECT DISTINCT country, state_province, county_parish 
 		FROM cclist
-		WHERE 1 $where_country_poldivs
+		WHERE 1 $where_country_poldivs 
 		ORDER BY country, state_province, county_parish 
 		;
 		";	
 	}
+	
 } elseif ($do == "resolve") {
 	if ( isset($_GET['country']) && isset($_GET['species'])) {
 	
@@ -205,8 +207,6 @@ if ($do == "meta" ) {
 		$result = mysqli_query($link,$sql) or die('Offending query:  '.$sql);	
 		if (mysqli_num_rows($result)) {
 			include_once "nsr.php";	
-		} else {
-			//echo "<br />All observations already in cache...<br />";
 		}
 	
 		

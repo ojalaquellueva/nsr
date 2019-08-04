@@ -106,11 +106,8 @@ if ($do == "meta" ) {
 			$country = addcslashes($country, '%_');
 
 			// Form where criteria for country
-			if ( $filter_by_checklist===true ) {
-				$where_country=strlen($country)<1 ? "" : " AND poldiv_name='$country' ";
-			} else {
-				$where_country=strlen($country)<1 ? "" : " AND country='$country' ";
-			}
+			$where_country_checklist=strlen($country)<1 ? "" : " AND poldiv_name='$country' ";
+			$where_country_poldivs=strlen($country)<1 ? "" : " AND country='$country' ";
 		}
 	}
 	
@@ -120,7 +117,7 @@ if ($do == "meta" ) {
 		$sql="
 		SELECT DISTINCT country, state_province, county_parish 
 		FROM distribution
-		WHERE 1 $where_country
+		WHERE 1 $where_country_poldivs
 		ORDER BY country, state_province, county_parish 
 		;
 		";
@@ -131,11 +128,14 @@ if ($do == "meta" ) {
 		// Currently returns countries only
 		// Temporary solution until change table to support poldivs 
 		// at all levels
+		// Note that $where_country_checklist not currently used;
+		// need to restructure table poldiv_source before making
+		// this change
 		$sql="
-		SELECT DISTINCT poldiv_name AS country, NULL AS state_province, NULL AS county_parish 
-		FROM poldiv_source
-		WHERE 1 $where_country
-		ORDER BY poldiv_name, state_province, county_parish 
+		SELECT DISTINCT country, state_province, county_parish 
+		FROM cclist
+		WHERE 1 $where_country_poldivs
+		ORDER BY country, state_province, county_parish 
 		;
 		";	
 	}

@@ -64,6 +64,7 @@ $shortopts .= "r::"; 	// Replace cache?
 $options = getopt($shortopts);
 
 // Command line echo
+$e=true;
 $echo_on = true;
 if (array_key_exists('e', $options)) {
 	$e = $options["e"];

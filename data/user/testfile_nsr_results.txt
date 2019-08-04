@@ -1,12 +1,12 @@
-id	job	family	genus	species	country	state_province	state_province_full	county_parish	county_parish_full	poldiv_full	poldiv_type	native_status_country	native_status_state_province	native_status_county_parish	native_status	native_status_reason	native_status_sources	isIntroduced	isCultivatedNSR	is_cultivated_taxon	user_id
-32	2019-05-28-17:08:02:0.84305800			Pinus ponderosa	United States	Arizona	United States:Arizona	Pima	United States:Arizona:Pima	United States:Arizona:Pima	county_parish	P	P		P	Present in one or more checklists for region, status not indicated	usda	0	0	0	0
-33	2019-05-28-17:08:02:0.84305800			Sphaeralcea ambigua var. rosacea	United States	Arizona	United States:Arizona			United States:Arizona	state_province	A			A	Absent from all checklists for region	usda	1	0	0	0
-34	2019-05-28-17:08:02:0.84305800			Umbellularia californica	United States					United States	country	Ie			Ie	Introduced, species endemic to other region	mexico	1	0	0	0
-35	2019-05-28-17:08:02:0.84305800			Umbellularia californica	United States	California	United States:California			United States:California	state_province	Ie	Ie		Ie	Introduced, species endemic to other region	mexico	1	0	0	0
-36	2019-05-28-17:08:02:0.84305800			Umbellularia californica	United States	Florida	United States:Florida			United States:Florida	state_province	Ie	Ie		Ie	Introduced, species endemic to other region	mexico	1	0	0	0
-37	2019-05-28-17:08:02:0.84305800			Nepenthaceae	United States	Florida	United States:Florida			United States:Florida	state_province	A			A	Absent from all checklists for region	usda	1	0	0	0
-38	2019-05-28-17:08:02:0.84305800			Stenocereus thurberi	Mexico	Sonora	Mexico:Sonora	Aconchi	Mexico:Sonora:Aconchi	Mexico:Sonora:Aconchi	county_parish	N	N		N	Native to region, as per checklist	mexico	0	0	0	0
-39	2019-05-28-17:08:02:0.84305800			Stenocereus thurberi	France					France	country				UNK	Status unknown, no checklists for region of observation			0	0	0
-40	2019-05-28-17:08:02:0.84305800			Eucalyptus	Peru					Peru	country	I			I	Introduced to region, as per checklist	enquist	1	0	0	0
-41	2019-05-28-17:08:02:0.84305800			Eucalyptus	Australia					Australia	country	Ne			Ne	Endemic to region, as per checklist	enquist	0	0	0	0
-42	2019-05-28-17:08:02:0.84305800			Eucalyptus	France					France	country	Ie			Ie	Introduced, species endemic to other region	enquist	1	0	0	0
+id	family	genus	species	country	state_province	county_parish	poldiv_full	poldiv_type	native_status_country	native_status_state_province	native_status_county_parish	native_status	native_status_reason	native_status_sources	isIntroduced	isCultivatedNSR	is_cultivated_taxon	user_id
+1245	Pinaceae	Pinus	Pinus ponderosa	United States	Arizona	Pima	United States:Arizona:Pima	county_parish	P	P		P	Present in one or more checklists for region, status not indicated	usda	0	0	0	0
+1246		Stenocerus	Stenocerus thurberi	United States	Arizona		United States:Arizona	state_province	A	A		A	Absent from all checklists for region	usda	1	0	0	0
+1247	Lauraceae	Umbellularia	Umbellularia californica	United States			United States	country	P			P	Present in one or more checklists for region, status not indicated	usda	0	0	0	0
+1248	Lauraceae	Umbellularia	Umbellularia californica	United States	California		United States:California	state_province	N	N		N	Native to region		0	0	0	0
+1249	Lauraceae	Umbellularia	Umbellularia californica	United States	Florida		United States:Florida	state_province	P	A		A	Absent from all checklists for region	usda	1	0	0	0
+1250	Pittosporaceae	Pittosporum		United States	Florida		United States:Florida	state_province	I	I		I	Introduced to region, as per checklist	enquist	1	0	0	0
+1251	Pinaceae	Pinus	Pinus patula	Mexico	Tamaulipas		Mexico:Tamaulipas	state_province	N	N		N	Native to region, as per checklist	mexico	0	0	0	0
+1252	Pinaceae	Pinus	Pinus patula	France			France	country				UNK	Status unknown, no checklists for region of observation			0	0	0
+1253	Myrtaceae	Eucalyptus		Peru			Peru	country	I			I	Introduced to region, as per checklist	enquist	1	0	0	0
+1254	Myrtaceae	Eucalyptus		Australia			Australia	country	Ne			Ne	Endemic to region, as per checklist	enquist	0	0	0	0
+1255	Myrtaceae	Eucalyptus		France			France	country	Ie			Ie	Introduced, species endemic to other region	enquist	1	0	0	

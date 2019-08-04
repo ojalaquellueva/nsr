@@ -14,6 +14,7 @@ country, state_province, county_parish
 SELECT DISTINCT country, state_province_std, NULL
 FROM state_province
 WHERE country IN (
+'Canada',
 'United States',
 'Mexico',
 'Brazil',
@@ -44,6 +45,7 @@ b.checklist_details
 FROM state_province a JOIN poldiv_source b
 ON a.country=b.poldiv_name
 WHERE a.country IN (
+'Canada',
 'United States',
 'Mexico',
 'Brazil',

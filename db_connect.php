@@ -18,4 +18,7 @@ mysqli_options($dbh, MYSQLI_OPT_LOCAL_INFILE, true);
 mysqli_real_connect($dbh, $HOST, $USERW, $PWDW, $DB);
 
 
+// Check required functions present and create them if not
+include_once "check_functions.php";
+
 ?>

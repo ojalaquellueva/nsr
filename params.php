@@ -4,7 +4,11 @@
 // Include paths and filenames
 //////////////////////////////////////////////////
 
-$BASE_DIR = "/home/boyle/nsr/";
+// $BASE_DIR is server specific and therefore kept in 
+// server_config.php in parent directory, outside repo
+//$BASE_DIR = "/home/boyle/nsr/";
+include "../server_config.php";
+
 $APP_DIR = $BASE_DIR."repo/";
 
 // dir where db user & pwd file kept

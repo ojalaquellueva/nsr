@@ -1,12 +1,12 @@
 id	family	genus	species	country	state_province	county_parish	poldiv_full	poldiv_type	native_status_country	native_status_state_province	native_status_county_parish	native_status	native_status_reason	native_status_sources	isIntroduced	isCultivatedNSR	is_cultivated_taxon	user_id
-1290	Pinaceae	Pinus	Pinus ponderosa	United States	Arizona	Pima	United States:Arizona:Pima	county_parish	N	N		N	Native to region		0	0	0	0
-1291	Cactaceae	Stenocereus	Stenocereus thurberi	United States	Arizona		United States:Arizona	state_province	N	N		N	Native to region		0	0	0	0
-1292	Lauraceae	Umbellularia	Umbellularia californica	United States			United States	country	N			N	Native to region		0	0	0	0
-1293	Lauraceae	Umbellularia	Umbellularia californica	United States	California		United States:California	state_province	N	N		N	Native to region		0	0	0	0
-1294	Lauraceae	Umbellularia	Umbellularia californica	United States	Florida		United States:Florida	state_province	N	A		A	Absent from all checklists for region	usda	1	0	0	0
-1295	Pittosporaceae	Pittosporum		United States	Florida		United States:Florida	state_province	I	I		I	Introduced to region, as per checklist	enquist	1	0	0	0
-1296	Pinaceae	Pinus	Pinus patula	Mexico	Tamaulipas		Mexico:Tamaulipas	state_province	N	N		N	Native to region, as per checklist	mexico	0	0	0	0
-1297	Pinaceae	Pinus	Pinus patula	France			France	country				UNK	Status unknown, no checklists for region of observation			0	0	0
-1298	Myrtaceae	Eucalyptus		Peru			Peru	country	I			I	Introduced to region, as per checklist	enquist	1	0	0	0
-1299	Myrtaceae	Eucalyptus		Australia			Australia	country	Ne			Ne	Endemic to region, as per checklist	enquist	0	0	0	0
-1300	Myrtaceae	Eucalyptus		France			France	country	Ie			Ie	Introduced, species endemic to other region	enquist	1	0	0	
+2	Pinaceae	Pinus	Pinus ponderosa	United States	Arizona	Pima	United States:Arizona:Pima	county_parish	N	N		N	Native to region		0	0	0	0
+3	Cactaceae	Stenocereus	Stenocereus thurberi	United States	Arizona		United States:Arizona	state_province	N	N		N	Native to region		0	0	0	0
+4	Lauraceae	Umbellularia	Umbellularia californica	United States			United States	country	N			N	Native to region		0	0	0	0
+5	Lauraceae	Umbellularia	Umbellularia californica	United States	California		United States:California	state_province	N	N		N	Native to region		0	0	0	0
+6	Lauraceae	Umbellularia	Umbellularia californica	United States	Florida		United States:Florida	state_province	N	A		A	Absent from all checklists for region	usda	1	0	0	0
+7	Pittosporaceae	Pittosporum		United States	Florida		United States:Florida	state_province	I	I		I	Introduced to region, as per checklist	enquist	1	0	0	0
+8	Pinaceae	Pinus	Pinus patula	Mexico	Tamaulipas		Mexico:Tamaulipas	state_province	N	N		N	Native to region, as per checklist	mexico	0	0	0	0
+9	Pinaceae	Pinus	Pinus patula	France			France	country				UNK	Status unknown, no checklists for region of observation			0	0	0
+10	Myrtaceae	Eucalyptus		Peru			Peru	country	I			I	Introduced to region, as per checklist	enquist	1	0	0	0
+11	Myrtaceae	Eucalyptus		Australia			Australia	country	Ne			Ne	Endemic to region, as per checklist	enquist	0	0	0	0
+12	Myrtaceae	Eucalyptus		France			France	country	Ie			Ie	Introduced, species endemic to other region	enquist	1	0	0	

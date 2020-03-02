@@ -105,13 +105,10 @@ git clone --recursive https://github.com/ojalaquellueva/nsr.git
 3. Copy write-access database config file (`db_configw-example.php`) as `db_configw.php` to location outside public_html and set the parameters.
 4. Rename parameters file `params.example.php` to `params.php` and set parameters.
 5. Adjust file system permissions as per your server settings.
-6. The following files, directories and their contents are not used by web service and may be removed:
+6. The following subdirectory and its contents are not used by the web service and may be removed:
 
 ```
-rm -rf nsr_batch_includes/
 rm -rf nsr_db/
-rm db_batch_connect.php
-rm nsr_batch.php
 ```
 
 ## <a name="Usage"></a>Usage

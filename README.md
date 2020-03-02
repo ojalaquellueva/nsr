@@ -29,36 +29,36 @@ The NSR uses a similar hierarchical approach for political divisions, transferri
 
 ## <a name="Data"></a>Data sources & database
 
-The majority of the checklists consulted by the NSR are high-quality published species lists prepared by professional taxonomists as part of floras or other floristic projects. These checklists are imported and compiled within a PostgreSQL database. Assembly of the NSR database is performed by a separate pipeline of PHP and SQL scripts in subdirectory nsr_db/. See the separate README in this directory for more details.
+The majority of the checklists consulted by the NSR are high-quality published species lists prepared by professional taxonomists as part of floras or other floristic projects. These checklists are imported and compiled within a PostgreSQL database. Assembly of the NSR database is performed by a separate pipeline of PHP and SQL scripts in subdirectory `nsr_db/`. See the separate README in this directory for more details.
 
 ## <a name="Components"></a>Components
 
-#### nsr_db/nsr_db.php  
+#### `nsr_db/nsr_db.php  `
 - Builds & populates MySQL database used by all NSR services
 - Reference data not included 
-- See separate README in nsr_db/ for details 
+- See separate README in `nsr_db/` for details 
 
-#### nsr.php   
+#### `nsr.php` 
 - Core application, evaluates table of observations against reference tables and populates native status opinion columns.  
-- Called by nsr_batch.php and nsr_ws.php  
+- Called by `nsr_batch.php` and `nsr_ws.php`  
 
-#### nsr_batch.php    
+#### `nsr_batch.php`    
 - NSR batch processing application  
-- Calls nsr.php  
+- Calls `nsr.php`  
 - Processes multiple observations at once  
 - Uploads observations as CSV file from data directory 
 - Exports NSR results as TAB delimited file to data directory  
 - Requires shell access to this server  
 
-#### nsr_ws.php   
+#### `nsr_ws.php`   
 - Simple NSR web service
 - Processes on observation per call  
 - Calls nsr.php
 
 ## <a name="Software"></a>Software requirements
-* OS: Runs on a unix or unix-like environment
+* OS: Runs in unix. Current development environment: Ubuntu 18.04.
 * MySQL 5.5 or greater
-* PHP 7.0 or greater (may work on earlier versions, but not tested)
+* PHP 7.0 or greater
   * To allow use of LOCAL keyword when importing   files to database, make sure the following line in php.ini is uncommented:  
   
     	```
@@ -71,7 +71,7 @@ The majority of the checklists consulted by the NSR are high-quality published s
 The following steps assume two installations: one in public_html for the web service, and a second installation elsewhere in the file system for creating the database and running the batch applications. Other configurations may be used as well.
 
 ### <a name="Core"></a>Database and batch application
-1. Clone this repository to location of choice, using recursive option to include submodules:
+1. Clone this repository to location of choice, using recursive option to include required submodules:
 
 ```
 git clone --recursive https://github.com/ojalaquellueva/nsr.git
@@ -79,10 +79,10 @@ git clone --recursive https://github.com/ojalaquellueva/nsr.git
 2. Set up MySQL database
    * Create empty NSR database.
    * Create admin-level and select-only NSR database users, using user names and passwords of your choice.
-3. Copy read-only database config file (db_config-example.php) as db_config.php to location outside the application directory and set the parameters.
-4. Copy write-access database config file (db_configw-example.php) as db_configw.php to location outside the application directory and set the parameters.
-5. Copy or rename example parameters file (params.example.php) to params.php to same location (inside the main application directory) and set the parameters.
-6. Prepare NSR database checklist data sources and set database parameters as described in nsr_db/README.md
+3. Copy read-only database config file (`db_config-example.php`) as `db_config.php` to location outside the application directory and set the parameters.
+4. Copy write-access database config file (`db_configw-example.php`) as `db_configw.php` to location outside the application directory and set the parameters.
+5. Rename example parameters file `params.example.php` to `params.php` and set parameters.
+6. Prepare NSR database checklist data sources and set database parameters as described in `nsr_db/README.md`
 7. Build NSR database
 8. The following file is used only by the web service and may be removed:
 
@@ -101,11 +101,11 @@ The following instructions assume:
 ```
 git clone --recursive https://github.com/ojalaquellueva/nsr.git
 ```
-2. Copy read-only database config file (db_config-example.php) as db_config.php to location outside public_html and set the parameters.
-3. Copy write-access database config file (db_configw-example.php) as db_configw.php to location outside public_html and set the parameters.
-4. Copy or rename parameters file (params.example.php) to params.php and set the parameters.
+2. Copy read-only database config file (`db_config-example.php`) as `db_config.php` to location outside public_html and set the parameters.
+3. Copy write-access database config file (`db_configw-example.php`) as `db_configw.php` to location outside public_html and set the parameters.
+4. Rename parameters file `params.example.php` to `params.php` and set parameters.
 5. Adjust file system permissions as per your server settings.
-6. The following files, directories and their contents are not used by web service and should be removed:
+6. The following files, directories and their contents are not used by web service and may be removed:
 
 ```
 rm -rf nsr_batch_includes/
@@ -125,7 +125,7 @@ php nsr_db.php
 
 ```
 
-See separate README in nsr_db/ for details.
+See separate README in `nsr_db/` for details.
 
 ### <a name="Batch"></a>Batch application
 

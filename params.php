@@ -17,7 +17,7 @@ $CONFIG_DIR = $BASE_DIR."config/";
 
 // Input & output data directory
 $DATADIR = $BASE_DIR."data/user/";
-$DATADIR = $APP_DIR."data/user/";
+//$DATADIR = $APP_DIR."data/user/";
 
 // Path and name of log file
 $LOGFILE_NAME = "log.txt";

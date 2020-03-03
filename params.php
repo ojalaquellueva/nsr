@@ -7,13 +7,13 @@
 // $BASE_DIR is server specific and therefore kept in 
 // server_config.php in parent directory, outside repo
 //$BASE_DIR = "/home/boyle/nsr/";
-include "../server_config.php";
+include "../config/server_config.php";
 
 $APP_DIR = $BASE_DIR."repo/";
 
 // dir where db user & pwd file kept
 // Should be outside application directory and html directory
-$CONFIG_DIR = $BASE_DIR; 
+$CONFIG_DIR = $BASE_DIR."config/"; 
 
 // Input & output data directory
 $DATADIR = $BASE_DIR."data/user/";

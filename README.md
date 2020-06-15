@@ -33,18 +33,18 @@ The majority of the checklists consulted by the NSR are high-quality published s
 
 ## <a name="Components"></a>Components
 
-#### `nsr_db/nsr_db.php  `
+#### `nsr_db/nsr_db.php`  
 - Builds & populates MySQL database used by all NSR services
 - Reference data not included 
-- See separate README in `nsr_db/` for details 
+- See separate README in nsr_db/ for details 
 
-#### `nsr.php` 
+#### `nsr.php`   
 - Core application, evaluates table of observations against reference tables and populates native status opinion columns.  
-- Called by `nsr_batch.php` and `nsr_ws.php`  
+- Called by nsr_batch.php and nsr_ws.php  
 
 #### `nsr_batch.php`    
 - NSR batch processing application  
-- Calls `nsr.php`  
+- Calls nsr.php  
 - Processes multiple observations at once  
 - Uploads observations as CSV file from data directory 
 - Exports NSR results as TAB delimited file to data directory  
@@ -56,33 +56,28 @@ The majority of the checklists consulted by the NSR are high-quality published s
 - Calls nsr.php
 
 ## <a name="Software"></a>Software requirements
-* OS: Runs in unix. Current development environment: Ubuntu 18.04.
+* OS: Runs on a unix or unix-like environment
+* PHP 7.0 or greater (may work on earlier versions, but not tested)
 * MySQL 5.5 or greater
-* PHP 7.0 or greater
-  * To allow use of LOCAL keyword when importing   files to database, make sure the following line in php.ini is uncommented:  
-  
-    	```
-    	mysqli.allow_local_infile = On
-    	```
-    
 
 ## <a name="Installation"></a>Installation & setup
 
 The following steps assume two installations: one in public_html for the web service, and a second installation elsewhere in the file system for creating the database and running the batch applications. Other configurations may be used as well.
 
 ### <a name="Core"></a>Database and batch application
-1. Clone this repository to location of choice, using recursive option to include required submodules:
+1. Clone this repository to location of choice, using recursive option to include submodules:
 
 ```
 git clone --recursive https://github.com/ojalaquellueva/nsr.git
 ```
+
 2. Set up MySQL database
    * Create empty NSR database.
    * Create admin-level and select-only NSR database users, using user names and passwords of your choice.
-3. Copy read-only database config file (`db_config-example.php`) as `db_config.php` to location outside the application directory and set the parameters.
-4. Copy write-access database config file (`db_configw-example.php`) as `db_configw.php` to location outside the application directory and set the parameters.
-5. Rename example parameters file `params.example.php` to `params.php` and set parameters.
-6. Prepare NSR database checklist data sources and set database parameters as described in `nsr_db/README.md`
+3. Copy read-only database config file (db_config-example.php) as db_config.php to location outside the application directory and set the parameters.
+4. Copy write-access database config file (db_configw-example.php) as db_configw.php to location outside the application directory and set the parameters.
+5. Copy or rename example parameters file (params.example.php) to params.php to same location (inside the main application directory) and set the parameters.
+6. Prepare NSR database checklist data sources and set database parameters as described in nsr_db/README.md
 7. Build NSR database
 8. The following file is used only by the web service and may be removed:
 
@@ -101,14 +96,18 @@ The following instructions assume:
 ```
 git clone --recursive https://github.com/ojalaquellueva/nsr.git
 ```
-2. Copy read-only database config file (`db_config-example.php`) as `db_config.php` to location outside public_html and set the parameters.
-3. Copy write-access database config file (`db_configw-example.php`) as `db_configw.php` to location outside public_html and set the parameters.
-4. Rename parameters file `params.example.php` to `params.php` and set parameters.
+
+2. Copy read-only database config file (db_config-example.php) as db_config.php to location outside public_html and set the parameters.
+3. Copy write-access database config file (db_configw-example.php) as db_configw.php to location outside public_html and set the parameters.
+4. Copy or rename parameters file (params.example.php) to params.php and set the parameters.
 5. Adjust file system permissions as per your server settings.
-6. The following subdirectory and its contents are not used by the web service and may be removed:
+6. The following files, directories and their contents are not used by web service and should be removed:
 
 ```
+rm -rf nsr_batch_includes/
 rm -rf nsr_db/
+rm db_batch_connect.php
+rm nsr_batch.php
 ```
 
 ## <a name="Usage"></a>Usage
@@ -122,7 +121,7 @@ php nsr_db.php
 
 ```
 
-See separate README in `nsr_db/` for details.
+See separate README in nsr_db/ for details.
 
 ### <a name="Batch"></a>Batch application
 
@@ -140,33 +139,33 @@ Options (default in __bold__):
 -t: inputfile type [__csv__,tab]  
 -r: replace the cache [true,__false__]  
 
-Example: 
- 
+Example:  
+
 ```
 php nsr_batch.php -i=true -f='my_observations.txt' -l=unix -t=tab
-```
 
+```
 
 Notes:  
 * Use -r=false to retain all previously cached results. Option -r=true is used only when NSR reference database has changed and previous results may not be valid.  
 * When the NSR has finished running, results file will be saved to the NSR data directeory
 * Results file has same base name as input file, plus suffix "_nsr_results.txt" 
-* Results file is tab-delimitted, regardless of the format of the input file  
+* Results file is tab-delimitted, regardless of the format of the input file.  
 
-#### <a name='Input'>Batch input format</a>  
+#### <a name="Inupt"></a>Batch input format
 
 
 The NSR accepts as input a plain text file containing one or more observations of taxon in political division, formatted as follows (optional values in square brackets; if county_parish is included, state_province must be included as well):  
 
-taxon,country[,state_province[,county_parish]]  
-taxon,country[,state_province[,county_parish]]  
-taxon,country[,state_province[,county_parish]]  
+taxon,country[,state\_province[,county\_parish]]  
+taxon,country[,state\_province[,county\_parish]]  
+taxon,country[,state\_province[,county\_parish]]  
 
 Taxon names can be of any of the following ranks: family, genus, species, subspecies, variety, forma. Do not include author.
 
-Spellings of political division names in the NSR database are the plain ascii (unaccented) versions of English-language political division names in Geonames (www.geonames.org). Political division names in user input should therefore be standardized according to the same standard. 
+Spellings of political division names in the NSR database are the plain ascii (unaccented) versions of English-language political division names in Geonames (`www.geonames.org`). Political division names in user input should therefore be standardized according to the same standard. 
 
-#### <a name="Output">Batch output format</a>
+#### <a name="Output"></a>Batch output format
 
 The NSR batch application returns original rows and values as submitted, plus columns indicating whether taxon is native in each level of observation within the political division hierarchy, an overall assessment of native status within the lowest political division of observation, a short explanation of how the decision was reached, and a list of checklist sources consulted.   
 
@@ -182,24 +181,26 @@ The NSR batch application returns original rows and values as submitted, plus co
 | isIntroduced	| Simplified overall native status (1=introduced;  0=native; blank=status unknown)
 | isCultivatedNSR	| Species is known to be cultivated in declared region  (1=cultivated;  0=wild or status unknown)
 
-###  <a name="ws">Web service</a>
+###  <a name="ws"></a>Web service
 
 Syntax:  
+
 ```
 [base_url]/nsr/nsr_ws.php?species=[Genus]%20[specific_epithet]&country=[country]&stateprovince=[state_province]&countyparish=[county_parish]&format=[output_format]
 ```
 
-Example:
+Example: 
+
 ```
-http://bien.nceas.ucsb.edu/bien/apps/nsr/nsr_ws.php?species=Pinus%20ponderosa&country=United%20States&stateprovince=Arizona&countyparish=Pima&format=json
+https://bien.nceas.ucsb.edu/nsr/nsr_ws.php?species=Pinus%20ponderosa&country=United%20States&stateprovince=Arizona&countyparish=Pima&format=json
 ```
 
 Notes:  
-* Accepts one species + political_division_of_observation at a time
+* Accepts one species + political\_division\_of\_observation at a time
 * Parameters stateprovince, county parish and format are optional  
 * Output format: xml (default),  json   
 
-## <a name="Native">Native Status Codes</a>
+## <a name="Native"></a>Native Status Codes
 
 | Native status code	| Meaning 
 | --------- | -------------------

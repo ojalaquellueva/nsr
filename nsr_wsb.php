@@ -5,6 +5,13 @@
 // nsr_batch.php
 ////////////////////////////////////////////////////////
 
+
+// For testing
+$cmd='echo "$(whoami)"';
+exec($cmd, $output, $status);
+$whoami=$output[0];
+//die("whoami: '$whoami'");
+
 ///////////////////////////////////
 // Parameters
 ///////////////////////////////////
@@ -88,7 +95,7 @@ if (!is_array($input_array)) {
 // Make temporary data directory & file in /tmp 
 $cmd="mkdir -p $data_dir_tmp";
 exec($cmd, $output, $status);
-if ($status) die("ERROR: Unable to create temp data directory");
+if ($status) die("ERROR: Unable to create temp data directory (whoami='$whoami')");
 $file_tmp = $data_dir_tmp . "/" . $filename_tmp;
 
 // Convert array to CSV & save
@@ -108,7 +115,7 @@ fclose($fp);
 $data_dir_tmp_full = $data_dir_tmp . "/";
 $cmd="php nsr_batch.php -e=false -i=false -f='$filename_tmp' -d='$data_dir_tmp_full' -l=unix -t=csv -r=true";
 exec($cmd, $output, $status);
-if ($status) die("ERROR: php_batch non-zero exit status");
+if ($status) die("ERROR: nsr_wsb_batch non-zero exit status");
 
 ///////////////////////////////////
 // Retrieve the tab-delimited results

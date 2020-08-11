@@ -10,7 +10,8 @@
 /////////////////////
 
 // Path and name of file containing input names and political divisions
-$DATADIR = "/home/boyle/nsr/data/user/";
+#$DATADIR = "/home/boyle/nsr/data/user/";
+$DATADIR = "/var/www/data/user/";
 $inputfilename = "nsr_submitted_dev2.csv";
 $inputfilename = "testfile.csv";
 
@@ -23,7 +24,6 @@ $format="json";
 $lines = 100000;
 
 // api base url 
-$base_url = "http://bien.nceas.ucsb.edu/bien/apps/nsr/nsr_wsb.php";
 $base_url = "https://bien.nceas.ucsb.edu/nsr/nsr_wsb.php";
 
 /////////////////////

@@ -1,18 +1,9 @@
 <?php
 
-// Mode determines which database is used
-$MODE = "ws";
-
-/*
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-*/
-
 /* 
-Native Status Resolver (NSR)
+Native Status Resolver (NSR) Simple API
 
-A basic NSR webservice
+Simple web service layer for the NSR
 For each valid combination of species+country+state_province+county_parish
 Returns and evaluation of native status
 Return format is xml (default) or json
@@ -24,6 +15,15 @@ http://bien.nceas.ucsb.edu/bien/apps/nsr/nsr_ws.php?species=Pinus%20ponderosa&co
 stateprovince, countyparish and format are optional
 
 */ 
+
+// Mode determines which database is used
+$MODE = "ws";
+
+/*
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+*/
 
 $ws_includes_dir = "nsr_ws_includes";
 

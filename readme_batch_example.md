@@ -1,9 +1,9 @@
 # Example command for testing nsr_batch
 
-* Uses example names file "testfile.csv" in example data directory (data/user/)
+* Uses example names file "nsr_testfile.csv" in example data directory (data/user/)
 
 ``` 
-php nsr_batch.php -e=true -i=true -f="testfile.csv" -l=unix -t=csv -r=true
+php nsr_batch.php -e=true -i=true -f="nsr_testfile.csv" -l=unix -t=csv -r=true
 ```
 
 #### Options  

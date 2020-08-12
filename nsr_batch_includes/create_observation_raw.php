@@ -22,7 +22,6 @@ user_id INT(11) UNSIGNED DEFAULT NULL
 
 $sql="
 CREATE TABLE observation_raw (
-family VARCHAR(150) DEFAULT NULL,
 species VARCHAR(150) DEFAULT NULL,
 country VARCHAR(50) DEFAULT NULL,
 state_province VARCHAR(50) DEFAULT NULL,

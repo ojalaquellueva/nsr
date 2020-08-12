@@ -29,14 +29,9 @@ The NSR uses a similar hierarchical approach for political divisions, transferri
 
 ## <a name="Data"></a>Data sources & database
 
-The majority of the checklists consulted by the NSR are high-quality published species lists prepared by professional taxonomists as part of floras or other floristic projects. These checklists are imported and compiled within a PostgreSQL database. Assembly of the NSR database is performed by a separate pipeline of PHP and SQL scripts in subdirectory `nsr_db/`. See the separate README in this directory for more details.
+The majority of the checklists consulted by the NSR are high-quality published species lists prepared by professional taxonomists as part of floras or other floristic projects. These checklists are imported and compiled within a PostgreSQL database. Assembly of the NSR database is performed by a separate pipeline of PHP and SQL scripts. See respository `https://github.com/ojalaquellueva/nsr_db` for details.
 
 ## <a name="Components"></a>Components
-
-#### `nsr_db/nsr_db.php`  
-- Builds & populates MySQL database used by all NSR services
-- Reference data not included 
-- See separate README in nsr_db/ for details 
 
 #### `nsr.php`   
 - Core application, evaluates table of observations against reference tables and populates native status opinion columns.  
@@ -59,6 +54,7 @@ The majority of the checklists consulted by the NSR are high-quality published s
 * OS: Runs on a unix or unix-like environment
 * PHP 7.0 or greater (may work on earlier versions, but not tested)
 * MySQL 5.5 or greater
+* Fully populated NSR MySQL database, with read-only user (see separate repository `https://github.com/ojalaquellueva/nsr_db` for details).
 
 ## <a name="Installation"></a>Installation & setup
 
@@ -114,14 +110,7 @@ rm nsr_batch.php
 
 ### <a name="DB"></a>Build NSR database
 
-Syntax:  
-
-```
-php nsr_db.php
-
-```
-
-See separate README in nsr_db/ for details.
+See separate repository `https://github.com/ojalaquellueva/nsr_db` for details.
 
 ### <a name="Batch"></a>Batch application
 
@@ -131,13 +120,17 @@ Syntax:
 php nsr_batch.php -e=<echo> -i=<interactive_mode_on> -f=<inputfile> -l=<line_endings> -t=<inputfile_type> -r=<replace_cache>
 ```
 
-Options (default in __bold__):  
--e: terminal echo on [__true__,false]  
--i: interactive mode [true,__false__]  
--f: input file name ['__nsr_input.csv__']  
--l: line-endings [unix,__mac__,win]  
--t: inputfile type [__csv__,tab]  
--r: replace the cache [true,__false__]  
+#### Options  
+* Default values in **bold** 
+
+| Option	| Meaning | Values
+| --------- | ------------------- | --------------------
+| -e | terminal echo on | __true__,false
+| -i | interactive mode | true,__false__ 
+| -f | input file name |  
+| -l | line-endings | unix,__mac__,win
+| -t | inputfile type | __csv__,tab
+| -r | replace the cache | true,__false__  
 
 Example:  
 

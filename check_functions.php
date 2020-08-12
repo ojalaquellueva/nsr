@@ -28,7 +28,7 @@ if(!$strSplitExists) {
 		RETURN replace(SUBSTRING(SUBSTRING_INDEX(str, delim, tokenNo), LENGTH(SUBSTRING_INDEX(str, delim, tokenNo - 1)) + 1), delim, '');
 	";
 	$exec_query=mysqli_query($dbh, $sql);
-	$msg_error="Failed to install function 'strSplit'!\r\n" . mysql_error($dbh) . "\r\n";
+	$msg_error="Failed to install function 'strSplit'!\r\n" . mysqli_error($dbh) . "\r\n";
 	if (!$exec_query) die($msg_error);
 	echo "done\r\n";
 }

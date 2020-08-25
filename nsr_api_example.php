@@ -10,12 +10,8 @@
 /////////////////////
 
 // Path and name of file containing input names and political divisions
-$DATADIR = "/home/boyle/nsr/src/data/user/";
+$DATADIR = "data/user/";
 $inputfilename = "nsr_testfile.csv";
-
-// Desired response format, json or xml
-// NOT USED YET
-$format="json";
 
 // Number of lines to import
 // Start with a very small number for testing
@@ -23,7 +19,7 @@ $format="json";
 $lines = 1000;
 
 // api base url 
-$base_url = "http://bien.nceas.ucsb.edu/bien/apps/nsr/nsr_wsb.php";
+$base_url = "https://bien.nceas.ucsb.edu/nsr/nsr_wsb.php";
 
 /////////////////////
 // Functions
@@ -57,10 +53,6 @@ function csvtoarray($file,$delimiter,$lines) {
 /////////////////////
 // Main
 /////////////////////
-
-// Turn the format parameter into an array
-// NOT USED YET
-$format_array = array("format"=>"$format");
 
 // Import the csv data as an array
 $inputfile = $DATADIR.$inputfilename;
@@ -105,23 +97,20 @@ if ( $status != 201 && $status != 200 ) {
 // Close curl
 curl_close($ch);
 
-//$result_json = var_dump($response);
 $results_json = $response;
 $results = json_decode($results_json, true);
 
 // Echo the response content
 echo "JSON response:\r\n";
-//var_dump($response);
 echo $results_json;
 echo "\r\n\r\n";
 
 echo "Response as CSV (selected fields only):\r\n";
 foreach($results as $result) {
-	$flds1 =array_slice($result, 1, 5);
-	$flds2 =array_slice($result, 7, 1);
-	$flds3 =array_slice($result, 14, 4);
-	$flds4 =array_slice($result, 20, 1);
-	$line = implode(",", $flds1) . "," . implode(",", $flds2) . "," . implode(",", $flds3) . "," . implode(",", $flds4);
+	$flds1 =array_slice($result, 0, 1);
+	$flds2 =array_slice($result, 2, 4);
+	$flds3 =array_slice($result, 12, 3);
+	$line = implode(",", $flds1) . "," . implode(",", $flds2) . "," . implode(",", $flds3);
 	echo $line;
     echo "\r\n";
 }

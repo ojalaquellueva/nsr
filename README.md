@@ -317,9 +317,11 @@ Batch API output is similar to the [NSR Batch command line application output](#
 
 The following scripts provide examples of calling the NSR Batch API using PHP and R:
 
-* `nsr_api_example.php`.
-* `nsr_api_example.R`. 
+* ***`nsr_api_example.php`***
+   * To run this example, you will need input file `nsr_testfile.csv` in directory `data/user/`.
+* ***`nsr_api_example.R`***
+   * To run this example, you will need input file `nsr_testfile.csv` in directory `data/user/`. Place the example file in the same directory as the R file, or modify the input file path in the R script.
 
 Both scripts load the following example file as input data:
 
-* `data/user/nsr_testfile.csv`
+* ***`data/user/nsr_testfile.csv`***

@@ -4,63 +4,117 @@ Author: Brad Boyle (bboyle@email.arizona.edu)
 
 ## Table of Contents
 
-- [Overview](#Overview)
-- [Data sources & database](#Data)
-- [Components](#Components)
-- [Software requirements](#Software)
-- [Installation](#Installation)
-  - [Database and batch application](#Core)
-  - [Web service](#wsi)
-- [Usage](#Usage)
-  - [Build NSR database](#DB)
-  - [Batch applicaton](#Batch)
-  - [Batch input format](#Input)
-  - [Batch output format](#Output)
-  - [Web service](#ws)
-- [Native Status Codes](#Native)
+- [Overview](#overview)
+- [BIEN NSR](#bien-nsr)
+- [Database](#database)
+- [Interfaces](#interfaces)
+- [Top-level scripts](#scripts)
+- [Example scripts](#example-scripts)
+- [Software requirements](#software)
+- [Installation](#installation)
+  - [Database and batch application](#core)
+  - [APIs](#wsi)
+- [Usage](#usage)
+  - [Build NSR database](#db)
+  - [Command Line (NSR Batch)](#batch)
+     - [Input](#input)
+     - [Output](#output)
+  - [Simple API](#simple-api)
+  - [Batch API](#batch-api)
+     - [Input](#batch-api-input)
+     - [Output](#batch-api-output)
+     - [Examples](#batch-api-examples)
+- [Native Status Codes](#status-codes)
 
-## <a name="Overview"></a>Overview
+<a name="overview"></a>
+## Overview
 
-The Native Status Resolver (NSR) determines if a taxon is native or introduced within a political division of observation. The NSR accepts as input one or more observations of a taxon in a political division (country, plus optionally state/province or county/parish). For each observation, the NSR returns an opinion as to whether that taxon is native or introduced in the lowest political division submitted. Native status opinions are determined by consulting one or more species checklists for the region in question. If no checklist is available for the region submitted, the NSR returns no opinion. In some cases, even if no checklist is available for the political division of observation, the NSR may  be able to assign a status of "introduced" if the taxon is endemic to a different, non-overlapping political division.
+The Native Status Resolver (NSR) is a data validation service which determines if a species (or other taxon such as genus or family) is native or introduced within the political division of observation. The NSR make this determination by comparison against country-, state- or county-level checklists.
 
-If the taxon submitted is not present in any checklist for the region of observation, the NSR will also search for opinions for higher taxa, as appropriate. For example, if Poa annua var. supina is submitted, the NSR also checks for opinions for Poa annua and Poa. If a native status opinion is available for a higher taxon and it applies to the lower taxon as well, the NSR will report that opinion. In the case of Poa annua var. supina, a status of "introduced" for Poa annua is also assigned to the variety, but an opinion of "native" is not assigned (i.e., if the species is introduced then all lower taxa must also be introduced, whereas the fact that the species is native to a region does not indicate which variety is native to that region). In other words, introduced status propagates upward in the taxonomic hierarchy and native status propagates downward.
+The NSR accepts as input one or more observations of a taxon in a political division (country, plus optionally state/province or county/parish). For each observation, the NSR returns an opinion as to whether that taxon is native or introduced in the lowest political division submitted. Native status opinions are determined by consulting one or more species checklists for the region in question. If no checklist is available for the region submitted, the NSR returns no opinion. In some cases, even if no checklist is available for the political division of observation, the NSR may  be able to assign a status of "introduced" if the taxon is endemic to a different, non-overlapping political division.
 
-The NSR uses a similar hierarchical approach for political divisions, transferring native status opinions up or down the hierarchy as appropriate. For example, a species that is "introduced" according to a country-level checklist will also be flagged as introduced to a state in that country, even if no checklist is available for that state. Similarly, a species recorded as "native" in a county-level checklist will also be flagged as native to the containing state and country. In other words, introduced status propagates downward in the political division hierarchy and native status propagates upward.
+If the taxon submitted is not present in any checklist for the region of observation, the NSR will also search higher taxa for opinions indicating the taxon is introduced in the region of observation.  If a species is introduced then all varieties and subspecies must also be introduced. Conversely, an opinion of "native" for a lower taxon is also applied to the higher taxa to which it belongs. If a variety is native to a particular region, that automatically means that the species, genus and family to which that variety belongs are also native. In other words, "native" propagates up the taxonomic hierarchy, and "introduced" propagates down the taxonomic hierarchy.
 
-## <a name="Data"></a>Data sources & database
+For example, if Poa annua var. supina is submitted, but no opinion is available for the variety, the NSR will check for opinions for Poa annua and Poa. If an opinion is discovered indicating that Poa annua is introduced to the region of observation, then the NSR will report that Poa annua var. supina is introduced.
 
-The majority of the checklists consulted by the NSR are high-quality published species lists prepared by professional taxonomists as part of floras or other floristic projects. These checklists are imported and compiled within a PostgreSQL database. Assembly of the NSR database is performed by a separate pipeline of PHP and SQL scripts. See respository `https://github.com/ojalaquellueva/nsr_db` for details.
+The NSR uses a similar hierarchical approach for political divisions, transferring "native" up the political division hierarchy and "introduced" down the hierarchy. For example, a species recorded as "native" in a county-level checklist will also be flagged as native to the containing state and country. Similarly, a species that is "introduced" according to a country will also be flagged as introduced to a state in that country, even if no checklist is available for that state.
 
-## <a name="Components"></a>Components
+This repository contains source code for the NSR core application and API. For code used to build the NSR database, see separate repository `See separate repository https://github.com/ojalaquellueva/nsr_db`.
+
+<a name="bien-nsr"></a>
+## BIEN NSR
+
+The [BIEN NSR](https://bien.nceas.ucsb.edu/bien/tools/nsr/) provides access to an NSR database populated with multiple checklists providing nearly complete global coverage. The majority of the checklists in the BIEN NSR are high-quality published species lists prepared by professional taxonomists as part of floras or other floristic projects. For details of BIEN NSR sources, see respository `https://github.com/ojalaquellueva/nsr_db` for details. The BIEN NSR can be accessed via all of the interfaces listed below (see [Interfaces](#interfaces)). 
+
+<a name="database"></a>
+## NSR Database
+
+The NSR database is a MySQL database populated with one or more taxonomic country-, state- or county-level checklists, plus supporting lookup tables of political divisions and taxa. Political division name are standardized according to Geonames (geonames.org) using the GNRS (see `https://github.com/ojalaquellueva/gnrs`). Assembly of the NSR database is performed by a separate pipeline of PHP and SQL scripts. See respository `https://github.com/ojalaquellueva/nsr_db` for details.
+
+<a name="interfaces"></a>
+## Interfaces
+
+The NSR can be accessed via the following interfaces:
+
+* [NSR Batch Application](#nsr-batch). The NSR can be accessed locall via the command line by calling `nsr_batch.php`. 
+* [NSR Simple API](#simple-api). The NSR Simple API supports url-encoded requests to the NSR. It supports one taxon + political division combination per call. Results are returned as JSON or XML.
+* [NSR Batch API](#nsr-batch). The NSR Batch API supports requests of up to 5000 taxon + political division combinations per call. Request must be sent as JSON-encoded POST data. Results are returned as JSON.
+* [RNSR R Package](#rnsr). The RNSR R package provides a simplified interface to the [NSR Batch API](#nsr-batch) via a family of R language functions. As with the parent API, it support up to 5000 taxon + political division combinations per call. RNSR can be downloaded from repository `https://github.com/EnquistLab/RNSR`.
+
+<a name="scripts"></a>
+## Top-level scripts
 
 #### `nsr.php`   
 - Core application, evaluates table of observations against reference tables and populates native status opinion columns.  
-- Called by nsr_batch.php and nsr_ws.php  
+- Called by `nsr_batch.php` and `nsr_ws.php` 
 
 #### `nsr_batch.php`    
 - NSR batch processing application  
-- Calls nsr.php  
+- Calls `nsr.php`  
 - Processes multiple observations at once  
 - Uploads observations as CSV file from data directory 
 - Exports NSR results as TAB delimited file to data directory  
 - Requires shell access to this server  
+- Called by `nsr_wsb.php`
 
 #### `nsr_ws.php`   
-- Simple NSR web service
-- Processes on observation per call  
-- Calls nsr.php
+- NSR Simple API
+- Processes on observation (taxon + political division) per call  
+- Calls `nsr.php`
 
-## <a name="Software"></a>Software requirements
-* OS: Runs on a unix or unix-like environment
-* PHP 7.0 or greater (may work on earlier versions, but not tested)
+#### `nsr_wsb.php`   
+- NSR batch API
+- Processes up to 5000 observations per call  
+- Calls `nsr_batch.php`
+
+#### `nsr_wsb.php`   
+- NSR batch API
+- Processes multiple observations per call  
+- Calls `nsr_batch.php`
+
+<a name="example-scripts"></a>
+## Example Scripts
+
+#### `nsr_api_example.php`   
+- Example of calling the NSR Batch API using PHP
+
+#### `nsr_api_example.R`   
+- Example of calling the NSR Batch API using R
+
+<a name="software"></a>
+## Software requirements
+* OS: Runs on a unix/linux. The [BIEN NSR](#bien-nsr) is currently running on Ubuntu 18.04.5.
+* PHP 7.0 or greater
 * MySQL 5.5 or greater
-* Fully populated NSR MySQL database, with read-only user (see separate repository `https://github.com/ojalaquellueva/nsr_db` for details).
+* Fully populated NSR MySQL database, with read-only nsr user (see separate repository `https://github.com/ojalaquellueva/nsr_db` for details).
 
-## <a name="Installation"></a>Installation & setup
+<a name="installation"></a>
+## Installation & setup
 
 The following steps assume two installations: one in public_html for the web service, and a second installation elsewhere in the file system for creating the database and running the batch applications. Other configurations may be used as well.
 
-### <a name="Core"></a>Database and batch application
+<a name="core"></a>
+### Database and batch application
 1. Clone this repository to location of choice, using recursive option to include submodules:
 
 ```
@@ -75,27 +129,29 @@ git clone --recursive https://github.com/ojalaquellueva/nsr.git
 5. Copy or rename example parameters file (params.example.php) to params.php to same location (inside the main application directory) and set the parameters.
 6. Prepare NSR database checklist data sources and set database parameters as described in nsr_db/README.md
 7. Build NSR database
-8. The following file is used only by the web service and may be removed:
+8. The following file is used only by the web service and can be removed if not needed:
 
 ```
 rm nsr_ws.php
+rm nsr_wsb.php
 ```
 
-### <a name="wsi"></a>NSR web service
+<a name="wsi"></a>
+### NSR API
 
 The following instructions assume:
 * NSR database is installed and configured as described above
 * Valid virtual host and port have been configured for the API root directory
 
-1. Clone this repository to API root directory of your choice (e.g., /var/www/public_html/nsr/), using recursive option to include submodules:
+1. Clone this repository to API root directory of your choice (e.g., `/var/www/public_html/nsr/`), using recursive option to include submodules:
 
 ```
 git clone --recursive https://github.com/ojalaquellueva/nsr.git
 ```
 
-2. Copy read-only database config file (db_config-example.php) as db_config.php to location outside public_html and set the parameters.
-3. Copy write-access database config file (db_configw-example.php) as db_configw.php to location outside public_html and set the parameters.
-4. Copy or rename parameters file (params.example.php) to params.php and set the parameters.
+2. Copy read-only database config file (`db_config-example.php`) as `db_config.php` to location outside `public_html` and set the parameters.
+3. Copy write-access database config file (`db_configw-example.php`) as `db_configw.php` to location outside `public_html` and set the parameters.
+4. Copy or rename parameters file (`params.example.php`) to `params.php` and set the parameters.
 5. Adjust file system permissions as per your server settings.
 6. The following files, directories and their contents are not used by web service and should be removed:
 
@@ -106,13 +162,15 @@ rm db_batch_connect.php
 rm nsr_batch.php
 ```
 
-## <a name="Usage"></a>Usage
+<a name="usage">
+## </a>Usage
 
-### <a name="DB"></a>Build NSR database
+### <a name="db"></a>Build NSR database
 
 See separate repository `https://github.com/ojalaquellueva/nsr_db` for details.
 
-### <a name="Batch"></a>Batch application
+<a name="batch"></a>
+### Command Line (NSR Batch)
 
 Syntax:  
 
@@ -145,36 +203,67 @@ Notes:
 * Results file has same base name as input file, plus suffix "_nsr_results.txt" 
 * Results file is tab-delimitted, regardless of the format of the input file.  
 
-#### <a name="Inupt"></a>Batch input format
-
+<a name="input"></a>
+#### Input
 
 The NSR accepts as input a plain text file containing one or more observations of taxon in political division, formatted as follows (optional values in square brackets; if county_parish is included, state_province must be included as well):  
 
-taxon,country[,state\_province[,county\_parish]]  
-taxon,country[,state\_province[,county\_parish]]  
-taxon,country[,state\_province[,county\_parish]]  
+```
+taxon,country[,state_province[,county_parish]]  
+```
 
-Taxon names can be of any of the following ranks: family, genus, species, subspecies, variety, forma. Do not include author.
+Taxon names can be of any of the following ranks: family, genus, species, subspecies, variety, forma. Do not include authors.
 
 Spellings of political division names in the NSR database are the plain ascii (unaccented) versions of English-language political division names in Geonames (`www.geonames.org`). Political division names in user input should therefore be standardized according to the same standard. 
 
-#### <a name="Output"></a>Batch output format
+Below is an example of an input file suitable processing with the NSR Batch application:
+
+```
+taxon,country,state_province,county_parish
+Pinus ponderosa,United States,Arizona,Pima
+Eucalyptus,Australia,Western Australia,
+Abrothallus bertianus,Austria,,
+Cocos nucifera,Jamaica,,
+Eucalyptus,Mexico,,
+Larrea tridentata,Mexico,,
+
+```
+
+<a name="output"></a>
+#### Output
 
 The NSR batch application returns original rows and values as submitted, plus columns indicating whether taxon is native in each level of observation within the political division hierarchy, an overall assessment of native status within the lowest political division of observation, a short explanation of how the decision was reached, and a list of checklist sources consulted.   
-
 
 | Column	| Meaning (values)
 | --------- | -------------------
 | native\_status\_country	| Native status in country (see native status values, below)
 | native\_status\_state\_province	| Native status in state\_province, if any (see native status values, below)
 | native\_status\_county\_parish	| Native status in county\_parish, if any (see native status values, below)
-| native\_status	| Overall native status in lowest declared political division (see native status values, below)
+| native\_status	| Overall native status in lowest declared political division (see [Native Status Codes](#status-codes))
 | native\_status\_reason	| Reason native status was assigned
 | native\_status\_sources	| Checklists used to determine native status
 | isIntroduced	| Simplified overall native status (1=introduced;  0=native; blank=status unknown)
 | isCultivatedNSR	| Species is known to be cultivated in declared region  (1=cultivated;  0=wild or status unknown)
 
-###  <a name="ws"></a>Web service
+<a name="status-codes"></a>
+#### Native Status Codes
+
+For each observation (taxon + political division combination)submitted, the NSR returns one of the following native status codes: 
+
+| Native status code	| Meaning 
+| --------- | -------------------
+| P	| Present in checklist for region of observation but no explicit status assigned
+| N	| Native to region of observation
+| Ne | Native and endemic to region of observation
+| A	 | Absent from all checklists for region of observation
+| I	| Introduced, as declared in checklist for region of observation
+| Ie | Endemic to other region and therefore introduced in region of observation
+| UNK | Unknown; no checklists available for region of observation and taxon not endemic elsewhere
+
+<a name="simple-api"></a>
+### Simple API
+
+The NSR Simple API supports simple url-encoded requests to the NSR. Only one observation (taxon + political division) is supported per call.
 
 Syntax:  
 
@@ -189,18 +278,48 @@ https://bien.nceas.ucsb.edu/nsr/nsr_ws.php?species=Pinus%20ponderosa&country=Uni
 ```
 
 Notes:  
-* Accepts one species + political\_division\_of\_observation at a time
 * Parameters stateprovince, county parish and format are optional  
 * Output format: xml (default),  json   
 
-## <a name="Native"></a>Native Status Codes
+<a name="batch-api"></a>
+### Batch API
 
-| Native status code	| Meaning 
-| --------- | -------------------
-| P	| Present in checklist for region of observation but no explicit status assigned
-| N	| Native to region of observation
-| Ne | Native and endemic to region of observation
-| A	 | Absent from all checklists for region of observation
-| I	| Introduced, as declared in checklist for region of observation
-| Ie | Endemic to other region and therefore introduced in region of observation
-| UNK | Unknown; no checklists available for region of observation and taxon not endemic elsewhere
+The NSR batch API accepts & processes up to 5000 observations in a single call. Request data must be JSON-encoded and sent as a POST request, with HTTP header set to "Content-Type: application/json". Results are returned as JSON. The process is best understood by examining the input format and the PHP and R example files (see below). 
+
+<a name="batch-api-input"></a>
+#### Input
+
+Raw input for the Batch API is similar to the input format for the NSR Batch Application (see above), with the addition of option unique ID column ("`user_id`") as the last column. This ID is returned unchanged in the NSR results. The advantage of including a unique ID for each row is that it allows you to link the NSR results back to your original data by joining on a single column instead of four columns. Although the values in column `user_id` are optional, you must include this column, even if it is blank.
+
+```
+taxon,country[,state_province[,county_parish]][, user_id]]  
+```
+
+An example input file is shown below. Note that first line must be the header. If you leave out the header, the first line of data will be ignored. 
+
+```
+taxon,country,state_province,county_parish,user_id
+Pinus ponderosa,United States,Arizona,Pima,1
+Eucalyptus,Australia,Western Australia,,2
+Abrothallus bertianus,Austria,,,3
+Cocos nucifera,Jamaica,,,4
+Eucalyptus,Mexico,,,5
+Larrea tridentata,Mexico,,,6
+```
+
+<a name="batch-api-output"></a>
+#### Output
+
+Batch API output is similar to the [NSR Batch command line application output](#output), with the addition of the (optional) column `user_id` (see [Batch API Input Format](#batch-api-input)). See also [Native Status Codes](#native-status-codes).
+
+<a name="batch-api-examples"></a>
+#### Batch API Examples
+
+The following scripts provide examples of calling the NSR Batch API using PHP and R:
+
+* `nsr_api_example.php`.
+* `nsr_api_example.R`. 
+
+Both scripts load the following example file as input data:
+
+* `data/user/nsr_testfile.csv`

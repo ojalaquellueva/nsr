@@ -312,7 +312,6 @@ include_once $batch_includes_dir."dump_nsr_results.php";
 // Clear observation table
 include_once "clear_observations.php";		
 
-
 //////////////////////////////////////////////////////
 // Close connection and report time 
 //////////////////////////////////////////////////////

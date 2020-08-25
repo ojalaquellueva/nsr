@@ -10,8 +10,8 @@
 /////////////////////
 
 // Path and name of file containing input names and political divisions
-$DATADIR = "/home/boyle/nsr/repo/data/user/";
-$inputfilename = "testfile.csv";
+$DATADIR = "/home/boyle/nsr/src/data/user/";
+$inputfilename = "nsr_testfile.csv";
 
 // Desired response format, json or xml
 // NOT USED YET

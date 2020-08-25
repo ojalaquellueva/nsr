@@ -56,7 +56,6 @@ AND b.fams=1
 ";
 sql_execute_multiple($dbh, $sql);
 
-
 //include "db_close.php";
 
 ?>

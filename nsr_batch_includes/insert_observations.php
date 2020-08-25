@@ -58,9 +58,7 @@ user_id
 FROM observation_raw
 ;
 ";
-
 sql_execute_multiple($dbh, $sql);
-
 
 // HACK: Merge Newfoundland and Labrador
 $sql="

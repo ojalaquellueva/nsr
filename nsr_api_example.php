@@ -20,6 +20,7 @@ $lines = 1000;
 
 // api base url 
 $base_url = "https://bien.nceas.ucsb.edu/nsr/nsr_wsb.php";
+$base_url = "https://bien.nceas.ucsb.edu/nsrdev/nsr_wsb.php"; 	# Dev
 
 /////////////////////
 // Functions

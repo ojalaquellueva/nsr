@@ -58,6 +58,42 @@ $CACHE_WHERE_NA = " is_in_cache=0 ";	// no alias version
 //////////////////////////////////////////////////
 $batch_size=10000;
 
+/////////////////////////////////////////////////
+// API parameters
+/////////////////////////////////////////////////
+
+// Return offending SQL on error? (true|false)
+// TURN OFF FOR PRODUCTION! ($err_show_sql=false)
+$err_show_sql=false;
+
+// Maximum permitted input rows per request
+// For no limit, set to 0
+$MAX_ROWS=5000;	
+					
+// Number of batches
+$NBATCH=10000;	
+$NBATCH=25;				
+
+//////////////////////////////////////////////////
+// All NSR options
+// Use to test if submitted options allowed
+//////////////////////////////////////////////////
+
+# Option "resolve" goes to nsr_batch; other options query db directly
+$NSR_MODES = array("resolve","parse","meta","sources","citations");
+
+# NSR checklist sources
+# Not currently used
+# Consider getting these directly from database instead!
+$NSR_SOURCES = array("weakly","enquist"); // ...and etc....
+
+//////////////////////////////////////////////////
+// NSR default options
+//////////////////////////////////////////////////
+
+$NSR_DEF_MODE = "resolve";		// Processing mode
+$NSR_DEF_SOURCES = "weakly,enquist";	// Checklist sources
+
 //////////////////////////////////////////////////
 // MySQL import parameters for raw observation text file
 // Set any variable to empty string to remove entirely

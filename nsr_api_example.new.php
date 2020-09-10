@@ -22,7 +22,9 @@ $inputfilename = "nsr_testfile.csv";
 $lines = 1000;
 
 // api base url 
-$base_url = "https://bien.nceas.ucsb.edu/nsr/nsr_wsb.php";
+$base_url = "https://bien.nceas.ucsb.edu/nsr/nsr_wsb.php";	# Prod
+//$base_url = "https://bien.nceas.ucsb.edu/nsrdev/nsr_wsb.php"; 	# Dev
+$base_url = "https://bien.nceas.ucsb.edu/nsrdev/nsr_wsb.new.php"; 	# Dev.new
 
 /////////////////////
 // NSR options
@@ -64,26 +66,30 @@ $opts_arr = array(
 // Make data array
 ///////////////////////////////
 
-// Import csv data and convert to array
-$data_arr = array_map('str_getcsv', file($DATADIR.$inputfilename));
+if ($mode=="resolve") {
+	// Import csv data and convert to array
+	$data_arr = array_map('str_getcsv', file($DATADIR.$inputfilename));
 
-# Get subset
-$data_arr = array_slice($data_arr, 0, $lines);
+	# Get subset
+	$data_arr = array_slice($data_arr, 0, $lines);
 
-// Echo the raw data
-if ( $mode=="resolve" || $mode=="" ) {
-	// Echo raw data
-	echo "The raw data:\r\n";
-	foreach($data_arr as $row) {
-		foreach($row as $key => $value) echo "$value\t"; echo "\r\n";
-	}
-	echo "\r\n";
-
-	if ($disp_data_array) {
-		echo "The raw data as array:\r\n";
-		var_dump($data_arr);
+	// Echo the raw data
+	if ( $mode=="resolve" || $mode=="" ) {
+		// Echo raw data
+		echo "The raw data:\r\n";
+		foreach($data_arr as $row) {
+			foreach($row as $key => $value) echo "$value\t"; echo "\r\n";
+		}
 		echo "\r\n";
+
+		if ($disp_data_array) {
+			echo "The raw data as array:\r\n";
+			var_dump($data_arr);
+			echo "\r\n";
+		}
 	}
+} else {
+	$data_arr=array();
 }
 
 // // Convert to JSON
@@ -171,19 +177,30 @@ $results_json = $response;
 $results = json_decode($results_json, true);
 
 // Echo the response content
-echo "JSON response:\r\n";
+echo "API results (JSON)\r\n";
 echo $results_json;
 echo "\r\n\r\n";
 
-echo "Response as CSV (selected fields only):\r\n";
-foreach($results as $result) {
-	$flds1 =array_slice($result, 0, 1);
-	$flds2 =array_slice($result, 2, 4);
-	$flds3 =array_slice($result, 12, 3);
-	$line = implode(",", $flds1) . "," . implode(",", $flds2) . "," . implode(",", $flds3);
-	echo $line;
-    echo "\r\n";
+if ($mode=="resolve") {
+	echo "API results as CSV (selected fields only):\r\n";
+	foreach($results as $result) {
+		$flds1 =array_slice($result, 0, 1);
+		$flds2 =array_slice($result, 2, 4);
+		$flds3 =array_slice($result, 12, 3);
+		$line = implode(",", $flds1) . "," . implode(",", $flds2) . "," . implode(",", $flds3);
+		echo $line;
+		echo "\r\n";
+	}
+	echo "\r\n";
+} else if ($mode=="citations") {
+	echo "API results as CSV:\r\n";
+	foreach($results as $result) {
+		$flds1 =array_slice($result, 0, 3);
+		$line = implode(",", $flds1);
+		echo $result;
+		echo "\r\n";
+	}
+	echo "\r\n";
 }
-echo "\r\n";
 
 ?>

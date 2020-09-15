@@ -240,6 +240,11 @@ if ( $mode=="resolve" || $mode=="" ) { 	// BEGIN mode_if
 
 $results_json = json_encode($results_array);
 
+# Special handling for bibtex newlines
+if ($mode=="citations") {
+	$results_json = str_replace('\\n','\\\\n',$results_json);
+}
+
 ///////////////////////////////////
 // Echo the results
 ///////////////////////////////////

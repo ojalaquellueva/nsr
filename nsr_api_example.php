@@ -25,7 +25,7 @@ $lines = 1000;
 // api base url 
 $base_url = "https://bien.nceas.ucsb.edu/nsr/nsr_wsb.php";	# Prod
 //$base_url = "https://bien.nceas.ucsb.edu/nsrdev/nsr_wsb.php"; 	# Dev
-$base_url = "https://bien.nceas.ucsb.edu/nsrdev/nsr_wsb.new.php"; 	# Dev.new
+$base_url = "https://bien.nceas.ucsb.edu/nsrdev/nsr_wsb.php"; 	# Dev.new
 
 /////////////////////
 // NSR options

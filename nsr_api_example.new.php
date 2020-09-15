@@ -5,8 +5,8 @@
 // Imports names from file on local file sysytem
 //////////////////////////////////////////////////////
 
-// Load library of http status codes
-require_once("includes/php/status_codes.inc.php");
+// Load functions
+require("php_utilities/functions.inc");
 
 /////////////////////
 // API parameters
@@ -34,9 +34,9 @@ $base_url = "https://bien.nceas.ucsb.edu/nsrdev/nsr_wsb.new.php"; 	# Dev.new
 //	Options: resolve*|parse|meta
 // 	E.g., $mode="parse"
 $mode="resolve";	# Resolve native status
-// $mode="meta";		# Return metadata on NSR & sources
-// $mode="sources";		# List NSR sources
-// $mode="citations";		# Return citations for NSR & sources
+//$mode="meta";		# Return metadata on NSR & sources
+//$mode="sources";		# List NSR sources
+$mode="citations";		# Return citations for NSR & sources
 
 /////////////////////////////////////////
 // Display options
@@ -178,7 +178,12 @@ $results = json_decode($results_json, true);
 
 // Echo the response content
 echo "API results (JSON)\r\n";
-echo $results_json;
+if (is_array($results_json)) {
+	print_r($results_json);
+} else {
+	echo $results_json;
+}
+;
 echo "\r\n\r\n";
 
 if ($mode=="resolve") {
@@ -193,14 +198,18 @@ if ($mode=="resolve") {
 	}
 	echo "\r\n";
 } else if ($mode=="citations") {
-	echo "API results as CSV:\r\n";
-	foreach($results as $result) {
-		$flds1 =array_slice($result, 0, 3);
-		$line = implode(",", $flds1);
-		echo $result;
-		echo "\r\n";
+	echo "API results as CSV (for pasting to spreadsheet):\r\n";
+
+	if ( $mode=="parse" || $mode=="" ) {
+		foreach($results as $result) {
+			$line = implode(",", array_slice($result, 0)) . "\r\n";
+			print_r($line);
+		}
+	} else {
+		$table = array_to_csv($results,",");
+		echo $table;
 	}
-	echo "\r\n";
+	echo "\n";
 }
 
 ?>

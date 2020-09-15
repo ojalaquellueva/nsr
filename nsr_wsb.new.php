@@ -15,8 +15,8 @@ $whoami=$output[0];
 // Parameters
 ///////////////////////////////////
 
-include 'params.php';
-require_once("includes/php/status_codes.inc.php");
+include 'params.php';	// includes html statuscodes
+//require_once("includes/php/status_codes.inc.php");
 
 //$msg = "Processing batch api request\r\n\r\n";
 //file_put_contents($LOGFILE, $msg)

@@ -23,10 +23,11 @@ $LOGFILE = $LOGFILE_PATH . $LOGFILE_NAME;
 
 // Path to general php funcions and generic include files
 //$utilities_path="/home/boyle/global_utilities/php/"; // Master, testing only
-$utilities_path=$APP_DIR."includes/php/";	// Local submodule directory
+$utilities_path=$APP_DIR."php_utilities/";	// Local submodule directory
 
 // General php funcions and generic include files
 include $utilities_path."functions.inc";
+include $utilities_path."status_codes.inc.php";
 include $utilities_path."taxon_functions.inc";
 include $utilities_path."sql_functions.inc";
 include $utilities_path."geo_functions.inc";

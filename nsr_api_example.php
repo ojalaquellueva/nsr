@@ -1,8 +1,11 @@
 <?php
 
 //////////////////////////////////////////////////////
-// Assembles test batch request and submits to NSR API
-// Imports names from file on local file sysytem
+// Test submission to NSR API
+//
+// Adjust parameters to test, especially $mode
+// Requires: nsr_testfile.dsv
+// Compatible with NSR version: 2.1+
 //////////////////////////////////////////////////////
 
 // Load functions
@@ -10,8 +13,12 @@ require("php_utilities/functions.inc");
 require("php_utilities/status_codes.inc.php");
 
 /////////////////////
-// API parameters
+// Parameters
 /////////////////////
+
+//
+// API parameters
+//
 
 // Path and name of file containing input names and political divisions
 $DATADIR = "data/user/";
@@ -27,9 +34,9 @@ $base_url = "https://bien.nceas.ucsb.edu/nsr/nsr_wsb.php";	# Prod
 //$base_url = "https://bien.nceas.ucsb.edu/nsrdev/nsr_wsb.php"; 	# Dev
 $base_url = "https://bien.nceas.ucsb.edu/nsrdev/nsr_wsb.php"; 	# Dev.new
 
-/////////////////////
+//
 // NSR options
-/////////////////////
+//
 
 // Processing mode
 //	Options: resolve*|parse|meta
@@ -39,12 +46,12 @@ $mode="meta";		# Return metadata on NSR & sources
 $mode="sources";		# List NSR sources
 $mode="citations";		# Return citations for NSR & sources
 
-/////////////////////////////////////////
+//
 // Display options
 // 
 // * Turn on/off what is echoed to terminal
 // * Raw data always displayed
-/////////////////////////////////////////
+//
 
 $disp_data_array=false;		// Echo raw data as array
 $disp_combined_array=false;	// Echo combined options+data array
@@ -54,6 +61,10 @@ $disp_json_data=false;		// Echo the options + raw data JSON POST data
 $disp_results_json=true;	// Echo results as array
 $disp_results_array=false;	// Echo results as array
 $disp_results_csv=true;		// Echo results as CSV text, for pasting to Excel
+
+/////////////////////
+// Main
+/////////////////////
 
 ///////////////////////////////
 // Make options array

@@ -3,7 +3,7 @@
 # By: Brad Boyle (bboyle@email.arizona.edu)
 # Date: 6 Feb. 2019
 # Last updated: 15 Sep. 2020
-# Compatible with NSR version: 2.1+
+# Compatible with NSR version: 2.3+
 ###############################################
 
 # Base url for NSR Batch API

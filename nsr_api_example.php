@@ -5,7 +5,7 @@
 //
 // Adjust parameters to test, especially $mode
 // Requires: nsr_testfile.dsv
-// Compatible with NSR version: 2.1+
+// Compatible with NSR version: 2.3+
 //////////////////////////////////////////////////////
 
 // Load functions

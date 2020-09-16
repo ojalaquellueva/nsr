@@ -284,7 +284,9 @@ Notes:
 <a name="batch-api"></a>
 ### Batch API
 
-The NSR batch API accepts & processes up to 5000 observations in a single call. Request data must be JSON-encoded and sent as a POST request, with HTTP header set to "Content-Type: application/json". Results are returned as JSON. The process is best understood by examining the input format and the PHP and R example files (see below). 
+The NSR batch API offers four modes (api routes): "resolve", "meta", "sources", "citations". As with the command line core service, `nsr_batch.php`, the batch API resolve mode resolves native status for batches of taxon observations. The remaining three modes return metadata about NSR checklist sources and the NSR itself. Mode "meta" returns version information for NSR source code and database. Mode "sources" returns information on all checklist sources (except for literature citations). Mode "citations" returns bibtex-formatted literature citations (if available) for NSR checklist sources. 
+
+In resolve mode, the NSR batch API accepts & processes up to 5000 observations in a single call. Request data must be JSON-encoded and sent as a POST request, with HTTP header set to "Content-Type: application/json". Results are returned as JSON. See [Input](#batch-api-input) for a description of input file format. Use of the API is best understood by examining the PHP and R example files (see [Batch API Examples](#batch-api-examples).
 
 <a name="batch-api-input"></a>
 #### Input

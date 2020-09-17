@@ -7,12 +7,14 @@
 ###############################################
 
 # Base url for NSR Batch API
-url = "https://bien.nceas.ucsb.edu/nsr/nsr_wsb.php"		# Production (server name)
-url = "https://nsrapi.xyz/nsr_wsb.php"								# Production (domain name)
+# url = "https://nsrapi.xyz/nsr_wsb.php"								# Production (domain name)
+# url = "https://bien.nceas.ucsb.edu/nsr/nsr_wsb.php"		# Production (server name)
+
+# Only development URL currently working
+url = "https://bien.nceas.ucsb.edu/nsrdev/nsr_wsb.php"		# Development (nimoy)
 
 # Load libraries
-library(RCurl)		# API requests
-# library(rjson)		# JSON coding/decoding
+library(httr)		# API requests
 library(jsonlite) # JSON coding/decoding
 
 # Read in example file of taxon observations
@@ -43,17 +45,20 @@ opts_json <-  jsonlite::toJSON(opts)
 opts_json <- gsub('\\[','',opts_json)
 opts_json <- gsub('\\]','',opts_json)
 
-# Combine the options and data into single JSON object
+# Combine the options and data into single JSON body
 input_json <- paste0('{"opts":', opts_json, ',"data":', data_json, '}' )
 
-# Construct the request
-headers <- list('Accept' = 'application/json', 'Content-Type' = 'application/json', 'charset' = 'UTF-8')
-
 # Send the API request
-results_json <- postForm(url, .opts=list(postfields= input_json, httpheader=headers))
+results_json <- POST(url = url,
+                  add_headers('Content-Type' = 'application/json'),
+                  add_headers('Accept' = 'application/json'),
+                  add_headers('charset' = 'UTF-8'),
+                  body = input_json,
+                  encode = "json")
 
-# Convert the JSON results to data frame
-results <- as.data.frame( fromJSON(results_json) )
+# Extract the response and convert to data frame
+results_raw <- fromJSON(rawToChar(results_json$content)) 
+results <- as.data.frame(results_raw)
 
 # Tidy up
 results <- t(results)						# Transpose
@@ -74,9 +79,6 @@ noquote(results.t)
 # Display the main results columns for all rows
 results[ , c("family", "genus", "species", "country", "state_province", "county_parish", "native_status", "isIntroduced", "native_status_sources", "native_status_reason")]
 
-
-
-
 #################################
 # Example 2: Get metadata for current NSR version
 #################################
@@ -84,24 +86,32 @@ rm( list = Filter( exists, c("input_json") ) )
 rm( list = Filter( exists, c("results_json") ) )
 rm( list = Filter( exists, c("results") ) )
 
-# All we need to do is reset option mode.
-# all other options will be ignored
+# Reset option mode
 mode <- "meta"		
 
-# Reform the options json again
+# Rebuild the options json
 opts <- data.frame(c(mode))
 names(opts) <- c("mode")
 opts_json <- jsonlite::toJSON(opts)
 opts_json <- gsub('\\[','',opts_json)
 opts_json <- gsub('\\]','',opts_json)
 
-# Make the options + data JSON
-input_json <- paste0('{"opts":', opts_json, ',"data":', data_json, '}' )
+# Prepare the complete json body
+# Note that data are no longer needed, only options
+input_json <- paste0('{"opts":', opts_json, '}' )
 
-# Send the request again
-results_json <- postForm(url, .opts=list(postfields= input_json, httpheader=headers))
+# Send the request
+results_json <- POST(url = url,
+	add_headers('Content-Type' = 'application/json'),
+	add_headers('Accept' = 'application/json'),
+	add_headers('charset' = 'UTF-8'),
+	body = input_json,
+	encode = "json"
+)
 
-results <-fromJSON(results_json)
+# Process the response
+results_raw <- fromJSON(rawToChar(results_json$content)) 
+results <- as.data.frame(results_raw)
 print( results )
 
 #################################
@@ -111,23 +121,31 @@ rm( list = Filter( exists, c("input_json") ) )
 rm( list = Filter( exists, c("results_json") ) )
 rm( list = Filter( exists, c("results") ) )
 
-# Set sources mode
+# Reset option mode
 mode <- "sources"		
 
-# Reform the options json again
+# Rebuild the options json
 opts <- data.frame(c(mode))
 names(opts) <- c("mode")
 opts_json <- jsonlite::toJSON(opts)
 opts_json <- gsub('\\[','',opts_json)
 opts_json <- gsub('\\]','',opts_json)
 
-# Make the options + data JSON
-input_json <- paste0('{"opts":', opts_json, ',"data":', data_json, '}' )
+# Prepare the complete json body
+input_json <- paste0('{"opts":', opts_json, '}' )
 
-# Send the request again
-results_json <- postForm(url, .opts=list(postfields= input_json, httpheader=headers))
+# Send the request
+results_json <- POST(url = url,
+	add_headers('Content-Type' = 'application/json'),
+	add_headers('Accept' = 'application/json'),
+	add_headers('charset' = 'UTF-8'),
+	body = input_json,
+	encode = "json"
+)
 
-results <-fromJSON(results_json)
+# Process the response
+results_raw <- fromJSON(rawToChar(results_json$content)) 
+results <- as.data.frame(results_raw)
 print( results )
 
 #################################
@@ -138,21 +156,29 @@ rm( list = Filter( exists, c("input_json") ) )
 rm( list = Filter( exists, c("results_json") ) )
 rm( list = Filter( exists, c("results") ) )
 
-# Set citations mode
+# Reset option mode
 mode <- "citations"		
 
-# Reform the options json again
+# Rebuild the options json
 opts <- data.frame(c(mode))
 names(opts) <- c("mode")
 opts_json <- jsonlite::toJSON(opts)
 opts_json <- gsub('\\[','',opts_json)
 opts_json <- gsub('\\]','',opts_json)
 
-# Make the options + data JSON
-input_json <- paste0('{"opts":', opts_json, ',"data":', data_json, '}' )
+# Prepare the complete json body
+input_json <- paste0('{"opts":', opts_json, '}' )
 
-# Send the request again
-results_json <- postForm(url, .opts=list(postfields= input_json, httpheader=headers))
+# Send the request
+results_json <- POST(url = url,
+	add_headers('Content-Type' = 'application/json'),
+	add_headers('Accept' = 'application/json'),
+	add_headers('charset' = 'UTF-8'),
+	body = input_json,
+	encode = "json"
+)
 
-results <-jsonlite::fromJSON(results_json)
+# Process the response
+results_raw <- fromJSON(rawToChar(results_json$content)) 
+results <- as.data.frame(results_raw)
 print( results )

@@ -42,9 +42,9 @@ $base_url = "https://bien.nceas.ucsb.edu/nsrdev/nsr_wsb.php"; 	# Dev.new
 //	Options: resolve*|parse|meta
 // 	E.g., $mode="parse"
 $mode="resolve";	# Resolve native status
-$mode="meta";		# Return metadata on NSR & sources
-$mode="sources";		# List NSR sources
-$mode="citations";		# Return citations for NSR & sources
+// $mode="meta";		# Return metadata on NSR & sources
+// $mode="sources";		# List NSR sources
+// $mode="citations";		# Return citations for NSR & sources
 
 //
 // Display options
@@ -75,11 +75,11 @@ $opts_arr = array(
 );
 
 ///////////////////////////////
-// Make data array
+// Prepare the json request body
 ///////////////////////////////
 
 if ($mode=="resolve") {
-	// Import csv data and convert to array
+	// Import csv data and convert to data array
 	$data_arr = array_map('str_getcsv', file($DATADIR.$inputfilename));
 
 	# Get subset
@@ -100,30 +100,23 @@ if ($mode=="resolve") {
 			echo "\r\n";
 		}
 	}
+	
+	$input_json = json_encode(array('opts' => $opts_arr, 'data' => $data_arr));	
 } else {
-	$data_arr=array();
+	//$data_arr=array();
+	$input_json = json_encode(array('opts' => $opts_arr));	
 }
 
-// // Convert to JSON
-//$json_data = json_encode($data_arr);	
-
-///////////////////////////////
-// Merge options and data into 
-// json object for post
-///////////////////////////////
-
-$json_data = json_encode(array('opts' => $opts_arr, 'data' => $data_arr));	
-
-// Echo the JSON
+// Echo the JSON body
 echo "The JSON input for the API:\r\n";
-echo $json_data . "\r\n\r\n";
+echo $input_json . "\r\n\r\n";
 
 ///////////////////////////////
 // Decompose the JSON into opt 
 // and data (for display)
 ///////////////////////////////
 
-$input_array = json_decode($json_data, true);
+$input_array = json_decode($input_json, true);
 
 if ($disp_combined_array) {
 	echo "The combined array:\r\n";
@@ -151,7 +144,7 @@ if ($disp_opts) {
 if ($disp_json_data) {
 	// Echo the final JSON post data
 	echo "API input (options + raw data converted to JSON):\r\n";
-	echo $json_data . "\r\n\r\n";
+	echo $input_json . "\r\n\r\n";
 }
 
 ///////////////////////////////
@@ -159,13 +152,13 @@ if ($disp_json_data) {
 ///////////////////////////////
 
 $url = $base_url;    
-$content = $json_data;
+$content = $input_json;
 
 // Initialize curl & set options
 $ch = curl_init($url);	
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);	// Return response (CRITICAL!)
 curl_setopt($ch, CURLOPT_POST, 1);	// POST request
-curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);	// Attach the encoded JSON
+curl_setopt($ch, CURLOPT_POSTFIELDS, $input_json);	// Attach the encoded JSON
 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json')); 
 
 // Execute the curl API call

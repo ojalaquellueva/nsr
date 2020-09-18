@@ -12,19 +12,19 @@ Author: Brad Boyle (bboyle@email.arizona.edu)
 - [Example scripts](#example-scripts)
 - [Software requirements](#software)
 - [Installation](#installation)
-  - [Database and batch application](#core)
-  - [APIs](#wsi)
+  - [Database and batch application](#install-core)
+  - [API](#install-api)
 - [Usage](#usage)
   - [Build NSR database](#db)
   - [Command Line (NSR Batch)](#batch)
      - [Input](#input)
      - [Output](#output)
-  - [Simple API](#simple-api)
-  - [Batch API](#batch-api)
-     - [Input](#batch-api-input)
-     - [Output](#batch-api-output)
-     - [Examples](#batch-api-examples)
+  - [NSR API](#api)
+     - [Input](#api-input)
+     - [Output](#api-output)
+     - [API examples](#api-examples)
 - [Native Status Codes](#status-codes)
+
 
 <a name="overview"></a>
 ## Overview
@@ -56,10 +56,9 @@ The NSR database is a MySQL database populated with one or more taxonomic countr
 
 The NSR can be accessed via the following interfaces:
 
-* [NSR Batch Application](#nsr-batch). The NSR can be accessed locall via the command line by calling `nsr_batch.php`. 
-* [NSR Simple API](#simple-api). The NSR Simple API supports url-encoded requests to the NSR. It supports one taxon + political division combination per call. Results are returned as JSON or XML.
-* [NSR Batch API](#nsr-batch). The NSR Batch API supports requests of up to 5000 taxon + political division combinations per call. Request must be sent as JSON-encoded POST data. Results are returned as JSON.
-* [RNSR R Package](#rnsr). The RNSR R package provides a simplified interface to the [NSR Batch API](#nsr-batch) via a family of R language functions. As with the parent API, it support up to 5000 taxon + political division combinations per call. RNSR can be downloaded from repository `https://github.com/EnquistLab/RNSR`.
+* [NSR Batch Application](#batch). The NSR can be accessed locall via the command line by calling `nsr_batch.php`. 
+* [NSR API](#api). The NSR Batch API supports requests of up to 5000 taxon + political division combinations per call. Request must be sent as JSON-encoded POST data. Results are returned as JSON.
+* [RNSR R Package](https://github.com/EnquistLab/RNSR). The RNSR R package provides a simplified interface to the [NSR Batch API](#batch) via a family of R language functions. As with the parent API, it support up to 5000 taxon + political division combinations per call. RNSR can be downloaded from repository https://github.com/EnquistLab/RNSR.
 
 <a name="scripts"></a>
 ## Top-level scripts
@@ -77,29 +76,19 @@ The NSR can be accessed via the following interfaces:
 - Requires shell access to this server  
 - Called by `nsr_wsb.php`
 
-#### `nsr_ws.php`   
-- NSR Simple API
-- Processes on observation (taxon + political division) per call  
-- Calls `nsr.php`
-
 #### `nsr_wsb.php`   
-- NSR batch API
+- NSR API
 - Processes up to 5000 observations per call  
-- Calls `nsr_batch.php`
-
-#### `nsr_wsb.php`   
-- NSR batch API
-- Processes multiple observations per call  
 - Calls `nsr_batch.php`
 
 <a name="example-scripts"></a>
 ## Example Scripts
 
 #### `nsr_api_example.php`   
-- Example of calling the NSR Batch API using PHP
+- Example of calling the NSR API using PHP
 
 #### `nsr_api_example.R`   
-- Example of calling the NSR Batch API using R
+- Example of calling the NSR API using R
 
 <a name="software"></a>
 ## Software requirements
@@ -113,7 +102,7 @@ The NSR can be accessed via the following interfaces:
 
 The following steps assume two installations: one in public_html for the web service, and a second installation elsewhere in the file system for creating the database and running the batch applications. Other configurations may be used as well.
 
-<a name="core"></a>
+<a name="install-core"></a>
 ### Database and batch application
 1. Clone this repository to location of choice, using recursive option to include submodules:
 
@@ -136,8 +125,8 @@ rm nsr_ws.php
 rm nsr_wsb.php
 ```
 
-<a name="wsi"></a>
-### NSR API
+<a name="install-api"></a>
+### API
 
 The following instructions assume:
 * NSR database is installed and configured as described above
@@ -167,7 +156,7 @@ rm nsr_batch.php
 
 ### <a name="db"></a>Build NSR database
 
-See separate repository `https://github.com/ojalaquellueva/nsr_db` for details.
+See separate repository `https://github.com/ojalaquellueva/nsr_db`.
 
 <a name="batch"></a>
 ### Command Line (NSR Batch)
@@ -245,53 +234,17 @@ The NSR batch application returns original rows and values as submitted, plus co
 | isIntroduced	| Simplified overall native status (1=introduced;  0=native; blank=status unknown)
 | isCultivatedNSR	| Species is known to be cultivated in declared region  (1=cultivated;  0=wild or status unknown)
 
-<a name="status-codes"></a>
-#### Native Status Codes
+<a name="api"></a>
+### NSR API
 
-For each observation (taxon + political division combination)submitted, the NSR returns one of the following native status codes: 
+The NSR API offers four modes (api routes): "resolve", "meta", "sources", "citations". As with the command line core service, `nsr_batch.php`, the API resolve mode resolves native status for batches of taxon observations. The remaining three modes return metadata about NSR checklist sources and the NSR itself. Mode "meta" returns version information for NSR source code and database. Mode "sources" returns information on all checklist sources (except for literature citations). Mode "citations" returns bibtex-formatted literature citations (if available) for NSR checklist sources. 
 
-| Native status code	| Meaning 
-| --------- | -------------------
-| P	| Present in checklist for region of observation but no explicit status assigned
-| N	| Native to region of observation
-| Ne | Native and endemic to region of observation
-| A	 | Absent from all checklists for region of observation
-| I	| Introduced, as declared in checklist for region of observation
-| Ie | Endemic to other region and therefore introduced in region of observation
-| UNK | Unknown; no checklists available for region of observation and taxon not endemic elsewhere
+In resolve mode, the NSR API accepts & processes up to 5000 observations in a single call. Request data must be JSON-encoded and sent as a POST request, with HTTP header set to "Content-Type: application/json". Results are returned as JSON. See [Input](#batch-api-input) for a description of input file format. Use of the API is best understood by examining the PHP and R example files (see [Batch API Examples](#batch-api-examples).
 
-<a name="simple-api"></a>
-### Simple API
-
-The NSR Simple API supports simple url-encoded requests to the NSR. Only one observation (taxon + political division) is supported per call.
-
-Syntax:  
-
-```
-[base_url]/nsr/nsr_ws.php?species=[Genus]%20[specific_epithet]&country=[country]&stateprovince=[state_province]&countyparish=[county_parish]&format=[output_format]
-```
-
-Example: 
-
-```
-https://bien.nceas.ucsb.edu/nsr/nsr_ws.php?species=Pinus%20ponderosa&country=United%20States&stateprovince=Arizona&countyparish=Pima&format=json
-```
-
-Notes:  
-* Parameters stateprovince, county parish and format are optional  
-* Output format: xml (default),  json   
-
-<a name="batch-api"></a>
-### Batch API
-
-The NSR batch API offers four modes (api routes): "resolve", "meta", "sources", "citations". As with the command line core service, `nsr_batch.php`, the batch API resolve mode resolves native status for batches of taxon observations. The remaining three modes return metadata about NSR checklist sources and the NSR itself. Mode "meta" returns version information for NSR source code and database. Mode "sources" returns information on all checklist sources (except for literature citations). Mode "citations" returns bibtex-formatted literature citations (if available) for NSR checklist sources. 
-
-In resolve mode, the NSR batch API accepts & processes up to 5000 observations in a single call. Request data must be JSON-encoded and sent as a POST request, with HTTP header set to "Content-Type: application/json". Results are returned as JSON. See [Input](#batch-api-input) for a description of input file format. Use of the API is best understood by examining the PHP and R example files (see [Batch API Examples](#batch-api-examples).
-
-<a name="batch-api-input"></a>
+<a name="api-input"></a>
 #### Input
 
-Raw input for the Batch API is similar to the input format for the NSR Batch Application (see above), with the addition of option unique ID column ("`user_id`") as the last column. This ID is returned unchanged in the NSR results. The advantage of including a unique ID for each row is that it allows you to link the NSR results back to your original data by joining on a single column instead of four columns. Although the values in column `user_id` are optional, you must include this column, even if it is blank.
+Raw input for the API is similar to the input format for the NSR Batch Application (see above), with the addition of option unique ID column ("`user_id`") as the last column. This ID is returned unchanged in the NSR results. The advantage of including a unique ID for each row is that it allows you to link the NSR results back to your original data by joining on a single column instead of four columns. Although the values in column `user_id` are optional, you must include this column, even if it is blank.
 
 ```
 taxon,country[,state_province[,county_parish]][, user_id]]  
@@ -309,15 +262,15 @@ Eucalyptus,Mexico,,,5
 Larrea tridentata,Mexico,,,6
 ```
 
-<a name="batch-api-output"></a>
+<a name="api-output"></a>
 #### Output
 
-Batch API output is similar to the [NSR Batch command line application output](#output), with the addition of the (optional) column `user_id` (see [Batch API Input Format](#batch-api-input)). See also [Native Status Codes](#native-status-codes).
+NSR API output is similar to the [NSR Batch command line application output](#output), with the addition of the (optional) column `user_id` (see [API Input Format](#api-input)). See also [Native Status Codes](#status-codes).
 
-<a name="batch-api-examples"></a>
-#### Batch API Examples
+<a name="api-examples"></a>
+#### API Examples
 
-The following scripts provide examples of calling the NSR Batch API using PHP and R:
+The following scripts provide examples of calling the NSR API using PHP and R:
 
 * ***`nsr_api_example.php`***
    * To run this example, you will need input file `nsr_testfile.csv` in directory `data/user/`.
@@ -327,3 +280,19 @@ The following scripts provide examples of calling the NSR Batch API using PHP an
 Both scripts load the following example file as input data:
 
 * ***`data/user/nsr_testfile.csv`***
+
+<a name="status-codes"></a>
+## Native Status Codes
+
+For each observation (taxon + political division combination)submitted, the NSR returns one of the following native status codes: 
+
+| Native status code	| Meaning 
+| --------- | -------------------
+| P	| Present in checklist for region of observation but no explicit status assigned
+| N	| Native to region of observation
+| Ne | Native and endemic to region of observation
+| A	 | Absent from all checklists for region of observation
+| I	| Introduced, as declared in checklist for region of observation
+| Ie | Endemic to other region and therefore introduced in region of observation
+| UNK | Unknown; no checklists available for region of observation and taxon not endemic elsewhere
+

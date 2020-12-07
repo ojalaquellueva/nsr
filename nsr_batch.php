@@ -2,18 +2,18 @@
 
 ///////////////////////////////////////////////////////////////////////////
 /*
-Native Status Resolver (NSR)
+NSR batch processing service
 
-Basic NSR batch processing service
-For each valid combination of species+country+state_province+county_parish
-Returns and evaluation of native status
-Return format is tab-delimitted
+For each combination of species+country+state_province+county_parish
+returns an evaluation of native status
 
-To execute, run /var/www/bien/apps/nsr/nsr_batch.php
+Usage:
+php nsr_batch.php -f="PATH_TO_FILE/FILENAME" [-e=true*|false] [-i=true|false*]  [-l=unix|mac*|win] [-t=csv*|tab] [-r=true|false*]
 
-Input: CSV file, "nsr_input.csv" in /var/www/bien/apps/nsr/data/
+Ouput:
+Tab-delimitted file, "FILENAME_nsr_results.txt", in same directory os input file
 
-Columns:
+Input file columns:
 family - optional
 genus - optional, but required if species present
 species - required; species or lower level taxon such as variety; NO AUTHORITY
@@ -22,7 +22,6 @@ state_province - optional, but required if county_parish present
 county_parish - optional
 user_id - optional; INTEGER UNSIGNED
 
-Returns: tab-delimited file, "nsr_results.txt", in /var/www/bien/apps/nsr/data/
 */ 
 ///////////////////////////////////////////////////////////////////////////
 

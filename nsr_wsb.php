@@ -193,6 +193,7 @@ if ( $mode=="resolve" || $mode=="" ) { 	// BEGIN mode_if
 	$data_dir_tmp_full = $data_dir_tmp . "/";
 	$cmd="php nsr_batch.php -e=false -i=false -f='$filename_tmp' -d='$data_dir_tmp_full' -l=unix -t=csv -r=true";
 
+	// Execute the nsr_batch command
 	exec($cmd, $output, $status);
 	if ($status) {
 		$err_msg="ERROR: nsr_batch exit status: $status\r\n";
@@ -215,7 +216,7 @@ if ( $mode=="resolve" || $mode=="" ) { 	// BEGIN mode_if
 
 } elseif ( $mode=="meta" ) { // CONTINUE mode_if 
 	$sql="
-	SELECT db_version, build_date, code_version
+	SELECT db_version, build_date, code_version, api_core_version_compatible
 	FROM meta
 	;
 	";

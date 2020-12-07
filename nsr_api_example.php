@@ -27,12 +27,12 @@ $inputfilename = "nsr_testfile.csv";
 // Number of lines to import
 // Start with a very small number for testing
 // Set to large number to impart entire file
-$lines = 1000;
+$lines = 5;
 
 // api base url 
 $base_url = "https://bien.nceas.ucsb.edu/nsr/nsr_wsb.php";	# Prod
-//$base_url = "https://bien.nceas.ucsb.edu/nsrdev/nsr_wsb.php"; 	# Dev
-$base_url = "https://bien.nceas.ucsb.edu/nsrdev/nsr_wsb.php"; 	# Dev.new
+//$base_url = "https://bien.nceas.ucsb.edu/nsrdev/nsr_wsb.new.php"; # testing
+$base_url = "https://bien.nceas.ucsb.edu/nsrdev/nsr_wsb.php"; 	# Dev
 
 //
 // NSR options

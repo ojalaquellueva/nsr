@@ -5,7 +5,7 @@
 // to results file in data directory
 //////////////////////////////////////////////////////
 
-include "dbw_open.php";
+include $APP_DIR . "dbw_open.php";
 
 if ($echo_on) echo "Exporting results to '$resultsfile'...";
 
@@ -18,6 +18,6 @@ $cmd="sed -i 's/NULL//g' $resultsfile";
 exec($cmd);
 if ($echo_on) echo $done;
 
-include "db_close.php";
+include $APP_DIR . "db_close.php";
 
 ?>

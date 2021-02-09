@@ -4,9 +4,10 @@
 // Include paths and filenames
 //////////////////////////////////////////////////
 
-// $BASE_DIR & $APP_DIR are server specific and therefore kept in 
 // server_config.php in parent directory, outside repo
-include "../config/server_config.php";
+// Path to server_config file in config directory
+// Parameters $BASE_DIR & $APP_DIR (see below) are set in this file
+include dirname(__FILE__) . "/../config/server_config.php";
 
 // dir where db user & pwd file kept
 // Should be outside application directory and html directory

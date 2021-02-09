@@ -1,6 +1,6 @@
 <?php
 
-include "dbw_open.php";
+include $APP_DIR . "dbw_open.php";
 
 if ($echo_on)  echo "Updating observations from cache...";
 // Transfer results from cache to observation table
@@ -73,5 +73,5 @@ AND $JOB_WHERE
 sql_execute_multiple($dbh, $sql);
 if ($echo_on)  echo $done;
 
-include "db_close.php";
+include $APP_DIR . "db_close.php";
 ?>

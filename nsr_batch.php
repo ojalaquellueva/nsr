@@ -149,7 +149,7 @@ if (count($pizza)>1) {
 } else {
 	$ext = '';
 }
-$resultsfilename = str_replace($ext,'',$inputfilename) . "_nsr_results.txt";
+$resultsfilename = str_replace($ext,'',$inputfilename) . "_nsr_results.tsv";
 $resultsfile = $data_dir.$resultsfilename;
 
 // Replace cache?
@@ -179,6 +179,7 @@ if ($interactive) {
 Run NSR batch application with following parameters:
 	
 NSR database: $DB
+Data directory: $data_dir
 Input file: $inputfilename
 File type: $filetype
 Results file: $resultsfilename

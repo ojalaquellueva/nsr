@@ -10,33 +10,10 @@ if (isset($batch)) {
 }
 
 // insert the raw records
-/*
-$sql="
-INSERT INTO observation (
-job,
-batch,
-family,
-genus,
-species,
-country,
-state_province,
-county_parish,
-user_id
-)
-SELECT 
-'$job',
-$curr_batch,
-family,
-genus,
-species,
-country,
-state_province,
-county_parish,
-user_id
-FROM observation_raw
-;
-";
-*/
+// Note that column batch must be left NULL when observations first inserted
+// Batch numbers are assigned at time of processing
+// Inserting a batch number at this stage will cause entire
+// job to be processed as one batch!
 $sql="
 INSERT INTO observation (
 job,
@@ -49,7 +26,7 @@ user_id
 )
 SELECT 
 '$job',
-$curr_batch,
+NULL,
 species,
 country,
 state_province,

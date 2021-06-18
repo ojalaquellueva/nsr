@@ -196,17 +196,28 @@ Notes:
 <a name="input"></a>
 #### Input
 
-The NSR accepts as input a plain text file containing one or more observations of taxon in political division, formatted as follows (optional values in square brackets; if county_parish is included, state_province must be included as well):  
+The NSR accepts as input a plain text file containing a header plus one or more observations of taxon in political division, formatted as follows (optional values in square brackets; if county_parish is included, state_province must be included as well):  
 
 ```
-taxon,country[,state_province[,county_parish]]  
+taxon,country,state_province,county_parish,user_id
+taxon,country[,state_province[,county_parish]][, user_id]]  
+taxon,country[,state_province[,county_parish]][, user_id]]  
+taxon,country[,state_province[,county_parish]][, user_id]]  
 ```
+
+The first line must be the header. Actual column names are ignored as this line is discarded. However, if you leave out the header, the first line of data will be ignored. 
 
 Taxon names can be of any of the following ranks: family, genus, species, subspecies, variety, forma. Do not include authors.
 
-Spellings of political division names in the NSR database are the plain ascii (unaccented) versions of English-language political division names in Geonames (`www.geonames.org`). Political division names in user input should therefore be standardized according to the same standard. 
+Spellings of political division names in the NSR database are the plain ascii (unaccented) versions of English-language political division names in Geonames (`www.geonames.org`). Political division names in user input should therefore be standardized according to the same standard. Although state_province and county_parish are both optional, if county is included its containing state_province must also be present. 
 
-Below is an example of an input file suitable processing with the NSR Batch application:
+Optional user_id can be used to include a single-column unique identifier for each line. Such identifiers simplify joining NSR results back to the user's original dataset.
+
+Although optional columns can be left blank, column numbers are fixed. For example, user_id is always the fifth column. Although the fields populated can vary among rows, the input file must have the same number of columns per line. The following examples should clarify these requirements.
+
+##### Example input files
+
+Below is an example of a valid input file, suitable for processing with NSR Batch:
 
 ```
 taxon,country,state_province,county_parish
@@ -216,7 +227,30 @@ Abrothallus bertianus,Austria,,
 Cocos nucifera,Jamaica,,
 Eucalyptus,Mexico,,
 Larrea tridentata,Mexico,,
+```
 
+The same example as above, with user_id included:
+
+```
+taxon,country,state_province,county_parish,user_id
+Pinus ponderosa,United States,Arizona,Pima,1
+Eucalyptus,Australia,Western Australia,,2
+Abrothallus bertianus,Austria,,,3
+Cocos nucifera,Jamaica,,,4
+Eucalyptus,Mexico,,,5
+Larrea tridentata,Mexico,,,6
+```
+
+Another example of a valid input file, containing taxon names and countries only:
+
+```
+taxon,country
+Pinus ponderosa,United States
+Eucalyptus,Australia
+Abrothallus bertianus,Austria
+Cocos nucifera,Jamaica
+Eucalyptus,Mexico
+Larrea tridentata,Mexico
 ```
 
 <a name="output"></a>
@@ -245,13 +279,13 @@ In resolve mode, the NSR API accepts & processes up to 5000 observations in a si
 <a name="api-input"></a>
 #### Input
 
-Raw input for the API is similar to the input format for the NSR Batch Application (see above), with the addition of option unique ID column ("`user_id`") as the last column. This ID is returned unchanged in the NSR results. The advantage of including a unique ID for each row is that it allows you to link the NSR results back to your original data by joining on a single column instead of four columns. Although the values in column `user_id` are optional, you must include this column, even if it is blank.
+Raw input for the API are similar to those of the NSR Batch Application (see above). The only difference is that you must include placeholders for all five columns, even if optional columns are left blank.
 
 ```
-taxon,country[,state_province[,county_parish]][, user_id]]  
+taxon,country,[state_province],[county_parish],[user_id]]  
 ```
 
-An example input file is shown below. Note that first line must be the header. If you leave out the header, the first line of data will be ignored. 
+An example input file is shown below. The first line must be the header. If you leave out the header, the first line of data will be ignored. 
 
 ```
 taxon,country,state_province,county_parish,user_id

@@ -68,8 +68,16 @@ $err_code=0;
 $err_msg="";
 $err=false;
 
-// Make sure that request is a POST
-if (strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') != 0) {
+// Make sure request is a pre-flight request or POST
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+	// Send pre-flight response and quit
+	//header("Access-Control-Allow-Origin: http://localhost:3000");	// Dev
+	header("Access-Control-Allow-Origin: *"); // Production
+	header("Access-Control-Allow-Methods: POST, OPTIONS");
+	header("Access-Control-Allow-Headers: Content-type");
+	header("Access-Control-Max-Age: 86400");
+	exit;
+} else if (strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') != 0) {
 	$err_msg="ERROR: Request method must be POST\r\n"; 
 	$err_code=400; goto err;
 }

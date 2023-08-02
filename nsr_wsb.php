@@ -34,9 +34,12 @@ $results_filename = $basename . "_nsr_results.tsv";
 // Functions
 ///////////////////////////////////
 
-// Load a tab separated text file as array
-// Use option $load_keys=true only if file has header
 function load_tabbed_file($filepath, $load_keys=false) {
+	//////////////////////////////////////////////////////
+	// Load a tab separated text file as array
+	// Use option $load_keys=true only if file has header
+	//////////////////////////////////////////////////////
+
     $array = array();
  
     if (!file_exists($filepath)){ return $array; }
@@ -58,6 +61,21 @@ function load_tabbed_file($filepath, $load_keys=false) {
     return $array;
 }
 
+function send_response($status, $body) {
+	/////////////////////////////////////////////////////
+	// Send the POST response, with either data or error 
+	// message in body. Body MUST be json.
+	// 'Access-Control-Allow-Origin' enables CORS
+	/////////////////////////////////////////////////////
+
+	header("Access-Control-Allow-Origin: *");
+	header('Content-type: application/json');
+	http_response_code($status);
+	echo $body;
+}
+
+
+
 ///////////////////////////////////
 // Receive & validate the POST request
 ///////////////////////////////////
@@ -68,7 +86,7 @@ $err_code=0;
 $err_msg="";
 $err=false;
 
-// Make sure request is a pre-flight request or POST
+// Must be pre-flight request or POST
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 	// Send pre-flight response and quit
 	//header("Access-Control-Allow-Origin: http://localhost:3000");	// Dev
@@ -250,6 +268,10 @@ if ( $mode=="resolve" || $mode=="" ) { 	// BEGIN mode_if
 	include("qy_db.php");
 }	// END mode_if
 
+///////////////////////////////////
+// Prepare the JSON response 
+///////////////////////////////////
+
 $results_json = json_encode($results_array);
 
 # Special handling for bibtex newlines
@@ -258,11 +280,12 @@ if ($mode=="citations") {
 }
 
 ///////////////////////////////////
-// Echo the results
+// Send the response
 ///////////////////////////////////
 
-header('Content-type: application/json');
-echo $results_json;
+// Status ($err_code) should be 200
+send_response($err_code, $results_json);
+exit;
 
 ///////////////////////////////////
 // Error: return http status code

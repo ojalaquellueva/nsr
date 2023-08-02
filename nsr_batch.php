@@ -234,12 +234,13 @@ include 'db_batch_connect.php';
 // Process observations not in cache, if any, then add to cache
 // Do only if >=1 observations not in cache
 $sql="
-SELECT COUNT(*) AS rows
+SELECT COUNT(*) AS `rows`
 FROM observation
 WHERE $JOB_WHERE_NA 
 AND is_in_cache=0
 ;
 ";
+
 //$result = mysqli_query($dbh, $sql);	
 //$num_rows = mysqli_num_rows($result);
 $num_rows = sql_get_first_result($dbh, $sql,'rows');

@@ -28,7 +28,7 @@ $basename = uniqid(rand(), true);
 $filename_tmp = $basename . '.csv';
 
 // Results file name
-$results_filename = $basename . "_nsr_results.tsv";
+$results_filename = $basename . "_nsr_results.txt";
 
 ///////////////////////////////////
 // Functions
@@ -40,9 +40,6 @@ function load_tabbed_file($filepath, $load_keys=false) {
     $array = array();
  
     if (!file_exists($filepath)){ return $array; }
-//     if (!file_exists($filepath)){ 
-//     	return "ERROR! File $filepath not found"; 
-//     }
     $content = file($filepath);
  
     for ($x=0; $x < count($content); $x++){
@@ -243,6 +240,13 @@ if ( $mode=="resolve" || $mode=="" ) { 	// BEGIN mode_if
 }	// END mode_if
 
 $results_json = json_encode($results_array);
+
+
+
+$results_json = file($results_file);
+
+
+
 
 # Special handling for bibtex newlines
 if ($mode=="citations") {

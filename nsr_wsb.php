@@ -266,6 +266,28 @@ if ( $mode=="resolve" || $mode=="" ) { 	// BEGIN mode_if
 	;
 	";
 	include("qy_db.php");
+} elseif ( $mode=="country_checklists" ) { // CONTINUE mode_if 
+	$sql="
+	SELECT ps.gid_0, ps.country, group_concat(s.source_name) AS sources 
+	FROM poldiv_source ps JOIN `source` s ON ps.source_id=s.source_id 
+	WHERE ps.poldiv_type='country' 
+	GROUP BY ps.gid_0, ps.country 
+	ORDER BY ps.country
+	;
+	";
+	include("qy_db.php");
+} elseif ( $mode=="checklist_countries" ) { // CONTINUE mode_if 
+	$sql="
+	SELECT s.source_id, s.source_name, s.source_name_full as checklist_details, 
+	s.date_accessed, s.source_citation,
+	group_concat(ps.poldiv_name) AS countries
+	FROM poldiv_source ps JOIN `source` s ON ps.source_id=s.source_id 
+	WHERE ps.poldiv_type='country' 
+	GROUP BY s.source_id
+	ORDER BY s.source_id, s.source_name
+	;
+	";
+	include("qy_db.php");
 }	// END mode_if
 
 ///////////////////////////////////

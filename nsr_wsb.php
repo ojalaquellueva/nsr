@@ -137,7 +137,7 @@ if (!is_array($input_array)) {
 // Extract & validate options
 ///////////////////////////////////////////
 
-// Get options and data from JSON
+// Get options from JSON
 if ( ! ( $opt_arr = isset($input_array['opts'])?$input_array['opts']:false ) ) {
 	$err_msg="ERROR: No options specified (element 'opts' in JSON request missing)\r\n";	
 	$err_code=400; goto err;
@@ -193,7 +193,7 @@ if ( $mode=="resolve" || $mode=="" ) { 	// BEGIN mode_if
 	if ($rows==0) {
 		$err_msg="ERROR: No data rows!\r\n"; $err_code=400; goto err; 
 	}
-
+	
 	///////////////////////////////////////////
 	// Save data array as CSV file,
 	// to be used as input for NSR batch 

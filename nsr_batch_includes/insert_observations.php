@@ -27,10 +27,10 @@ user_id
 SELECT 
 '$job',
 NULL,
-species,
-country,
-state_province,
-county_parish,
+TRIM(species),
+TRIM(country),
+TRIM(state_province),
+TRIM(county_parish),
 user_id
 FROM observation_raw
 ;

@@ -1,184 +1,278 @@
 ###############################################
-# Example use of NSR Batch API
-# By: Brad Boyle (bboyle@email.arizona.edu)
-# Date: 6 Feb. 2019
-# Last updated: 15 Sep. 2020
-# Compatible with NSR version: 2.3+
+# R NSR API Example
 ###############################################
 
-# Base url for NSR Batch API
-# url = "https://nsrapi.xyz/nsr_wsb.php"								# Production (domain name)
-# url = "https://bien.nceas.ucsb.edu/nsr/nsr_wsb.php"		# Production (server name)
+rm(list=ls())
 
-# Only development URL currently working
-url = "https://bien.nceas.ucsb.edu/nsrdev/nsr_wsb.php"		# Development (nimoy)
+#################################
+# Parameters & libraries
+#################################
 
-# Load libraries
+##################
+# Base URL
+##################
+
+url = "https://bien.nceas.ucsb.edu/nsr/nsr_wsb.php"
+
+##################
+# Libraries
+##################
+
 library(httr)		# API requests
 library(jsonlite) # JSON coding/decoding
 
-# Read in example file of taxon observations
-# See the BIEN website for details on how to organize an 
-# NSR input file a:
+##################
+# Test data
+##################
+
+# Test data
+# For details on how to organize an NSR input file, see:
 # http://bien.nceas.ucsb.edu/bien/tools/nsr/batch-mode/
-example_file <- "nsr_testfile.csv"
-obs <- read.csv( example_file, header=TRUE)
+example_file <- "https://bien.nceas.ucsb.edu/bien/wp-content/uploads/2023/06/nsr_testfile.csv"
 
-# Inspect the input
-obs
+# Set TRUE to use sample of 10 rows of data, FALSE to use all
+data.use.sample <- FALSE
 
-# Convert to JSON
-#data_json <- toJSON(unname(split(obs, 1:nrow(obs))))
-data_json <- toJSON(unname(obs))
+##################
+# Misc parameters
+##################
+
+# API variables to clear before each API call
+# Avoids spillover between calls
+api_vars <- c("mode")
+
+# Response variables to clear before each API call
+# Avoids confusion with previous results if API call fails
+response_vars <- c("request_json", "response_json", "response")
+
+#################################
+# Functions
+#################################
+
+make_request_json <- function( 
+	mode,				# API mode; required
+	data=NULL 	# Raw data; required if mode=='resolve'
+	) {
+	######################################
+	# Accepts: options parameters and (optionally) data
+	# Returns: formatted JSON api request
+	######################################
+	
+	# Set defaults if applicable
+	if ( mode=="resolve"  )  {
+		# Convert raw data to JSON
+		if (is.null(data) ) stop("ERROR: mode 'resolve' requires data!\n")
+		data_json <- jsonlite::toJSON(unname(data))
+	} 
+	
+	opts <- data.frame(mode = mode)
+	opts_json <-  jsonlite::toJSON(opts)
+	opts_json <- gsub('\\[','',opts_json)
+	opts_json <- gsub('\\]','',opts_json)
+	
+	# Combine the options and data into single JSON object
+	if ( mode=="resolve" ) {
+		input_json <- paste0('{"opts":', opts_json, ',"data":', data_json, '}' )
+	} else {
+		input_json <- paste0('{"opts":', opts_json, '}' )
+	}
+	
+	return(input_json)
+}
+
+send_request_json <- function( url, request_json ) {
+	###################################
+	# Accepts: API url + JSON options & data
+	# Sends: POST request to url, with JSON
+	#		attached to body
+	# Returns: JSON response
+	###################################
+	if ( is.null(url) || is.na(url) ) {
+		stop("ERROR: parameter 'url' missing (function send_request_json()'\n")
+	}
+	if ( is.null(request_json) || is.na(request_json) ) {
+		stop("ERROR: parameter 'json_body' missing (function send_request_json()'\n")
+	}
+	
+	response_json <- POST(url = url,
+	                  add_headers('Content-Type' = 'application/json'),
+	                  add_headers('Accept' = 'application/json'),
+	                  add_headers('charset' = 'UTF-8'),
+	                  body = request_json,
+	                  encode = "json"
+	                  )
+
+	return(response_json)
+}
+
+decode_response_json <- function( response_json, mode ) {
+	###################################
+	# Converts resonse json to data frame
+	# Also decodes weird format of NSR JSON
+	###################################
+	
+	response_raw <- fromJSON( rawToChar( response_json$content ) ) 
+	response <- as.data.frame(response_raw)
+	
+	if ( mode=="resolve") {
+		# Extra transformations needed due to weird NSR response data format
+		col.names <- response$id
+		response <- as.data.frame(t(response[,-1]))
+		colnames(response) <- col.names
+		
+		# Convert f'ing factors to character
+		factor_columns <- sapply(response, is.factor)
+		response[factor_columns] <- lapply(
+			response[factor_columns], as.character
+			)
+		# Convert numeric columns
+		response$isIntroduced <- as.integer(response$isIntroduced)
+		response$isCultivatedNSR <- as.integer(response$isCultivatedNSR)
+		
+		# Reset row numbers
+		row.names(response) <- 1:nrow(response)
+	} else {
+		# Unnest
+		response <- response[[1]]
+	}
+	
+	return( response )
+}
+
+get_request <- function(
+		url, 					# Required
+		mode,				# Required
+		data=NULL 	# Raw data; required if mode=='resolve)
+	) {
+	######################################
+	# Accepts: options parameters and (optionally) data
+	#		required for API request
+	# Sends: POST request to API
+	# Returns: response formatted as data frame
+	# 
+	# Meta-function which combine functions 
+	# make_request_json, send_request_json & 
+	# decode_response_json. See component 
+	# functions for details
+	######################################
+	if ( is.null(url) || is.na(url) ) {
+		stop("ERROR: parameter 'url' missing (function get_request()'\n")
+	}
+	if ( is.null(mode) || is.na(mode) ) {
+		stop("ERROR: parameter 'mode' missing (function get_request()'\n")
+	}
+
+	request_json <- make_request_json(
+		mode=mode,
+		data= data 
+		)
+	response_json <- send_request_json( url, request_json )
+	response_df <- decode_response_json( response_json, mode=mode )
+	
+	# if ( ncol(response_df)==1 ) {
+		# colnames(response_df) <- "error"
+		# response_df$http_status <- response_json$status
+	# }
+
+	return( response_df )
+}
+
+specify_decimal <- function(x, k) {
+	# Set fixed number of decimals
+	if ( is.na(x) || is.null(x) ) {
+		x.formatted <- x
+	} else {
+		x.formatted <- format(round(x, k), nsmall=k)
+	}
+	return( x.formatted )
+}
+
+#################################
+# Selected metadata checks
+#
+# Available metadata calls: 
+# "meta", "sources", "citations", "checklist_countries", "country_checklists"
+# print(response) to see the complete results of each call
+#################################
+
+# Application version and database version
+mode <- "meta"		
+rm( list = Filter( exists, response_vars ) )
+# request_json <- make_request_json(mode=mode)
+# response_json <- send_request_json( url, request_json )
+# response <- decode_response_json(response_json)
+response <- get_request(url=url, mode=mode)
+db_version  <- response$db_version
+db_date   <- response$build_date
+if( "app_version" %in% colnames(response) ) {
+	app_version  <- response$app_version
+} else {
+	app_version  <- response$code_version
+}
+
+# Available sources
+mode <- "sources"		
+rm( list = Filter( exists, response_vars ) )
+response <- get_request(url=url, mode=mode)
+source.details <- response
+
+# App and source citations
+mode <- "citations"		
+rm( list = Filter( exists, response_vars ) )
+citations <- get_request(url=url, mode=mode)
+
+# Display results
+cat("NSR version: ", app_version, "\n")
+cat("DB version: ", db_version, " (", db_date, ")\n")
+cat("Checklists:\n")
+print(source.details, row.names=FALSE)
+cat("Citations:")
+print(citations, row.names=FALSE)
+
+#################################
+# Load test data
+#################################
+
+data <- read.csv(example_file, header=TRUE)
+if (data.use.sample==TRUE) data <- head(data, 10) # Just a sample
+cat("Raw data:\n")
+print(data)
 
 #################################
 # Example 1: Resolve mode
 #################################
 
-# Set the NSR processing option
-mode <- "resolve"		# Resolve native status of taxon observation
+# Clear existing variables
+suppressWarnings( rm( list = Filter( exists, c(response_vars, api_vars ) ) ) )
 
-# Convert the options to data frame and then JSON
-opts <- data.frame( c(mode) )
-names(opts) <- c("mode")
-opts_json <-  jsonlite::toJSON(opts)
-opts_json <- gsub('\\[','',opts_json)
-opts_json <- gsub('\\]','',opts_json)
+# Set options
+mode <- "resolve"			# Processing mode
 
-# Combine the options and data into single JSON body
-input_json <- paste0('{"opts":', opts_json, ',"data":', data_json, '}' )
-
-# Send the API request
-results_json <- POST(url = url,
-                  add_headers('Content-Type' = 'application/json'),
-                  add_headers('Accept' = 'application/json'),
-                  add_headers('charset' = 'UTF-8'),
-                  body = input_json,
-                  encode = "json")
-
-# Extract the response and convert to data frame
-results_raw <- fromJSON(rawToChar(results_json$content)) 
-results <- as.data.frame(results_raw)
-
-# Tidy up
-results <- t(results)						# Transpose
-colnames(results) = results[1,] 		# Get header names from first row
-results = results[-1, ]          			# Remove the first row.
-results <- as.data.frame(results)	# Convert to dataframe (again)
-rownames(results) <- NULL			# Reset row numbers
-
-# Inspect the results
-head(results, 10)
-
-# That's a lot of columns. Let's display one row vertically
-# to get a better understanding of the output fields
-results.t <- t(results[,2:ncol(results)]) 
-results.t <- results.t[,1,drop =FALSE]
-noquote(results.t)
-
-# Display the main results columns for all rows
-results[ , c("family", "genus", "species", "country", "state_province", "county_parish", "native_status", "isIntroduced", "native_status_sources", "native_status_reason")]
+response <- get_request(url=url, mode=mode, data=data	)
+if ( colnames(response)[1]=="error" ) {
+	print( response )
+} else {
+	print(response)
+	
+	# More compact display:
+	print(response[ , c("family", "species", "country", "state_province", "native_status", "native_status_reason", "native_status_sources")])
+}
 
 #################################
-# Example 2: Get metadata for current NSR version
+# Example 2: Country checklists
 #################################
-rm( list = Filter( exists, c("input_json") ) )
-rm( list = Filter( exists, c("results_json") ) )
-rm( list = Filter( exists, c("results") ) )
 
-# Reset option mode
-mode <- "meta"		
-
-# Rebuild the options json
-opts <- data.frame(c(mode))
-names(opts) <- c("mode")
-opts_json <- jsonlite::toJSON(opts)
-opts_json <- gsub('\\[','',opts_json)
-opts_json <- gsub('\\]','',opts_json)
-
-# Prepare the complete json body
-# Note that data are no longer needed, only options
-input_json <- paste0('{"opts":', opts_json, '}' )
-
-# Send the request
-results_json <- POST(url = url,
-	add_headers('Content-Type' = 'application/json'),
-	add_headers('Accept' = 'application/json'),
-	add_headers('charset' = 'UTF-8'),
-	body = input_json,
-	encode = "json"
-)
-
-# Process the response
-results_raw <- fromJSON(rawToChar(results_json$content)) 
-results <- as.data.frame(results_raw)
-print( results )
+mode <- "country_checklists"		
+rm( list = Filter( exists, response_vars ) )
+country.checklists <- get_request(url=url, mode=mode)
+country.checklists <- country.checklists[ order(country.checklists$gid_0), ]
+print(country.checklists)
 
 #################################
-# Example 3: Get metadata for all NSR sources
+# Example 3: Checklist countries
 #################################
-rm( list = Filter( exists, c("input_json") ) )
-rm( list = Filter( exists, c("results_json") ) )
-rm( list = Filter( exists, c("results") ) )
 
-# Reset option mode
-mode <- "sources"		
-
-# Rebuild the options json
-opts <- data.frame(c(mode))
-names(opts) <- c("mode")
-opts_json <- jsonlite::toJSON(opts)
-opts_json <- gsub('\\[','',opts_json)
-opts_json <- gsub('\\]','',opts_json)
-
-# Prepare the complete json body
-input_json <- paste0('{"opts":', opts_json, '}' )
-
-# Send the request
-results_json <- POST(url = url,
-	add_headers('Content-Type' = 'application/json'),
-	add_headers('Accept' = 'application/json'),
-	add_headers('charset' = 'UTF-8'),
-	body = input_json,
-	encode = "json"
-)
-
-# Process the response
-results_raw <- fromJSON(rawToChar(results_json$content)) 
-results <- as.data.frame(results_raw)
-print( results )
-
-#################################
-# Example 4: Get bibtex citations for all 
-# checklist sources and the NSR itself
-#################################
-rm( list = Filter( exists, c("input_json") ) )
-rm( list = Filter( exists, c("results_json") ) )
-rm( list = Filter( exists, c("results") ) )
-
-# Reset option mode
-mode <- "citations"		
-
-# Rebuild the options json
-opts <- data.frame(c(mode))
-names(opts) <- c("mode")
-opts_json <- jsonlite::toJSON(opts)
-opts_json <- gsub('\\[','',opts_json)
-opts_json <- gsub('\\]','',opts_json)
-
-# Prepare the complete json body
-input_json <- paste0('{"opts":', opts_json, '}' )
-
-# Send the request
-results_json <- POST(url = url,
-	add_headers('Content-Type' = 'application/json'),
-	add_headers('Accept' = 'application/json'),
-	add_headers('charset' = 'UTF-8'),
-	body = input_json,
-	encode = "json"
-)
-
-# Process the response
-results_raw <- fromJSON(rawToChar(results_json$content)) 
-results <- as.data.frame(results_raw)
-print( results )
+mode <- "checklist_countries"		
+rm( list = Filter( exists, response_vars ) )
+checklist.countries <- get_request(url=url, mode=mode)
+print(checklist.countries)

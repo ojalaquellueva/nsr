@@ -4,6 +4,24 @@
 // Queries database with supplied sql ($sql)
 ////////////////////////////////////////////////////////
 
+
+/*
+// For testing only
+$CONFIG_DIR="/home/boyle/bien/nsr/config/";
+include 'params.php';
+$mode="citations";
+$sql="
+SELECT s.source_id, s.source_name, s.source_name_full as checklist_details, 
+s.date_accessed, s.citation AS source_citation,
+group_concat(ps.poldiv_name) AS countries
+FROM poldiv_source ps JOIN `source` s ON ps.source_id=s.source_id 
+WHERE ps.poldiv_type='country' 
+GROUP BY s.source_id
+ORDER BY s.source_id, s.source_name
+;
+";
+*/
+
 include $CONFIG_DIR.'db_config.php';
 
 // On error, display SQL if request (turn off for production!)

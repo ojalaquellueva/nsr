@@ -246,7 +246,7 @@ if ( $mode=="resolve" || $mode=="" ) { 	// BEGIN mode_if
 } elseif ( $mode=="meta" ) { // CONTINUE mode_if 
 	$sql="
 	SELECT app_version, db_version, db_version_comments, 
-	db_version_build_date, db_full_build_date,
+	db_modified_date, db_full_build_date,
 	code_version, code_version_release_date, code_version_comments,
 	citation, publication, logo_path 
 	FROM meta

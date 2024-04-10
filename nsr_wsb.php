@@ -245,8 +245,12 @@ if ( $mode=="resolve" || $mode=="" ) { 	// BEGIN mode_if
 
 } elseif ( $mode=="meta" ) { // CONTINUE mode_if 
 	$sql="
-	SELECT db_version, build_date, code_version, api_core_version_compatible
+	SELECT app_version, db_version, db_version_comments, 
+	db_version_build_date, db_full_build_date,
+	code_version, code_version_release_date, code_version_comments,
+	citation, publication, logo_path 
 	FROM meta
+	WHERE id=(SELECT MAX(id) FROM meta)
 	;
 	";
 	include("qy_db.php");
@@ -260,9 +264,17 @@ if ( $mode=="resolve" || $mode=="" ) { 	// BEGIN mode_if
 	include("qy_db.php");
 } elseif ( $mode=="citations" ) { // CONTINUE mode_if 
 	$sql="
-	SELECT source_id, source_name, source_citation
+	SELECT 'nsr.app' AS source, citation
+	FROM meta
+	WHERE id=(SELECT MAX(id) FROM meta)
+	UNION ALL
+	-- SELECT 'nsr.pub' AS source, publication AS citation
+	-- FROM meta
+	-- WHERE id=(SELECT MAX(id) FROM meta)
+	-- UNION ALL
+	SELECT source_name AS source, citation
 	FROM source
-	WHERE source_citation IS NOT NULL AND TRIM(source_citation)<>''
+	WHERE citation IS NOT NULL AND TRIM(citation)<>''
 	;
 	";
 	include("qy_db.php");
@@ -279,7 +291,7 @@ if ( $mode=="resolve" || $mode=="" ) { 	// BEGIN mode_if
 } elseif ( $mode=="checklist_countries" ) { // CONTINUE mode_if 
 	$sql="
 	SELECT s.source_id, s.source_name, s.source_name_full as checklist_details, 
-	s.date_accessed, s.source_citation,
+	s.date_accessed, s.citation AS source_citation,
 	group_concat(ps.poldiv_name) AS countries
 	FROM poldiv_source ps JOIN `source` s ON ps.source_id=s.source_id 
 	WHERE ps.poldiv_type='country' 

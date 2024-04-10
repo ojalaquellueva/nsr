@@ -220,7 +220,7 @@ if ( $mode=="resolve" || $mode=="" ) { 	// BEGIN mode_if
 	///////////////////////////////////
 
 	$data_dir_tmp_full = $data_dir_tmp . "/";
-	$cmd="php nsr_batch.php -e=false -i=false -f='$filename_tmp' -d='$data_dir_tmp_full' -l=unix -t=csv -r=true";
+	$cmd="php nsr_batch.php -e=false -i=false -f='$filename_tmp' -d='$data_dir_tmp_full' -l=unix -t=csv -r=false";
 
 	// Execute the nsr_batch command
 	exec($cmd, $output, $status);

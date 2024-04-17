@@ -300,6 +300,22 @@ if ( $mode=="resolve" || $mode=="" ) { 	// BEGIN mode_if
 	;
 	";
 	include("qy_db.php");
+} elseif ( $mode=="dd" ) { // CONTIE mode_if 
+	$sql="
+	SELECT * 
+	FROM dd_output
+	ORDER BY ordinal_position
+	;
+	";
+	include("qy_db.php");
+} elseif ( $mode=="dd_ns" ) { // CONTIE mode_if 
+	$sql="
+	SELECT * 
+	FROM dd_native_status
+	ORDER BY ordinal_position
+	;
+	";
+	include("qy_db.php");
 }	// END mode_if
 
 ///////////////////////////////////

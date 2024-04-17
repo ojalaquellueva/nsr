@@ -4,16 +4,17 @@
 -- Table defining output columns
 DROP TABLE IF EXISTS dd_output;
 CREATE TABLE dd_output (
-col_name text not null,
+col_name varchar(50) not null,
 ordinal_position integer not null,
-data_type text default null,
-description text default null,
-PRIMARY KEY (id)
+data_type varchar(50) default null,
+description varchar(250) default null,
+PRIMARY KEY (col_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+;
 
 INSERT INTO dd_output (col_name, ordinal_position, data_type, description)
 VALUES 
-('ID',1,'Positive integer','Integer idenfier (primary key) of each observation; preserves order submitted')
+('ID',1,'Positive integer','Integer idenfier (primary key) of each observation; preserves order submitted'),
 ('family',2,'Text','Family submitted (or inferred from genus or species)'),
 ('genus',3,'Text','Genus submitted (or inferred from species)'),
 ('species',4,'Text','Species name submitted'),
@@ -32,17 +33,15 @@ VALUES
 ('is_cultivated_taxon',17,'Integer (0|1)','Is species known to be cultivated in region of observation?  (1=cultivated;  0=wild or status unknown)')
 ;
 
-ALTER TABLE `dd_output` ADD INDEX `dd_output_id_idx` (`ID`);
-ALTER TABLE `dd_output` ADD INDEX `dd_output_ordinal_position_idx` (`ordinal_position`);
-
 
 DROP TABLE IF EXISTS dd_native_status;
 CREATE TABLE dd_native_status (
-val text not null,
+val varchar(50) not null,
 ordinal_position integer not null,
-description text default null,
-PRIMARY KEY (id)
+description varchar(250) default null,
+PRIMARY KEY (val)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+;
 
 -- Table defining values of output columns with constrained vocabulary
 INSERT INTO dd_native_status (val, ordinal_position, description)
@@ -53,11 +52,7 @@ VALUES
 ('A',4,'Absent from all checklists for region of observation'),
 ('I',5,'Introduced, as declared in checklist for region of observation'),
 ('Ie',6,'Endemic to other region and therefore introduced in region of observation'),
-('UNK',7,'Unknown; no checklists available for region of observation and taxon not known to be endemic elsewhere'),
+('UNK',7,'Unknown; no checklists available for region of observation and taxon not known to be endemic elsewhere')
 ;
-
-ALTER TABLE `dd_native_status` ADD INDEX `dd_native_status_ordinal_position_idx` (`ordinal_position`);
-
-
 
 

@@ -18,14 +18,14 @@ publication,
 logo_path
 )
 VALUES (
-'2.5',
-'2.2',
-'Minor schema change of table source to match GNRS',
-'2024-04-10',
+'2.5.1',
+'2.3',
+'Add data dictionary tables',
+'2024-04-17',
 '2020-09-15',
-'2.5',
-'Merge db and core code into single repo',
-'2024-04-10',
+'2.5.1',
+'Add data dictionary API calls',
+'2024-04-17',
 '@misc{nsr.app, author = {Boyle, B. L. and Maitner, B. and Barbosa, G. C. and Rethvick, S. Y. B. and Enquist, B. J.}, journal = {Botanical Information and Ecology Network}, title = {Native Species Resolver}, year = {2024}, url = {https://nsr.biendata.org/}, note = {Accessed <date_of_access>} }',
 '',
 ''

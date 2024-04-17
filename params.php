@@ -82,7 +82,7 @@ $NBATCH=25;
 //////////////////////////////////////////////////
 
 # Option "resolve" goes to nsr_batch; other options query db directly
-$NSR_MODES = array("resolve", "meta", "sources", "citations", "checklist_countries", "country_checklists");
+$NSR_MODES = array("resolve", "meta", "sources", "citations", "checklist_countries", "country_checklists","dd", "dd_ns");
 
 # NSR checklist sources
 # Not currently used

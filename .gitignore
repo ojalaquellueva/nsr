@@ -2,4 +2,5 @@ bak/
 log/**
 db/.git_db_retired
 db/.gitmodules_db_retired
+php_utilities_bak/
 

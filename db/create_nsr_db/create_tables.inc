@@ -4,11 +4,18 @@ echo "Creating tables...";
 $sql="
 DROP TABLE IF EXISTS meta;
 CREATE TABLE meta (
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT, 
+id int unsigned auto_increment,
+app_version VARCHAR(50) DEFAULT NULL,
 db_version VARCHAR(50) DEFAULT NULL,
+db_version_comments VARCHAR(250) DEFAULT NULL,
+db_modified_date date,
+db_full_build_date date,
 code_version VARCHAR(50) DEFAULT NULL,
-build_date timestamp,
-api_core_version_compatible VARCHAR(50) DEFAULT NULL,
+code_version_comments VARCHAR(250) DEFAULT NULL,
+code_version_release_date date,
+citation text,
+publication text,
+logo_path text,
 PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ;

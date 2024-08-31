@@ -3,7 +3,7 @@
 -- of political divisions
 -- ----------------------------------------------------------
 
--- NOTE: Populating columns not yet added to pipeline! 
+/* NOT YET ADDED TO PIPELINE! */
 
 --
 -- Create the gadm spatial object identifier columns

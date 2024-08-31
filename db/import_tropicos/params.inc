@@ -112,7 +112,12 @@ $optionally_enclosed_by = " OPTIONALLY ENCLOSED BY '\"' ";  // use if text surro
 $lines_terminated_by = " LINES TERMINATED BY '\r\n' ";
 $ignore_lines = " IGNORE 1 LINES ";	// Ignore header line?
 
-////////////////////////////////////////////////////////////////////////////////////
+// In most cases the following should be blank, but you may need to import
+// as the original character set if you are getting error "Invalid utf8mb4 
+// character string". This will not affect the final table character set,
+// which should remain utf8mb4.
+$character_set = "";
+$character_set = " CHARACTER SET latin1 ";
 
 
 ?>

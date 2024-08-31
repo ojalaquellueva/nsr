@@ -73,70 +73,48 @@ sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "  Inserting state observations:\r\n";
-// Loop through each record of raw table
-$sql_native_status="
-SELECT * FROM $tbl_raw;
-";
-
-$result = mysqli_query($dbh, $sql_native_status);
-$nrows = mysqli_num_rows($result);
-$curr_row = 1;
-echo "    Processing species $curr_row of $nrows";
-
-while ($row = mysqli_fetch_assoc($result)) {	
-	$taxon = $row["species"];
-	$taxon_rank = $row["taxon_rank"];
-	echo "\r    Processing species $curr_row of $nrows                           ";
-
-	// Insert observation for each non-empty state column
-	// Note that there are 32 state code columns
-	for ($x = 1; $x <= 32; $x++) {
-		$col = "state".$x;
-		//$msg = "col=".$col;
-		//echo $msg;
-		
-		$state_code = trim($row["$col"] ?? '');
-		//$msg = "state_code=".$state_code;
-		//echo $msg;
-		
-		if (is_null($state_code) || $state_code=="" || $state_code=="NA" ) break;
-		
-		// Insert the state-level observation
-		$sql = "
-		INSERT INTO distribution_staging (
-		source_name,
-		country,
-		state_province,
-		county_parish,
-		taxon,
-		taxon_rank,
-		native_status,
-		cult_status,
-		state_code
-		)
-		VALUES ( 
-		'$src',
-		'Mexico',
-		'$state_code',
-		NULL,
-		'$taxon',
-		'$taxon_rank',
-		'native',
-		NULL,
-		'$state_code'
-		)
-		;
-		";
-		
-		// add record to new table
-		sql_execute_multiple($dbh, $sql);					
-		
-	}
-	$curr_row++;
+// Loop through each state column of raw table
+echo "    Processing state column 1 of 32";
+// Insert observation for each non-empty state column
+// Note that there are 32 state code columns
+for ($x = 1; $x <= 32; $x++) {
+	$state_col = "state".$x;
+	echo "\r    Processing state column $x of 32";
+	
+	// Insert the state-level observations for this column
+	$sql = "
+	INSERT INTO distribution_staging (
+	source_name,
+	country,
+	state_province,
+	county_parish,
+	taxon,
+	taxon_rank,
+	native_status,
+	cult_status,
+	state_code
+	)
+	SELECT  
+	'$src',
+	'Mexico',
+	TRIM(`$state_col`),
+	NULL,
+	`taxon`,
+	`taxon_rank`,
+	'native',
+	NULL,
+	TRIM(`$state_col`)
+	FROM $tbl_raw
+	WHERE `$state_col` IS NOT NULL 
+	AND NOT `$state_col`='' 
+	AND NOT `$state_col`='NA'
+	;
+	";
+	
+	// add record to new table
+	sql_execute_multiple($dbh, $sql);					
 }
-
-$curr_row = $curr_row-1;
-echo "\r    Processing species $curr_row of $nrows...done\r\n";
+echo "\r    Processing state column $x of 32...done\r\n";
 
 echo "  Restoring indexes on staging table...";
 $sql="

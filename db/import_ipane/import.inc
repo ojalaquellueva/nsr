@@ -19,6 +19,7 @@ echo "  '$file_raw' --> `$tbl_raw`...";
 $sql = "
 LOAD DATA $local INFILE '$data_raw' 
 INTO TABLE $tbl_raw 
+$character_set 
 $fields_terminated_by 
 $optionally_enclosed_by 
 $lines_terminated_by 

@@ -1,5 +1,5 @@
 -- ---------------------------------------------------------------
--- Update updata metadata
+-- Update schema for table metadata
 -- Not yet added to DB pipeline
 -- Note: citation should load from bibtex file!
 -- ---------------------------------------------------------------

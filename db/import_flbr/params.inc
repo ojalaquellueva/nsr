@@ -94,7 +94,8 @@ $file_dist = "distribution.txt";
 $file_taxon = "taxon.txt";
 
 // Directory in which data for this source are stored
-$datapath = $data_dir . $source_name."/";		
+// Update as needed
+$datapath = $data_dir . $source_name."/"."BIEN4.2/";		
 
 // names of destination mysql tables
 $tbl_dist_raw=$source_name."_dist_raw";

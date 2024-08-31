@@ -28,7 +28,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 	// Note that there are 26 state code columns
 	for ($x = 1; $x <= 26; $x++) {
 		$col = "country".$x;
-		$country = trim($row["$col"]);
+		$country = trim($row["$col"] ?? '');
 		
 		if (is_null($country) || $country=="" ) break;
 		

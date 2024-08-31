@@ -24,6 +24,48 @@
 # Uncomment during development to turn on strict, verbose error-reporting
 error_reporting(E_ALL & ~E_NOTICE);
 
+//////////////////////////////////////////////////////////////
+// Functions
+//////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////
+// Loads results file as an asociative array
+// 
+// Options:
+//	$filepath: path and name of file to import
+//	$delim: field delimiter
+////////////////////////////////////////////////////////
+
+function file_to_array_assoc($filepath, $delim) {
+	$array = $fields = array(); $i = 0;
+	$handle = @fopen($filepath, "r");
+	if ($handle) {
+		while (($row = fgetcsv($handle, 4096, $delim , '"' , '"')) !== false) {
+			// Load keys from header row & continue to next
+			if (empty($fields)) {
+				$fields = $row;
+				continue;
+			}
+			
+			// Load value for this row 
+			foreach ($row as $k=>$value) {
+				$array[$i][$fields[$k]] = $value;
+			}
+			$i++;
+		}
+		if (!feof($handle)) {
+			echo "Error: unexpected fgets() fail\n";
+		}
+		fclose($handle);
+	}
+	
+	return $array;
+}
+
+////////////////////////////////////////////////////////
+// Main
+////////////////////////////////////////////////////////
+
 include "global_params.inc";
 
 include_once $config_file;
@@ -58,7 +100,6 @@ Building Native Species Resolver (NSR) database with the following settings:\r\n
   Replace database: $replace_db_display
   Row limit: $row_limit_disp
   Sources: $sources\n
-  WARNING: Table cultspp not loaded last time CHECK!!!
 Enter 'Yes' to proceed, or 'No' to cancel: ";
 $proceed=responseYesNoDie($msg_proceed);
 if ($proceed===false) die("\r\nOperation cancelled\r\n");
@@ -146,14 +187,6 @@ foreach ($src_array as $src) {
 // Complete any generic operations on core db
 //////////////////////////////////////////////////////////////////
 
-
-
-
-exit("STOPPIING...\n\n");
-
-
-
-
 echo "\r\n#############################################\r\n";
 echo "Completing general operations on core database:\r\n\r\n";	
 include_once "generic_operations/newfoundland_hack.inc";
@@ -166,7 +199,7 @@ include_once "load_core_db/load_metadata.inc";
 include_once "generic_operations/set_permissions.inc";
 
 // Remove any remaining temporary tables, as requested in params
-include_once "cleanup_final.inc";
+include_once "cleanup_delete.inc";
 
 //////////////////////////////////////////////////////////////////
 // Close connection and report total time elapsed 

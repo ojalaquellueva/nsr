@@ -101,6 +101,7 @@ $tbl_raw=$src."_raw";
 
 // Directory in which data for this source are stored
 $datapath = $data_dir . $source_name."/";		
+$datapath = $data_dir . $source_name."/"."BIEN4.2/";	// for testing with old data
 
 // Import parameters for main text file
 // Needed for 'LOAD DATA INFILE' statement

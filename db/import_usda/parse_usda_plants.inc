@@ -557,8 +557,8 @@ while ($row = mysqli_fetch_assoc($result)) {
 	$family = $row["Family"];
 	$genus = $row["Genus"];
 	$scientificName = $row["ScientificName"];
-	$distString = trim($row["StateAndProvince"]);
-	$nativeString = trim($row["NativeStatus"]);	
+	$distString = trim($row["StateAndProvince"] ?? '');
+	$nativeString = trim($row["NativeStatus"] ?? '');	
 	
 	echo "\r    Processing row $curr_row of $nrows     ";
 	//echo "\r\n\r\nTaxon = $scientificName\r\n  distn = $distString\r\n  nativeStatus = $nativeString";
@@ -600,7 +600,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 	// Loop through each element in distribution array and add record for
 	// state/province level political divisions 
 	foreach ($poldivArr AS $poldiv) {
-		$poldiv = trim($poldiv);
+		$poldiv = trim($poldiv ?? '');
 
 		// Set SQLL columns to null
 		$country = null;
@@ -643,15 +643,15 @@ while ($row = mysqli_fetch_assoc($result)) {
 			// get native status region and status
 			// $status_found=false;
 			foreach ($nativeStatusCombinedArr as $nativeStatusCombined) {
-				$nativeStatusCombined=trim($nativeStatusCombined);
+				$nativeStatusCombined=trim($nativeStatusCombined ?? '');
 				$nativeStatusArr = explode(" ",$nativeStatusCombined);
 				
 				if ($nativeStatusArr[0]=="unknown" || $nativeStatusArr[0]=="")	{
 					$currNativeStatusRegion="unknown";				
 				} else {
 					// Split again into region and native status parts
-					$currNativeStatusRegion = trim($nativeStatusArr[0]);
-					$nativeStatusCode = trim(str_replace(")","",str_replace("(","",$nativeStatusArr[1])));
+					$currNativeStatusRegion = trim($nativeStatusArr[0] ?? '');
+					$nativeStatusCode = trim(str_replace(")","",str_replace("(","",$nativeStatusArr[1])) ?? '');
 					$currNativeStatus = get_nativeStatus($nativeStatusCode);
 					$currCultStatus = get_cultStatus($nativeStatusCode);
 					
@@ -729,8 +729,8 @@ while ($row = mysqli_fetch_assoc($result)) {
 	$family = $row["Family"];
 	$genus = $row["Genus"];
 	$scientificName = $row["ScientificName"];
-	$distString = trim($row["StateAndProvince"]);
-	$nativeString = trim($row["NativeStatus"]);	
+	$distString = trim($row["StateAndProvince"] ?? '');
+	$nativeString = trim($row["NativeStatus"] ?? '');	
 	
 	echo "\r    Processing row $curr_row of $nrows     ";
 	//echo "\r\n\r\nTaxon = $scientificName\r\n  dist = $distString\r\n  nativeString = $nativeString";
@@ -773,7 +773,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 	// Loop through each element in distribution array and add record for
 	// state/province level political divisions 
 	foreach ($poldivArr AS $poldiv) {
-		$poldiv = trim($poldiv);
+		$poldiv = trim($poldiv ?? '');
 		
 		// Set SQLL columns to null
 		$country = null;
@@ -808,7 +808,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 			// get native status region and status
 			foreach ($nativeStatusCombinedArr as $nativeStatusCombined) {
-				$nativeStatusCombined=trim($nativeStatusCombined);
+				$nativeStatusCombined=trim($nativeStatusCombined ?? '');
 				$nativeStatusArr = explode(" ",$nativeStatusCombined);
 				$currNativeStatusRegion = null;
 				$currNativeStatus = null;
@@ -816,8 +816,8 @@ while ($row = mysqli_fetch_assoc($result)) {
 				
 				if (!($nativeStatusArr[0]=="unknown" || $nativeStatusArr[0]=="")) {
 					// Split again into region and native status parts
-					$currNativeStatusRegion = trim($nativeStatusArr[0]);
-					$nativeStatusCode = trim(str_replace(")","",str_replace("(","",$nativeStatusArr[1])));
+					$currNativeStatusRegion = trim($nativeStatusArr[0] ?? '');
+					$nativeStatusCode = trim(str_replace(")","",str_replace("(","",$nativeStatusArr[1])) ?? '');
 					$currNativeStatus = get_nativeStatus($nativeStatusCode);
 					$currCultStatus = get_cultStatus($nativeStatusCode);
 					//echo "\r\n    NSCombined=$nativeStatusCombined, currNSRegion=$currNativeStatusRegion, currNS=$currNativeStatus";

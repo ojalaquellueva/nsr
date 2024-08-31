@@ -15,10 +15,17 @@ $regions_raw_file = $datapath . "nsr_regions.csv";
 // END For development only
 */
 
-
 // Parameter: set to true to echo sample of GNRS results to terminal
 // Should normally be set to false
 $echo_reponse=false;
+
+// GNRS options
+$mode="resolve";		// Resolve names
+$batches=20;			// parallel processing batches
+
+////////////////////////////////////////////////////////
+// Main
+////////////////////////////////////////////////////////
 
 echo "Scrubbing regions:\r\n";
 
@@ -212,10 +219,21 @@ if ($status) die("ERROR: NULL-to-empty-string non-zero exit status (" . 		basena
 echo $done;
 
 echo "  Scrubbing political divisions with GNRS...";
+
 // Reimport the file as array & convert to json 
 $csv = $regions_raw_file;
-$csv_arr = array_map('str_getcsv', file($csv));
-$json_data = json_encode($csv_arr);
+$csv_arr = file_to_array_assoc($csv, ",");
+
+// Set options array
+$opts_arr = array(
+	"mode"=>$mode
+	);
+if ( $mode=="resolve" && (! $batches=="" ) ) {
+	$opts_arr += array("batches"=>$batches);
+}
+
+// Compose final json data object
+$json_data = json_encode(array('opts' => $opts_arr, 'data' => $csv_arr));
 
 // Set curl options
 $ch = curl_init($gnrs_url);	
@@ -229,7 +247,7 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);
 $response_json = curl_exec($ch);
 $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 if ( $status != 201 && $status != 200 ) {
-    die("Error: call to URL $url failed with status $status, response $response, curl_error " . curl_error($ch) . ", curl_errno " . curl_errno($ch) . "\r\n");
+    die("Error: call to URL $gnrs_url failed with status $status, response \"" . $response_json . "\", curl_error \"" . curl_error($ch) . "\", curl_errno " . curl_errno($ch) . "\r\n");
 }
 curl_close($ch);
 echo $done;

@@ -18,6 +18,7 @@ foreach($tbl_list as $tbl) {
 	$sql = "
 	LOAD DATA $local INFILE '$datapath$file_raw' 
 	INTO TABLE $tbl_raw 
+	$character_set 
 	$fields_terminated_by 
 	$optionally_enclosed_by 
 	$lines_terminated_by 

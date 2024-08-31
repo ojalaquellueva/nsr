@@ -3,6 +3,8 @@
 -- Now in pipeline, do not run for later versions
 -- --------------------------------------------------
 
+/* ADDED TO PIPELINE */
+
 alter table source
 add column date_accessed varchar(10) default null;
 

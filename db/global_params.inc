@@ -47,10 +47,9 @@ $REPLACE_DB = FALSE;
 //////////////////////////////////////////////////
 
 $src_array=array(
-	"enquist",
+	"ipane",
 	"weakley",
 	"mab",
-	"ipane",
 	"powo",
 	"flbr",
 	"conosur",
@@ -61,16 +60,11 @@ $src_array=array(
 	"vascan",
 	"newguinea"
 );
-/* 
+
 $src_array=array(
-	"powo",
-	"enquist",
 	"newguinea"
 );
-$src_array=array(
-	"enquist"
-);
- */
+
 
 //////////////////////////////////////////////////
 // Limit rows loaded per source?
@@ -86,14 +80,46 @@ $ROW_LIMIT=300;
 // NSR metadata
 //////////////////////////////////////////////////
 
-// Database version
-// Required! Added to table meta, along with today's date
-$DB_VERSION="3.0";
+// Overall application version
+// Increments when *either* code version or
+// DB version is changed
+$META_APP_VERSION="3.0";
 
-// Code version
-// Use tag # for commit associated with this DB version
-// Added to table meta, along with today's date
-$CODE_VERSION="3.0";
+// Database version
+// This should only increment when the database changes
+$META_DB_VERSION="3.0";
+$META_DB_VERSION_COMMENTS="Remove enquist, update powo, flbr, conosur, vascan";
+
+// Date of the latest DB modification, however slight
+// Either enter manually as "YYYY-MM-DD", or use keyword 'current'
+// to set to todays date using MySQL function CURRENT_DATE()
+$META_DB_MODIFIED_DATE='current';
+
+// Date of most recent complete rebuild of entire database
+// Either enter manually as "YYYY-MM-DD", or use keyword 'current'
+// to set to todays date using MySQL function CURRENT_DATE()
+$META_DB_FULL_BUILD_DATE='current';
+
+// Application code version
+// = tag # for latest commit associated with this DB version
+$META_CODE_VERSION="3.0";
+$META_CODE_VERSION_COMMENTS="Modifications to support changed schema for powo and more complete metadata";
+
+// Date associated with most recent tagged commit
+// Either enter manually as "YYYY-MM-DD", or use keyword 'current'
+// to set to todays date using MySQL function CURRENT_DATE()
+$META_CODE_VERSION_RELEASE_DATE="2024-08-31";
+
+// Example citation of this application, as bibtex
+$META_CITATION="@misc{nsr.app, author = {Boyle, B. L. and Maitner, B. and Barbosa, G. C. and Rethvick, S. Y. B. and Enquist, B. J.}, journal = {Botanical Information and Ecology Network}, title = {Native Species Resolver}, year = {2024}, url = {https://nsr.biendata.org/}, note = {Accessed <date_of_access>} }";
+
+// Application publication, if any, as bibtex
+$META_PUBLICATION="";
+
+// Path to icons and image files for API web app
+// Path should be relative to the API base directory
+$META_LOGO_PATH="images/";
+
 
 //////////////////////////////////////////////////
 // Users & access levels
@@ -129,7 +155,7 @@ $base_dir = "/home/boyle/bien/";
 $app_base_dir = $base_dir . "nsr/";
 
 // Application code directory (this one; git repo)
-$app_dir = $app_base_dir . "db/";
+$app_dir = $app_base_dir . "src/db/";
 
 // Data directory
 // Keep outside repo
@@ -180,7 +206,7 @@ $drop_staging_force=false;		// over-rides any source-specific settings
 //////////////////////////////////////////////////
 
 // GNRS base url
-$gnrs_url = "http://vegbiendev.nceas.ucsb.edu:8875/gnrs_ws.php"; 
+$gnrs_url = "http://vegbiendev.nceas.ucsb.edu:8875/gnrs_api.php"; 
 
 //////////////////////////////////////////////////
 // Error-reporting & runtime behavior

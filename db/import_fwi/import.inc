@@ -8,6 +8,7 @@ echo "Loading raw data:\r\n";
 // Taxa
 $file_raw=$file_raw;
 $tbl_raw_tmp=$tbl_raw;
+
 echo "  Importing file $file_raw to table `$tbl_raw_tmp`...";
 
 $data_raw="$datapath$file_raw";
@@ -31,11 +32,10 @@ sql_execute_multiple($dbh, $sql);
 if (!(empty_string_to_null($dbh, $tbl_raw_tmp))) die("Error\r\n.");
 echo $done;
 
-echo "  Importing file $file_regions_raw to table `fwi_regions_raw`...";
-
 // Regions
 $file_raw=$file_regions_raw;
-$tbl_raw_tmp=$fwi_regions_raw;
+$tbl_raw_tmp="fwi_regions_raw";
+
 echo "  Importing file $file_raw to table `$tbl_raw_tmp`...";
 
 $data_raw="$datapath$file_raw";

@@ -13,10 +13,10 @@ $plain_x="x";
 // Use this version if php not transmitting extended ascii to MySQL.
 // You can tell because the literal query works if you entire it directly
 // in the MySQL command line, but doesn't work if sent by php
-$encoded_x= utf8_decode('×');
-$encoded_x2= 'Ã—';
-$encoded_x3= utf8_decode('Ã—');
-$encoded_x4= "×";
+$encoded_x = "×";
+$encoded_x2 = mb_convert_encoding('×', "UTF-8", mb_detect_encoding('×'));
+$encoded_x3 = "Ã—";
+$encoded_x4 = mb_convert_encoding('Ã—', "UTF-8", mb_detect_encoding('Ã—'));
 
 echo "  Standarizing hybrid 'x'...";
 

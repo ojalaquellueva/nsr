@@ -100,7 +100,7 @@ $replace=true;
 $file_raw = "conosur.parsed.csv";
 
 // Directory in which data for this source are stored
-$datapath = $data_dir . $source_name."/";		
+$datapath = $data_dir . $source_name."/"."BIEN4.2/";		
 
 // extension of raw data files. Must be the same for all
 $file_ext = ".csv";

@@ -3,14 +3,12 @@
 
 include "params.inc";	// everything you need to set is here and in global_params.inc
 
-
-
+/* 
 // For development only
 echo "WARNING: sections of import_usda/import.php commented out!\n";
 exit("Exiting...\n\n");
-/*  END For development only
-
-
+//  END For development only
+ */
 
 ////////////// Import raw data file //////////////////////
 

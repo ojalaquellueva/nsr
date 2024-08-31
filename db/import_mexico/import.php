@@ -28,7 +28,8 @@ include "detect_rank.inc";
 
 // load data from combined raw data table to standardized staging table
 include "create_distribution_staging.inc";
-include "load_staging.inc";
+//include "load_staging.inc";
+include "load_staging_alt.inc";
 
 // load metadata on regions covered by this source
 include "create_poldiv_source_staging.inc";

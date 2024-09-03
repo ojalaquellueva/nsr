@@ -193,13 +193,14 @@ $timer_off=$global_utilities_path."timer_off.inc";
 include $local_utilities_path."functions_local.inc.php";
 
 //////////////////////////////////////////////////
-// Drop raw data tables after import complete?
-// (true/false)
+// Cleanup parameters
 //////////////////////////////////////////////////
 
-$drop_raw=false;
-$drop_raw_force=false;		// over-rides any source-specific settings
-$drop_staging_force=false;		// over-rides any source-specific settings
+// Delete raw and staging tables ('drop') -- or --
+// move to staging database ('move') -- or --
+// do nothing ('neither') --> will leave all temp tables where they are
+// Staging database will be automatically named $DB . "_staging"
+$DROP_OR_MOVE='drop';
 
 //////////////////////////////////////////////////
 // API parameters

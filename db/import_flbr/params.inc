@@ -89,6 +89,7 @@ $replace=true;
 //////////////////////////////////////////////////
 // Raw data file parameters
 //////////////////////////////////////////////////
+
 // Names of files you will be importing
 $file_dist = "distribution.txt";
 $file_taxon = "taxon.txt";
@@ -106,6 +107,10 @@ $tbl_raw_bak=$tbl_raw;	// need this because tbl_raw has two uses
 // Names of important fields that can be passed as parameters
 $fld_scientific_name="taxon";
 
+//////////////////////////////////////////////////
+// LOAD DATA INFILE parameters
+//////////////////////////////////////////////////
+
 // Import parameters for text file
 // Needed for 'LOAD DATA INFILE' statement
 // Set any variable to empty string to remove entirely
@@ -117,7 +122,19 @@ $optionally_enclosed_by = "";
 $lines_terminated_by = " LINES TERMINATED BY '\n' ";
 $ignore_lines = " IGNORE 1 LINES ";	// Ignore header line?
 
-////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////
+// Cleanup parameters
+//////////////////////////////////////////////////
 
+// Comma-delimited list of temporary tables 
+// associated with this source, with each table
+// name in single quotes, no comma after last element
+// For use in SQL IN list when deleting or moving tables
+$temp_tbl_list="
+'flbr_cclist_states',
+'flbr_dist_raw',
+'flbr_raw',
+'flbr_taxon_raw'
+";
 
 ?>

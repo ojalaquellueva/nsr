@@ -33,9 +33,11 @@ if (exists_table($dbh,'cultspp_staging')) {
 include 'standardize_status.inc';
 include 'standardize_country.inc';
 
+/* 
 // Remove staging table
 if ($drop_raw || $drop_raw_force) {
 	include 'cleanup.inc';
 }
+ */
 
 ?>

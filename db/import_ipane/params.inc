@@ -97,6 +97,10 @@ $tbl_raw=$source_name."_raw";
 // Names of important fields that can be passed as parameters
 $fld_scientific_name="ScientificName";
 
+//////////////////////////////////////////////////
+// LOAD DATA INFILE parameters
+//////////////////////////////////////////////////
+
 // Import parameters for text file
 // Needed for 'LOAD DATA INFILE' statement
 // Set any variable to empty string to remove entirely
@@ -115,7 +119,17 @@ $ignore_lines = " IGNORE 1 LINES ";	// Ignore header line?
 $character_set = "";
 $character_set = " CHARACTER SET latin1 ";
 
-////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////
+// Cleanup parameters
+//////////////////////////////////////////////////
+
+// Comma-delimited list of temporary tables 
+// associated with this source, with each table
+// name in single quotes, no comma after last element
+// For use in SQL IN list when deleting or moving tables
+$temp_tbl_list="
+'ipane_raw'
+";
 
 
 ?>

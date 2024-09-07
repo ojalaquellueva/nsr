@@ -30,7 +30,7 @@
 // the source(s) listed in $src_array.
 //
 //////////////////////////////////////////////////
-$REPLACE_DB = FALSE;
+$REPLACE_DB = TRUE;
 
 //////////////////////////////////////////////////
 // Distribution sources
@@ -62,7 +62,8 @@ $src_array=array(
 );
 
 $src_array=array(
-	"newguinea"
+	"mexico",
+	"usda"
 );
 
 
@@ -196,11 +197,24 @@ include $local_utilities_path."functions_local.inc.php";
 // Cleanup parameters
 //////////////////////////////////////////////////
 
+// Keeping the following for backwards-compatibility, so 
+// don't have to modify import.php for each source.
+// Their roles now superseeded by $DROP_OR_MOVE
+// Set both to FALSE
+$drop_raw=FALSE;
+$drop_raw_force=FALSE;
+
 // Delete raw and staging tables ('drop') -- or --
 // move to staging database ('move') -- or --
 // do nothing ('neither') --> will leave all temp tables where they are
 // Staging database will be automatically named $DB . "_staging"
-$DROP_OR_MOVE='drop';
+$DROP_OR_MOVE='move';
+
+// Replace staging DB or move tables to existing DB?
+// TRUE: Replaces staging DB, if already exists
+// FALSE: Move tables into existing staging DB, if exists
+//   if doesn't exist, creates new DB
+$DB_STAGING_REPLACE=FALSE;
 
 //////////////////////////////////////////////////
 // API parameters

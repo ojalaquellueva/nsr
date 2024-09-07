@@ -92,6 +92,10 @@ $tbl_raw=$source_name."_raw";
 // Names of important fields that can be passed as parameters
 $fld_scientific_name="taxon";
 
+//////////////////////////////////////////////////
+// LOAD DATA INFILE parameters
+//////////////////////////////////////////////////
+
 // Import parameters for text file
 // Needed for 'LOAD DATA INFILE' statement
 // Set any variable to empty string to remove entirely
@@ -103,7 +107,17 @@ $optionally_enclosed_by = " OPTIONALLY ENCLOSED BY '\"' ";  // use if text surro
 $lines_terminated_by = " LINES TERMINATED BY '\r\n' ";
 $ignore_lines = " IGNORE 1 LINES ";	// Ignore header line?
 
-////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////
+// Cleanup parameters
+//////////////////////////////////////////////////
+
+// Comma-delimited list of temporary tables 
+// associated with this source, with each table
+// name in single quotes, no comma after last element
+// For use in SQL IN list when deleting or moving tables
+$temp_tbl_list="
+'mab_raw'
+";
 
 
 ?>

@@ -1,5 +1,9 @@
 <?php
 
+// ******************************
+// **** UNDER CONSTRUCTION! *****
+// ******************************
+
 //////////////////////////////////////////////////////////
 // Unpacks USDA plants download into multiple
 // state checklists
@@ -406,6 +410,8 @@ function get_nativeStatus($str) {
  	return strtr($str,$arr);
 }
 
+/* // DON'T BOTHER! Only 9 records return get_cultStatus='cultivated' 
+
 // Function to convert USDA status codes to cultivated status
 // value used by this application
 function get_cultStatus($str) {
@@ -425,6 +431,8 @@ function get_cultStatus($str) {
 	
  	return strtr($str,$arr);
 }
+
+*/
 
 // Array of all L48 state-level codes
 $stateL48Arr = array(
@@ -505,31 +513,95 @@ $provArr = array(
 //////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////
-// Generate new table
-// New raw table is similar to staging table
+// Generate tables of:
+// 1. Distinct distribution + native status combinations
+// 2. Atomic native status by single region assertions
 //////////////////////////////////////////////////////////
 
-$tbl_raw2 = $tbl_raw . "2";
-echo "  Creating new table...";
+// Create foreign key by concatenating StateAndProvince + NativeStatus,
+// casting NULL to ''
+echo "  Creating foreign key on StateAndProvince + NativeStatus in table '$tbl_raw':\n";
+
+echo "    Adding FK column `distNativeStatus`...";
 $sql="
-DROP TABLE IF EXISTS $tbl_raw2;
-CREATE TABLE $tbl_raw2 (
+ALTER TABLE $tbl_raw
+ADD COLUMN distNativeStatus VARCHAR(500) DEFAULT NULL
+;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+echo "    Populating FK...";
+$sql="
+UPDATE $tbl_raw
+SET distNativeStatus=CONCAT_WS('@', 
+IFNULL(StateAndProvince,''),
+IFNULL(NativeStatus,'')
+)
+;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+echo "    Indexing FK...";
+$sql="
+ALTER TABLE $tbl_raw
+ADD INDEX distNativeStatus_idx (distNativeStatus)
+;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+// Extract distinct values of distNativeStatus, StateAndProvince and NativeStatus, 
+// setting distNativeStatus as the primary key
+echo "  Extracting table `usda_distNativeStatus` of unique values of StateAndProvince and NativeStatus...";
+
+echo "    Creating table...";
+$sql="
+DROP TABLE IF EXISTS usda_distNativeStatus;
+CREATE TABLE usda_distNativeStatus AS
+SELECT DISTINCT distNativeStatus, 
+StateAndProvince, 
+NativeStatus
+FROM $tbl_raw
+ORDER BY distNativeStatus, StateAndProvince, NativeStatus
+;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+echo "    Setting primary key...";
+$sql="
+ALTER TABLE usda_distNativeStatus;
+ADD PRIMARY KEY (distNativeStatus)
+;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+echo "    Adding remaining indexes primary key...";
+$sql="
+ALTER TABLE usda_distNativeStatus;
+ADD INDEX (StateAndProvince),
+ADD INDEX (NativeStatus)
+;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+// Create table to hold the atomic native status assertions linked
+// to the concatenated distribution + native status record identified
+// by primary key distNativeStatus in table usda_distNativeStatus
+// Except for pkey, don't add indexes until after table populated
+echo "  Creating table `usda_nativeStatus`...";
+$sql="
+DROP TABLE IF EXISTS usda_nativeStatus;
+CREATE TABLE usda_nativeStatus (
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+distNativeStatus VARCHAR(500) NOT NULL,
 country VARCHAR(50) NOT NULL,
 state_province VARCHAR(100) DEFAULT NULL,
-county_parish VARCHAR(100) DEFAULT NULL,
-family VARCHAR(50) DEFAULT NULL,
-genus VARCHAR(50) DEFAULT NULL,
-scientificName VARCHAR(250) DEFAULT NULL,
-native_status VARCHAR(50) DEFAULT NULL,
-cult_status VARCHAR(50) DEFAULT NULL,
-INDEX (country),
-INDEX (state_province),
-INDEX (county_parish),
-INDEX (family),
-INDEX (genus),
-INDEX (scientificName),
-INDEX (native_status),
-INDEX (cult_status)
+native_status VARCHAR(50) DEFAULT NULL
 );
 ";
 sql_execute_multiple($dbh, $sql);
@@ -539,12 +611,15 @@ echo $done;
 // Extract native status checklist records based on column 
 // `NativeStatus`
 //////////////////////////////////////////////////////////
-echo "  Extracting state/province-level distribution records:\r\n";
+echo "  Extracting state/province-level distribution records from table `usda_distNativeStatus`:\n";
 
-// Loop through each record of raw table
+// Loop through each record of raw distribution + native status table
 $sql_native_status="
-SELECT Family, Genus, ScientificName, StateAndProvince, NativeStatus
-FROM $tbl_raw;
+SELECT distNativeStatus, 
+StateAndProvince, 
+NativeStatus
+FROM usda_distNativeStatus
+;
 ";
 
 $result = mysqli_query($dbh, $sql_native_status);
@@ -553,14 +628,12 @@ $curr_row = 1;
 echo "    Processing row $curr_row of $nrows     ";
 
 while ($row = mysqli_fetch_assoc($result)) {
-	$family = $row["Family"];
-	$genus = $row["Genus"];
-	$scientificName = $row["ScientificName"];
+	$distNativeStatus = trim($row["distNativeStatus"] ?? '');
 	$distString = trim($row["StateAndProvince"] ?? '');
 	$nativeString = trim($row["NativeStatus"] ?? '');	
 	
 	echo "\r    Processing row $curr_row of $nrows     ";
-	//echo "\r\n\r\nTaxon = $scientificName\r\n  distn = $distString\r\n  nativeStatus = $nativeString";
+	//echo "\n\ndistn = $distString\r\n  nativeStatus = $nativeString";
 	
 	// Unpack distribution string to an array
 	if (is_null($distString)) {
@@ -601,23 +674,16 @@ while ($row = mysqli_fetch_assoc($result)) {
 	foreach ($poldivArr AS $poldiv) {
 		$poldiv = trim($poldiv ?? '');
 
-		// Set SQLL columns to null
-		$country = null;
-		$stateProvince = null;
+		// Set SQL columns to null
 		$nativeStatus = null;
-		$cultStatus = null;
 		
-		// Set insert half of the SQL; this is constant
+		// Compose insert portion of the SQL; this is constant
 		$sql_insert = "
-		INSERT INTO $tbl_raw2 (
+		INSERT INTO usda_nativeStatus (
+		distNativeStatus,
 		country,
 		state_province,
-		county_parish,
-		family,
-		genus,
-		scientificName,
-		native_status,
-		cult_status				
+		native_status		
 		)	
 		";
 		$sql_select = "";
@@ -632,7 +698,6 @@ while ($row = mysqli_fetch_assoc($result)) {
 			$currNativeStatusRegion = null;
 			$nativeStatusCode = null;
 			$currNativeStatus = null;
-			$currCultStatus = null;
 			
 			// get code for USDA native status jurisdiction relevant 
 			// to this political division
@@ -652,7 +717,6 @@ while ($row = mysqli_fetch_assoc($result)) {
 					$currNativeStatusRegion = trim($nativeStatusArr[0] ?? '');
 					$nativeStatusCode = trim(str_replace(")","",str_replace("(","",$nativeStatusArr[1])) ?? '');
 					$currNativeStatus = get_nativeStatus($nativeStatusCode);
-					$currCultStatus = get_cultStatus($nativeStatusCode);
 					
 				}
 				//echo "\r\n    NSCombined=$nativeStatusCombined, currNSRegion=$currNativeStatusRegion, currNS=$currNativeStatus";
@@ -662,7 +726,6 @@ while ($row = mysqli_fetch_assoc($result)) {
 				if ($currNativeStatusRegion==$nativeStatusRegion || $nativeString=="") {
 					// Check if current native status is relevant to this political division 
 					$nativeStatus = $currNativeStatus;
-					$cultStatus = $currCultStatus;	
 				
 					// For political divisions of Canada and L48, set native status 
 					// to "unknown" if "native". In such cases, local status is 
@@ -673,21 +736,16 @@ while ($row = mysqli_fetch_assoc($result)) {
 					if (($nativeStatusRegion=="L48" || $nativeStatusRegion=="CAN") 
 					&& $nativeStatus=="native") $nativeStatus = "unknown";
 					if (is_null($nativeStatus) || $nativeStatus=="") $nativeStatus="unknown";
-					if (is_null($cultStatus) || $cultStatus=="") $cultStatus="unknown";
-					//echo " Updated to: nativeStatus=$nativeStatus, cultStatus=$cultStatus";
+					//echo " Updated to: nativeStatus=$nativeStatus";
 			
 					// Compose remainder of SQL		
 					// These are the values to be inserted			
 					$sql_select="
 					VALUES (
+					'$distNativeStatus',
 					'$country',
 					'$stateProvince',
-					NULL,
-					'$family',
-					'$genus',
-					'$scientificName',
-					'$nativeStatus',
-					'$cultStatus'
+					'$nativeStatus'
 					);
 					";
 
@@ -715,8 +773,11 @@ echo "  Adding missing state/province-level records of introduced species:\r\n";
 
 // Loop through each record of raw table
 $sql_native_status="
-SELECT Family, Genus, ScientificName, StateAndProvince, NativeStatus
-FROM $tbl_raw;
+SELECT distNativeStatus, 
+StateAndProvince, 
+NativeStatus
+FROM usda_distNativeStatus
+;
 ";
 
 $result = mysqli_query($dbh, $sql_native_status);
@@ -725,14 +786,12 @@ $curr_row = 1;
 echo "    Processing row $curr_row of $nrows     ";
 
 while ($row = mysqli_fetch_assoc($result)) {
-	$family = $row["Family"];
-	$genus = $row["Genus"];
-	$scientificName = $row["ScientificName"];
+	$distNativeStatus = trim($row["distNativeStatus"] ?? '');
 	$distString = trim($row["StateAndProvince"] ?? '');
 	$nativeString = trim($row["NativeStatus"] ?? '');	
 	
 	echo "\r    Processing row $curr_row of $nrows     ";
-	//echo "\r\n\r\nTaxon = $scientificName\r\n  dist = $distString\r\n  nativeString = $nativeString";
+	//echo "\r\n\r\ndist = $distString\r\n  nativeString = $nativeString";
 	
 	// Unpack distribution string to an array
 	unset($distArr);
@@ -778,19 +837,14 @@ while ($row = mysqli_fetch_assoc($result)) {
 		$country = null;
 		$stateProvince = null;
 		$nativeStatus = null;
-		$cultStatus = null;
 		
 		// Set insert half of the SQL; this is constant
 		$sql_insert = "
-		INSERT INTO $tbl_raw2 (
+		INSERT INTO usda_nativeStatus (
+		distNativeStatus,
 		country,
 		state_province,
-		county_parish,
-		family,
-		genus,
-		scientificName,
-		native_status,
-		cult_status				
+		native_status		
 		)	
 		";
 		$sql_select = "";
@@ -811,14 +865,12 @@ while ($row = mysqli_fetch_assoc($result)) {
 				$nativeStatusArr = explode(" ",$nativeStatusCombined);
 				$currNativeStatusRegion = null;
 				$currNativeStatus = null;
-				$currCultStatus = null;
 				
 				if (!($nativeStatusArr[0]=="unknown" || $nativeStatusArr[0]=="")) {
 					// Split again into region and native status parts
 					$currNativeStatusRegion = trim($nativeStatusArr[0] ?? '');
 					$nativeStatusCode = trim(str_replace(")","",str_replace("(","",$nativeStatusArr[1])) ?? '');
 					$currNativeStatus = get_nativeStatus($nativeStatusCode);
-					$currCultStatus = get_cultStatus($nativeStatusCode);
 					//echo "\r\n    NSCombined=$nativeStatusCombined, currNSRegion=$currNativeStatusRegion, currNS=$currNativeStatus";
 				}
 				
@@ -830,9 +882,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 				// for current political division and known to be introduced
 				if ($currNativeStatusRegion==$nativeStatusRegion && $currNativeStatus=="introduced") {
 					$nativeStatus = "introduced";
-					$cultStatus = $currCultStatus;	
-					if (is_null($cultStatus) || $cultStatus=="") $cultStatus="unknown";
-					//echo " Updated to: nativeStatus=$nativeStatus, cultStatus=$cultStatus";
+					//echo " Updated to: nativeStatus=$nativeStatus";
 					
 					if ($poldiv=="USA") {
 						foreach ($stateL48Arr as $state) {
@@ -841,11 +891,12 @@ while ($row = mysqli_fetch_assoc($result)) {
 							// Check if entry already exists
 							// for this species in this region
 							$sql_existing_record="
-							SELECT scientificName 
-							FROM $tbl_raw2
+							SELECT distNativeStatus 
+							FROM usda_nativeStatus
 							WHERE country='$country'
 							AND state_province='$stateProv'
-							AND scientificName='$scientificName';
+							AND distNativeStatus='$distNativeStatus'
+							;
 							";
 							
 							// Only add if no existing record
@@ -853,14 +904,10 @@ while ($row = mysqli_fetch_assoc($result)) {
 								// Compose remainder of SQL		
 								$sql_select="
 								VALUES (
+								'$distNativeStatus',
 								'$country',
 								'$stateProv',
-								NULL,
-								'$family',
-								'$genus',
-								'$scientificName',
-								'not native',
-								'$cultStatus'
+								'not native'
 								);
 								";
 							
@@ -879,11 +926,12 @@ while ($row = mysqli_fetch_assoc($result)) {
 							// Check if entry already exists
 							// for this species in this region
 							$sql_existing_record="
-							SELECT scientificName 
-							FROM $tbl_raw2
+							SELECT distNativeStatus 
+							FROM usda_nativeStatus
 							WHERE country='$country'
 							AND state_province='$stateProv'
-							AND scientificName='$scientificName';
+							AND distNativeStatus='$distNativeStatus'
+							;
 							";
 							
 							// Only add if no existing record
@@ -891,14 +939,10 @@ while ($row = mysqli_fetch_assoc($result)) {
 								// Compose remainder of SQL		
 								$sql_select="
 								VALUES (
+								'$distNativeStatus',
 								'$country',
 								'$stateProv',
-								NULL,
-								'$family',
-								'$genus',
-								'$scientificName',
-								'$nativeStatus',
-								'$cultStatus'
+								'not native'
 								);
 								";
 							
@@ -921,16 +965,71 @@ $curr_row = $curr_row-1;
 echo "\r    Processing row $curr_row of $nrows...done\r\n";
 
 //////////////////////////////////////////////////////////
-// Remove original raw table and rename new
+// Make duplicate "raw" table of unique, atomic native 
+// status x region x taxon assertions
 //////////////////////////////////////////////////////////
-echo "  Removing old table...";
+
+$tbl_raw2 = $tbl_raw . "2";
+
+echo "  Creating table `$tbl_raw2` of atomic taxon x region x native status assertions...";
+
+echo "    Indexing foreign key in table `usda_nativeStatus`..."
 $sql="
-DROP TABLE $tbl_raw;
+ALTER TABLE usda_nativeStatus
+ADD INDEX (distNativeStatus)
+;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
 
-echo "  Removing duplicate records from new table...";
+echo "    Generating table `$tbl_raw2`..."
+$sql="
+DROP TABLE IF EXISTS `$tbl_raw2`;
+CREATE TABLE `$tbl_raw2` AS 
+SELECT 
+b.country,
+b.state_province,
+NULL AS county_parish,
+a.family,
+a.genus,
+a.scientificName,
+b.native_status,
+NULL AS cult_status
+FROM `$tbl_raw` a JOIN usda_nativeStatus b
+ON a.distNativeStatus=b.distNativeStatus
+;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+echo "    Indexing table `$tbl_raw2`...";
+$sql="
+ALTER TABLE $tbl_raw2;
+ADD INDEX (country),
+ADD INDEX (state_province),
+ADD INDEX (family),
+ADD INDEX (genus),
+ADD INDEX (scientificName),
+ADD INDEX (native_status)
+;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+//////////////////////////////////////////////////////////
+// Rename original raw table and rename new to old
+//////////////////////////////////////////////////////////
+
+
+echo "  Renaming `$tbl_raw` TO `$tbl_raw_orig`...";
+$tbl_raw_orig=$tbl_raw . "_orig";
+$sql="
+RENAME TABLE `$tbl_raw` TO `$tbl_raw_orig`;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+echo "  Removing duplicate records from `$tbl_raw2` and renaming to `$tbl_raw`...";
 $sql="
 CREATE TABLE $tbl_raw LIKE $tbl_raw2;
 INSERT INTO $tbl_raw SELECT DISTINCT * FROM $tbl_raw2;

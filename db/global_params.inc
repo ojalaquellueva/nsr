@@ -74,11 +74,15 @@ $src_array=array(
 //////////////////////////////////////////////////
 
 # Integer # of rows to import, "" imports all
-$ROW_LIMIT="";
 $ROW_LIMIT=300;
+$ROW_LIMIT="";
 
 //////////////////////////////////////////////////
 // NSR metadata
+//
+// Also update source-specific metadata in parameter 
+// file of each data source. E.g.,  
+// "import_powo/params.inc"
 //////////////////////////////////////////////////
 
 // Overall application version
@@ -121,7 +125,6 @@ $META_PUBLICATION="";
 // Path should be relative to the API base directory
 $META_LOGO_PATH="images/";
 
-
 //////////////////////////////////////////////////
 // Users & access levels
 //
@@ -145,11 +148,11 @@ $usr_array=array(
 );
 
 //////////////////////////////////////////////////
-// Include paths and filenames
+// Paths and filenames
 //////////////////////////////////////////////////
 
 // Base directory
-// All other paths set relative to this one
+// All other paths are relative to this one
 $base_dir = "/home/boyle/bien/";
 
 // Base directory for all code related to this application
@@ -183,6 +186,8 @@ $config_file = $config_dir . "db_config_nsr_db.inc";
 
 ///////////////////////////////////////////////////
 // Include files (functions, etc.)
+// These are imported as one or more
+// git submodules & saved to locations shown below.
 ///////////////////////////////////////////////////
 
 include $global_utilities_path."functions.inc";
@@ -197,24 +202,28 @@ include $local_utilities_path."functions_local.inc.php";
 // Cleanup parameters
 //////////////////////////////////////////////////
 
-// Keeping the following for backwards-compatibility, so 
-// don't have to modify import.php for each source.
-// Their roles now superseeded by $DROP_OR_MOVE
+// Keep the following for backwards-compatibility,  
+// otherwise will have to modify import.php for 
+// each source. These parameters now superseeded 
+// by $TEMP_TABLE_ACTION
 // Set both to FALSE
 $drop_raw=FALSE;
 $drop_raw_force=FALSE;
 
-// Delete raw and staging tables ('drop') -- or --
-// move to staging database ('move') -- or --
-// do nothing ('neither') --> will leave all temp tables where they are
+// Fate of temp tables after DB build complete
+// Values: drop|move|neither
+// "drop": Delete raw and staging tables
+// "move": move to staging database
+// "nothing": do nothing; leave all temp tables where they are
+// "none": synonym of "nothing"
 // Staging database will be automatically named $DB . "_staging"
-$DROP_OR_MOVE='move';
+$TEMP_TABLE_ACTION='move';
 
 // Replace staging DB or move tables to existing DB?
 // TRUE: Replaces staging DB, if already exists
 // FALSE: Move tables into existing staging DB, if exists
 //   if doesn't exist, creates new DB
-$DB_STAGING_REPLACE=FALSE;
+$DB_STAGING_REPLACE=TRUE;
 
 //////////////////////////////////////////////////
 // API parameters

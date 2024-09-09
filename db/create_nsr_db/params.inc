@@ -7,6 +7,7 @@ $file_country="country.csv";
 $file_country_name="countryNames.txt";
 $file_state_province="stateProvince.csv";
 $file_state_province_name="stateProvinceName.csv";
+$file_gadm_state_province="gadm_admin_1.csv";
 
 
 // Include path to file in name if not in same directory as this script

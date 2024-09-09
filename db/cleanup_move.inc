@@ -1,14 +1,48 @@
 <?php
 
 /////////////////////////////////////////////////////////
-// Move raw & staging tables to schema $DB."_staging"
-// $DB . "_staging" must exist
+// Move temp tables to schema $DB."_staging"
 /////////////////////////////////////////////////////////
 
-$old_db=$DB;
-$new_db=$DB."_staging";
+//
+// Determine if new staging database should be created
+//
 
-echo "Moving raw and staging tables...";
+$db_exists=db_exists($db_staging, $USER, $PWD);		
+
+if ( $DB_STAGING_REPLACE==FALSE && $db_exists ) {
+	$create_db_staging=FALSE;	
+} else {
+	$create_db_staging=TRUE;
+}
+
+//
+// Create new staging database if applicable
+//
+
+if ( $create_db_staging==TRUE ) {
+	include "mysql_connect.inc";	// Connect without specifying database
+	
+	// Drop and replace entire database
+	echo "  Creating database `$db_staging`...";
+	$sql_create_db="
+		DROP DATABASE IF EXISTS `".$db_staging."`;
+		CREATE DATABASE `".$db_staging."`;
+		USE `".$db_staging."`;
+	";
+	sql_execute_multiple($dbm, $sql_create_db);
+	echo "done\n";
+	mysqli_close($dbm);
+}
+	
+//
+// Move tables with suffixes "_raw" and "_staging"
+//
+
+echo "  Moving raw and staging tables...";
+$old_db=$DB;
+$new_db=$db_staging;
+
 $sql_temp_tables="
 SELECT table_name
 FROM information_schema.tables 
@@ -32,10 +66,14 @@ if ( is_null( $qy=sql_get_first_result($dbh, $sql_temp_tables, 'TABLE_NAME') ) )
 }
 
 
-echo "Moving remaining temp tables by source:\n";
+//
+// Move remaining tables, if any
+//
+
+echo "  Moving remaining temp tables by source:\n";
 
 foreach ($src_array as $src) {
-	echo "  ".$src."...";	
+	echo "    ".$src."...";	
 	unset($temp_tbl_list);
 	include "import_".$src."/params.inc";
 	

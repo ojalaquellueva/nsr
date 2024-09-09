@@ -21,7 +21,7 @@ $source_name_full="Catálogo de las plantas vasculares del Cono Sur (Argentina, 
 $source_url="http://www.darwin.edu.ar/Proyectos/FloraArgentina/fa.htm";	
 
 // bibtext formatted citation for thsi source
-$source_citation="";
+$citation="";
 
 // Person who provided access to source (optional)
 $source_contact_name="Fernando O. Zuloaga";
@@ -44,6 +44,13 @@ $cclist_countries="
 'Paraguay',
 'Uruguay'
 ";
+
+// Set true if country checklist also contains comprehensive
+// state checklists, else false. If true will cause all states to
+// be loaded to cclist under this source.
+// CRITICAL! State lists will not be treated as comprehensive
+// unless this parameter=TRUE
+$cclist_states_from_country=true;
 
 ////////////////////////////////////////////////////////////////
 // Array of all countries covered by this checklist, not just

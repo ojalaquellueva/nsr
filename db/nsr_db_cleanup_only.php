@@ -1,4 +1,4 @@
-$TEMP_TABLE_ACTION<?php
+<?php
 
 //////////////////////////////////////////////////////////////////
 // Removes temporary tables from database as separate step
@@ -60,28 +60,14 @@ include $timer_on;
 $echo_on = true;		// Display messages and SQL for debugging
 $SQL_display = true;	// Displays final SQL statement
 
-if ( $TEMP_TABLE_ACTION == "move" ) {
-	
-	if ( $create_db_staging==TRUE ) {
-		include "mysql_connect.inc";	// Connect without specifying database
-		
-		// Drop and replace entire database
-		echo "Creating database `$db_staging`...";
-		$sql_create_db="
-			DROP DATABASE IF EXISTS `".$db_staging."`;
-			CREATE DATABASE `".$db_staging."`;
-			USE `".$db_staging."`;
-		";
-		sql_execute_multiple($dbm, $sql_create_db);
-		echo "done\r\n";
-		mysqli_close($dbm);
-	}
-	
+if ( $TEMP_TABLE_ACTION == "move" || $TEMP_TABLE_ACTION == "drop" ) {
 	include "db_connect.inc"; // Reconnect to the new DB 
-	include_once "cleanup_move.inc";
-} else if ( $TEMP_TABLE_ACTION == "drop" ) {
-	include "db_connect.inc";
-	include_once "cleanup_drop.inc";
+	
+	if ( $TEMP_TABLE_ACTION == "move" ) {
+		include_once "cleanup_move.inc";
+	} else {
+		include_once "cleanup_drop.inc";
+	}
 } else if ( $TEMP_TABLE_ACTION == "none" || $TEMP_TABLE_ACTION == "nothing" ) {
 	echo "No action taken (\$TEMP_TABLE_ACTION='$TEMP_TABLE_ACTION')";
 } else {

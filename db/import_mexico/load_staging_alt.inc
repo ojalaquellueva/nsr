@@ -164,6 +164,10 @@ END;
 sql_execute_multiple($dbh, $sql);
 echo $done;
 
+/* 
+Skipping. Best not to flag state endemics given uncertainty.
+Set all state level occurrences to 'native' in separate script
+
 // The following best done *after* update full state name
 echo "  Updating status for state-level endemics...";
 $sql="
@@ -181,6 +185,7 @@ WHERE a.state_province IS NOT NULL
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
+*/
 
 echo "  Removing temporary column state_code...";
 $sql="

@@ -1,5 +1,5 @@
 -- -------------------------------------------------------------------
--- Set erroneous values of "unknown" to "native for usda source only
+-- Set erroneous values of "unknown" to "native" for usda source only
 -- This is temporary hack in existing database
 -- Permanent fix will be applied next time database is rebuilt
 -- -------------------------------------------------------------------
@@ -102,16 +102,7 @@ AND state_province IS NOT NULL
 AND county_parish IS NOT NULL
 ;
 
--- Mark cache records to delete
--- UPDATE cache a JOIN distribution b
--- ON a.species=b.taxon 
--- AND a.poldiv_full=b.poldiv_full
--- SET del=1
--- WHERE b.source_id=@srcid
--- AND b.changed=1
--- ;
-
--- Forget it, just mark all USDA species records instead
+-- Mark all USDA species records for removal
 UPDATE cache a JOIN (
 SELECT DISTINCT taxon
 FROM distribution 

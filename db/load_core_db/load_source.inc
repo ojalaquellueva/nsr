@@ -10,7 +10,6 @@ If ($records===false) {
 	echo "Records=".$records."\r\n";
 	die("failed query on table `source`");
 }
-
 	
 if ($records>1) {
 	// > 1 entry for this source; issue warning and quit
@@ -23,7 +22,7 @@ if ($records>1) {
 			source_name,
 			source_name_full,
 			source_url,
-			source_citation,
+			citation,
 			source_contact_name,
 			source_contact_email,
 			date_accessed,
@@ -35,7 +34,7 @@ if ($records>1) {
 			'$source_name',
 			'$source_name_full',
 			'$source_url',
-			'$source_citation',
+			'$citation',
 			'$source_contact_name',
 			'$source_contact_email',
 			'$date_accessed',
@@ -53,7 +52,7 @@ if ($records>1) {
 			SET
 			source_name_full='$source_name_full',
 			source_url='$source_url',
-			source_citation='$source_citation',
+			citation='$citation',
 			source_contact_name='$source_contact_name',
 			source_contact_email='$source_contact_email',
 			date_accessed='$date_accessed',

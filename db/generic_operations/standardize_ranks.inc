@@ -5,7 +5,7 @@
 // on input to this limited set of options
 ////////////////////////////////////////////////////////////
 
-echo "  Standardizing ranks..";
+echo "Standardizing ranks..";
 $sql="
 UPDATE distribution 
 SET taxon_rank=

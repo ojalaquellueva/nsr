@@ -21,7 +21,7 @@ $source_name_full="Brazilian Flora 2020 project";
 $source_url="http://ipt.jbrj.gov.br/jbrj/resource?r=lista_especies_flora_brasil#downloads";	
 
 // bibtext formatted citation for thsi source
-$source_citation="@article{b14,
+$citation="@article{b14,
 author = {Brazil Flora, G.},
 journal = {Instituto de Pesquisas Jardim Botanico do Rio de Janeiro},
 note = {Dataset/Checklist.},

@@ -72,6 +72,4 @@ ADD INDEX (species_id);
 sql_execute_multiple($dbh, $sql);
 echo $done;
 
-	
 ?>
-

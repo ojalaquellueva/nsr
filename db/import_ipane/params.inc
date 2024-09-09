@@ -21,7 +21,7 @@ $source_name_full="Invasive Plant Atlas of New England";
 $source_url="http://www.eddmaps.org/ipane/index.html";	
 
 // bibtext formatted citation for thsi source
-$source_citation="";
+$citation="";
 
 // Person who provided access to source (optional)
 $source_contact_name="Corey Merow";

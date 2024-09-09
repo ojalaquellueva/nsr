@@ -5,10 +5,10 @@
 // for each taxon
 /////////////////////////////////////////////////////
 
-echo "  Creating lookup table `taxon_country_sources`\r\n";
+echo "Creating lookup table `taxon_country_sources`\r\n";
 
 
-echo "    Setting NULL values of native-status to 'unknown'...";
+echo "  Setting NULL values of native-status to 'unknown'...";
 $sql="
 UPDATE distribution
 SET native_status='unknown'
@@ -19,7 +19,7 @@ sql_execute_multiple($dbh, $sql);
 echo $done;
 
 
-echo "    Creating & populating `taxon_country_sources`...";
+echo "  Creating & populating `taxon_country_sources`...";
 $sql="
 DROP TABLE IF EXISTS taxon_country_sources;
 CREATE TABLE taxon_country_sources

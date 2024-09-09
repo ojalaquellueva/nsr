@@ -21,7 +21,7 @@ $source_name_full="USDA Plants Database";
 $source_url="http://plants.usda.gov/adv_search.html";	
 
 // bibtext formatted citation for thsi source
-$source_citation="";
+$citation="";
 
 // Person who provided access to source (optional)
 $source_contact_name=NULL;
@@ -54,6 +54,8 @@ $cclist_countries="
 // Set true if country checklist also contains comprehensive
 // state checklists, else false. If true will cause all states to
 // be loaded to cclist under this source.
+// CRITICAL! State lists will not be treated as comprehensive
+// unless this parameter=TRUE
 $cclist_states_from_country=true;
 
 // Regional scope (political division level) of this source. For comprehensive sources, 

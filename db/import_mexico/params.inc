@@ -21,7 +21,7 @@ $source_name_full="Checklist of the native vascular plants of Mexico";
 $source_url="http://www.sciencedirect.com/science/article/pii/S1870345316300707";	
 
 // bibtext formatted citation for thsi source
-$source_citation="";
+$citation="";
 
 // Person who provided access to source (optional)
 $source_contact_name="José Luis Villaseñor";
@@ -48,6 +48,13 @@ $cclist_countries="
 //		list may indicates non-native species
 // 0 = selective, not comprehensive. Not all taxa in region(s) include, absence not interpretable
 $is_comprehensive=1;
+
+// Set true if country checklist also contains comprehensive
+// state checklists, else false. If true will cause all states to
+// be loaded to cclist under this source.
+// CRITICAL! state-level absences will not count as introduced unless this
+// parameter is set to TRUE
+$cclist_states_from_country=true;
 
 // Regional scope (political division level) of this source. For comprehensive sources, 
 // lower political divisions will also be treated as comprehensive, but but higher 

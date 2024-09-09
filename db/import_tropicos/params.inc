@@ -59,7 +59,7 @@ $source_name_full="Missouri Botanical Gardens country checklists";
 $source_url="www.http://services.tropicos.org/";	
 
 // bibtext formatted citation for thsi source
-$source_citation="";
+$citation="";
 
 // Person who provided access to source (optional)
 $source_contact_name="Peter Jorgensen";

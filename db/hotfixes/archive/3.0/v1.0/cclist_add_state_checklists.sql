@@ -1,6 +1,7 @@
 -- ------------------------------------------------------------------------
 -- Adds missing state checklists
 -- 2019-05-29
+-- Update 2024-09-08: Added to DB pipeline, app & DB version 3.0
 -- -------------------------------------------------------------------------
 
 CREATE TABLE cclist_bak LIKE cclist;

@@ -5,7 +5,7 @@
 // for each country
 /////////////////////////////////////////////////////
 
-echo "  Creating lookup table `country_sources`...";
+echo "Creating lookup table `country_sources`...";
 $sql="
 DROP TABLE IF EXISTS country_sources;
 CREATE TABLE country_sources

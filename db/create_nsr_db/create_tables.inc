@@ -26,7 +26,7 @@ source_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 source_name VARCHAR(50) NOT NULL,
 source_name_full VARCHAR(250) NOT NULL,
 source_url VARCHAR(500) DEFAULT NULL,
-source_citation TEXT,
+citation TEXT,
 source_contact_name VARCHAR(50) DEFAULT NULL,
 source_contact_email VARCHAR(250) DEFAULT NULL,
 date_accessed VARCHAR(10) DEFAULT NULL,
@@ -110,7 +110,6 @@ INDEX (source_id),
 INDEX (checklist_type)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
 DROP TABLE IF EXISTS countryName;
 CREATE TABLE countryName (
 countryNameID INT(11) UNSIGNED NOT NULL AUTO_INCREMENT, 
@@ -162,6 +161,21 @@ INDEX (state_province_id),
 INDEX (state_province),
 INDEX (state_province_ascii)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Temporary table for adding GADM ids
+DROP TABLE IF EXISTS gadm_admin_1_raw;
+CREATE TABLE gadm_admin_1_raw (
+gid_0 VARCHAR(5) DEFAULT NULL,
+name_0 VARCHAR(50) DEFAULT NULL,
+gid_1 VARCHAR(12) DEFAULT NULL,
+hasc_1 VARCHAR(12) DEFAULT NULL,
+name_1 VARCHAR(100) DEFAULT NULL,
+engtype_1 VARCHAR(25) DEFAULT NULL,
+type_1 VARCHAR(25) DEFAULT NULL,
+geonameid VARCHAR(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+;
+
 
 DROP TABLE IF EXISTS cultspp;
 CREATE TABLE cultspp (
@@ -240,6 +254,27 @@ source VARCHAR(150) NOT NULL,
 PRIMARY KEY(gf_lookup_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ;
+
+-- Data dictionary tables
+DROP TABLE IF EXISTS dd_output;
+CREATE TABLE dd_output (
+col_name varchar(50) not null,
+ordinal_position integer not null,
+data_type varchar(50) default null,
+description varchar(250) default null,
+PRIMARY KEY (col_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+;
+
+DROP TABLE IF EXISTS dd_native_status;
+CREATE TABLE dd_native_status (
+val varchar(50) not null,
+ordinal_position integer not null,
+description varchar(250) default null,
+PRIMARY KEY (val)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+;
+
 
 ";
 sql_execute_multiple($dbh, $sql);

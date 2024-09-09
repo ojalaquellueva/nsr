@@ -94,6 +94,7 @@ $row_limit_disp=$ROW_LIMIT;
 if ( $ROW_LIMIT=="" ) $row_limit_disp="[none]";
 $replace_db_display=$REPLACE_DB?'Yes':'No';
 $replace_db_staging = $DB_STAGING_REPLACE ? "TRUE" : "FALSE";
+$meta_import_display = $META_IMPORT ? "TRUE" : "FALSE";
 
 // Confirm operation
 $msg_proceed="
@@ -103,6 +104,8 @@ Building Native Species Resolver (NSR) database with the following settings:\n
   Replace database: $replace_db_display
   Row limit: $row_limit_disp
   Sources: $sources
+  Import previous meta table: $meta_import_display" . 
+  ($META_IMPORT?"\n  Previous meta table database: $META_DB_PREV":"") . "
   Drop temp tables or move to staging: $TEMP_TABLE_ACTION
   " . ($TEMP_TABLE_ACTION=='drop'?"":"Staging database: $db_staging
   Replace staging: $replace_db_staging") . "\n
@@ -160,7 +163,8 @@ if ($REPLACE_DB) {
 	include_once "create_nsr_db/populate_state_province_name.inc";
 	include_once "create_nsr_db/state_province_std.inc";
 	include_once "create_nsr_db/fix_errors.inc";
-	//include_once "create_nsr_db/make_cclist.inc";
+	include_once "create_nsr_db/populate_gadm_admin_1_raw.inc";
+	include_once "create_nsr_db/update_state_province.inc.inc";
 	include_once "create_nsr_db/gf_lookup.inc";
 } else {
 	include "db_connect.inc";
@@ -190,53 +194,45 @@ foreach ($src_array as $src) {
 }
 
 //////////////////////////////////////////////////////////////////
-// Complete any generic operations on core db
+// Complete misc updates on core db
 //////////////////////////////////////////////////////////////////
 
 echo "\n#############################################\n";
-echo "Completing general operations on core database:\n\n";	
+echo "Completing final updates to core tables:\n\n";	
 include_once "generic_operations/newfoundland_hack.inc";
 include_once "generic_operations/standardize_ranks.inc";
 include_once "generic_operations/country_sources.inc";
+include_once "generic_operations/update_poldiv_source.inc";
 include_once "generic_operations/taxon_country_sources.inc";
 include_once "generic_operations/endemic_taxon_sources.inc";
 include_once "generic_operations/optimize.inc";
-include_once "load_core_db/load_metadata.inc";
+if ( $META_IMPORT ) include_once "load_core_db/import_meta.inc";
+include_once "load_core_db/load_meta.inc";
+
+//////////////////////////////////////////////////////////////////
+// Complete misc updates on core db
+//////////////////////////////////////////////////////////////////
+
+echo "\n#############################################\n";
+echo "Setting permissions:\n\n";	
 include_once "generic_operations/set_permissions.inc";
 
 //////////////////////////////////////////////////////////////////
 // Clean up temp tables, if requested
 //////////////////////////////////////////////////////////////////
 
+echo "\n#############################################\n";
 echo "Cleaning up";
 
-if ( $TEMP_TABLE_ACTION == "move" ) {
+if ( $TEMP_TABLE_ACTION == "move" || $TEMP_TABLE_ACTION == "drop" ) {
 	echo ":\n";
-	$db_exists=db_exists($db_staging, $USER, $PWD);		
-	$create_db_staging=TRUE;
-	if ( $DB_STAGING_REPLACE==FALSE && $db_exists ) $create_db_staging=FALSE;	
-
-	if ( $create_db_staging==TRUE ) {
-		include "mysql_connect.inc";	// Connect without specifying database
-		
-		// Drop and replace entire database
-		echo "Creating database `$db_staging`...";
-		$sql_create_db="
-			DROP DATABASE IF EXISTS `".$db_staging."`;
-			CREATE DATABASE `".$db_staging."`;
-			USE `".$db_staging."`;
-		";
-		sql_execute_multiple($dbm, $sql_create_db);
-		echo "done\n";
-		mysqli_close($dbm);
-	}
-	
 	include "db_connect.inc"; // Reconnect to the new DB 
-	include_once "cleanup_move.inc";
-} else if ( $TEMP_TABLE_ACTION == "drop" ) {
-	echo ":\n";
-	include "db_connect.inc";
-	include_once "cleanup_drop.inc";
+	
+	if ( $TEMP_TABLE_ACTION == "move" ) {
+		include_once "cleanup_move.inc";
+	} else {
+		include_once "cleanup_drop.inc";
+	}
 } else if ( $TEMP_TABLE_ACTION == "none" || $TEMP_TABLE_ACTION == "nothing" ) {
 	echo "...no action taken (\$TEMP_TABLE_ACTION='$TEMP_TABLE_ACTION')";
 } else {

@@ -21,7 +21,7 @@ $source_name_full="Test list of country endemics";
 $source_url="";	
 
 // bibtext formatted citation for thsi source
-$source_citation="";
+$citation="";
 
 // Person who provided access to source (optional)
 $source_contact_name="";

@@ -43,13 +43,16 @@ ADD INDEX (species)
 ;
 
 -- Mark species+poldiv combinations already present
-UPDATE temp_missing_species s JOIN distribution_staging d
+UPDATE temp_missing_species s JOIN (
+SELECT DISTINCT taxon, country, state_province, county_parish
+FROM distribution_staging 
+WHERE taxon LIKE '% % %'
+) d
 ON s.species=d.taxon 
 AND s.country=d.country 
 AND s.state_province=d.state_province
 AND s.county_parish=d.county_parish
 SET s.del='DELETE'
-WHERE d.taxon LIKE '% % %';
 ;
 
 ALTER TABLE temp_missing_species

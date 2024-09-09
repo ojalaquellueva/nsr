@@ -8,7 +8,7 @@
 // that merge both regions under "Newfoundland and Labrador"
 /////////////////////////////////////////////////////
 
-echo "  Merging Newfoundland and Labrador lists...";
+echo "Merging Newfoundland and Labrador lists...";
 $sql="
 DROP TABLE IF EXISTS temp_NL;
 CREATE TABLE temp_NL LIKE distribution;

@@ -1,9 +1,8 @@
 -- ----------------------------------------------------------
 -- Updates to table poldiv_source to support spatial queries 
 -- of political divisions
+-- UPDATE 2024-09-08: added to pipeline for application v3.0
 -- ----------------------------------------------------------
-
-/* NOT YET ADDED TO PIPELINE! */
 
 --
 -- Create the gadm spatial object identifier columns

@@ -21,7 +21,7 @@ $source_name_full="Flora of the West Indies";
 $source_url="http://botany.si.edu/antilles/westindies/";	
 
 // bibtext formatted citation for thsi source
-$source_citation="";
+$citation="";
 
 // Person who provided access to source (optional)
 $source_contact_name="Pedro Acevedo-Rodriguez";

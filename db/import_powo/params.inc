@@ -60,7 +60,7 @@ $source_name_full="Plants of the World Online";
 $source_url="http://www.plantsoftheworldonline.org/";	
 
 // bibtext formatted citation for thsi source
-$source_citation="";
+$citation="";
 
 // Person who provided access to source (optional)
 $source_contact_name="";

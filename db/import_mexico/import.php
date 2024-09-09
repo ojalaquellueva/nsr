@@ -31,6 +31,10 @@ include "create_distribution_staging.inc";
 //include "load_staging.inc";
 include "load_staging_alt.inc";
 
+// Fix source-specific issue: change native_status for state-
+// level occurrences from 'endemic' to 'native'
+include "fix_state_occurrences.inc";
+
 // load metadata on regions covered by this source
 include "create_poldiv_source_staging.inc";
 include "load_poldiv_source_staging.inc"; // NOT READY

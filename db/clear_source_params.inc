@@ -9,7 +9,7 @@
 
 $source_name_full="";
 $source_url="";	
-$source_citation="";
+$citation="";
 $source_contact_name="";
 $source_contact_email="";
 $date_accessed="";

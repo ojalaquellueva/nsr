@@ -1,12 +1,14 @@
 -- ------------------------------------------------------------------------
 -- Fix false state endemics in Mexico list in production database
 -- 2019-05-29
+-- Updates 2024-09-08: 
+--   * Correction added to pipeline (the right way)
+--   * This bugfix was incorrectly implement in this hotfix!
 -- -------------------------------------------------------------------------
 
 set @srcid:=5;   -- source_id for source "mexico"
 
--- List species in Mexico list which are found in only one state but not 
--- endemic to Mexico
+-- List species in Mexico which are listed as state endemics but not country endemics
 SELECT DISTINCT state_end.taxon, state_end.country, state_end.state_province, ctry_end.taxon, ctry_end.country, ctry_end.state_province 
 FROM 
 (

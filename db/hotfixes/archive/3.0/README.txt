@@ -1,0 +1,1 @@
+These hotfixes integrated into pipeline for application version 3.0

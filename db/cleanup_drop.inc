@@ -5,7 +5,7 @@
 // global_params.inc
 /////////////////////////////////////////////////////////
 
-echo "Dropping raw data tables...";
+echo "  Dropping raw data tables...";
 $sql="
 SELECT CONCAT( 'DROP TABLE ', GROUP_CONCAT(table_name) , ';' ) 
 AS statement FROM information_schema.tables 
@@ -20,7 +20,7 @@ if ( is_null( $qy=sql_get_first_result($dbh, $sql, 'statement') ) ) {
 	echo $done;	
 }
 
-echo "Dropping staging tables...";
+echo "  Dropping staging tables...";
 $sql="
 SELECT CONCAT( 'DROP TABLE ', GROUP_CONCAT(table_name) , ';' ) 
 AS statement FROM information_schema.tables 
@@ -36,7 +36,7 @@ if ( is_null( $qy=sql_get_first_result($dbh, $sql, 'statement') ) ) {
 
 // Drop any remaining tables using source-specific 
 // list of temporary tables
-echo "Dropping remaining temp tables by source:\n";
+echo "  Dropping remaining temp tables by source:\n";
 
 foreach ($src_array as $src) {
 	echo "  ".$src."...";	

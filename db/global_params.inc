@@ -74,8 +74,8 @@ $src_array=array(
 //////////////////////////////////////////////////
 
 # Integer # of rows to import, "" imports all
-$ROW_LIMIT=300;
 $ROW_LIMIT="";
+$ROW_LIMIT=200;
 
 //////////////////////////////////////////////////
 // NSR metadata
@@ -124,6 +124,19 @@ $META_PUBLICATION="";
 // Path to icons and image files for API web app
 // Path should be relative to the API base directory
 $META_LOGO_PATH="images/";
+
+// Import current (historical) table meta from previous database?
+// TRUE|FALSE
+// New metadata records for new database will be inserted at the end.
+// The old table MUST have and identical schema to the new one for this to work.
+// If not, set $META_IMPORT=FALSE to load only the single metadata record for the 
+// new database, then rebuild historical table manually after DB build is complete.
+$META_IMPORT=TRUE;
+
+// Name of previous database in which historical meta table is found
+// Must be on the same server
+// You MUST supply this parameter if $META_IMPORT=TRUE
+$META_DB_PREV="nsr_2_0";
 
 //////////////////////////////////////////////////
 // Users & access levels

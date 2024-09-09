@@ -5,7 +5,7 @@
 // for each taxon
 /////////////////////////////////////////////////////
 
-echo "  Creating lookup table `endemic_taxon_sources`...";
+echo "Creating lookup table `endemic_taxon_sources`...";
 $sql="
 DROP TABLE IF EXISTS endemic_taxon_sources;
 CREATE TABLE endemic_taxon_sources

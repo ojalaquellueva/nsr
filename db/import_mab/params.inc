@@ -21,7 +21,7 @@ $source_name_full="Endemic genera and families from Mabberley";
 $source_url="";	
 
 // bibtext formatted citation for thsi source
-$source_citation='\"@book{mabberley2008mabberley,title={Mabberleys plant-book: a portable dictionary of plants, their classifications and uses.},author={Mabberley, David John and others},number={Ed. 3},year={2008},publisher={Cambridge University Press}}\"';
+$citation='\"@book{mabberley2008mabberley,title={Mabberleys plant-book: a portable dictionary of plants, their classifications and uses.},author={Mabberley, David John and others},number={Ed. 3},year={2008},publisher={Cambridge University Press}}\"';
 
 // Person who provided access to source (optional)
 $source_contact_name="";

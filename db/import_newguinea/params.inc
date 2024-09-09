@@ -53,7 +53,7 @@ $source_name_full="Flora of New Guinea";
 $source_url="https://www.nature.com/articles/s41586-020-2549-5";	
 
 // bibtext formatted citation for thsi source
-$source_citation="
+$citation="
 @article{camara2020new,
   title={New Guinea has the world’s richest island flora},
   author={C{\'a}mara-Leret, Rodrigo and Frodin, David G and Adema, Frits and Anderson, Christiane and Appelhans, Marc S and Argent, George and Guerrero, Susana Arias and Ashton, Peter and Baker, William J and Barfod, Anders S and others},

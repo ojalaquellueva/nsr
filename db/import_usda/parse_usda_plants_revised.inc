@@ -554,7 +554,7 @@ echo $done;
 
 // Extract distinct values of distNativeStatus, StateAndProvince and NativeStatus, 
 // setting distNativeStatus as the primary key
-echo "  Extracting table `usda_distNativeStatus` of unique values of StateAndProvince and NativeStatus...";
+echo "  Extracting table `usda_distNativeStatus` of unique values of StateAndProvince and NativeStatus:\n";
 
 echo "    Creating table...";
 $sql="
@@ -572,7 +572,7 @@ echo $done;
 
 echo "    Setting primary key...";
 $sql="
-ALTER TABLE usda_distNativeStatus;
+ALTER TABLE usda_distNativeStatus
 ADD PRIMARY KEY (distNativeStatus)
 ;
 ";
@@ -581,7 +581,7 @@ echo $done;
 
 echo "    Adding remaining indexes primary key...";
 $sql="
-ALTER TABLE usda_distNativeStatus;
+ALTER TABLE usda_distNativeStatus
 ADD INDEX (StateAndProvince),
 ADD INDEX (NativeStatus)
 ;
@@ -971,9 +971,9 @@ echo "\r    Processing row $curr_row of $nrows...done\r\n";
 
 $tbl_raw2 = $tbl_raw . "2";
 
-echo "  Creating table `$tbl_raw2` of atomic taxon x region x native status assertions...";
+echo "  Creating table `$tbl_raw2` of atomic taxon x region x native status assertions:\n";
 
-echo "    Indexing foreign key in table `usda_nativeStatus`..."
+echo "    Indexing foreign key in table `usda_nativeStatus`...";
 $sql="
 ALTER TABLE usda_nativeStatus
 ADD INDEX (distNativeStatus)
@@ -982,7 +982,7 @@ ADD INDEX (distNativeStatus)
 sql_execute_multiple($dbh, $sql);
 echo $done;
 
-echo "    Generating table `$tbl_raw2`..."
+echo "    Generating table `$tbl_raw2`...";
 $sql="
 DROP TABLE IF EXISTS `$tbl_raw2`;
 CREATE TABLE `$tbl_raw2` AS 
@@ -1004,7 +1004,7 @@ echo $done;
 
 echo "    Indexing table `$tbl_raw2`...";
 $sql="
-ALTER TABLE $tbl_raw2;
+ALTER TABLE $tbl_raw2
 ADD INDEX (country),
 ADD INDEX (state_province),
 ADD INDEX (family),
@@ -1020,9 +1020,8 @@ echo $done;
 // Rename original raw table and rename new to old
 //////////////////////////////////////////////////////////
 
-
-echo "  Renaming `$tbl_raw` TO `$tbl_raw_orig`...";
 $tbl_raw_orig=$tbl_raw . "_orig";
+echo "  Renaming `$tbl_raw` TO `$tbl_raw_orig`...";
 $sql="
 RENAME TABLE `$tbl_raw` TO `$tbl_raw_orig`;
 ";

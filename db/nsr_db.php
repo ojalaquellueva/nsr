@@ -29,7 +29,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 //////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////
-// Loads results file as an asociative array
+// Loads results file as an associative array
 // 
 // Options:
 //	$filepath: path and name of file to import
@@ -107,7 +107,7 @@ Building Native Species Resolver (NSR) database with the following settings:\n
   Import previous meta table: $meta_import_display" . 
   ($META_IMPORT?"\n  Previous meta table database: $META_DB_PREV":"") . "
   Drop temp tables or move to staging: $TEMP_TABLE_ACTION
-  " . ($TEMP_TABLE_ACTION=='drop'?"":"Staging database: $db_staging
+  " . ($TEMP_TABLE_ACTION=='drop' || $TEMP_TABLE_ACTION=='none' || $TEMP_TABLE_ACTION=='nothing'?"":"Staging database: $db_staging
   Replace staging: $replace_db_staging") . "\n
 Enter 'Yes' to proceed, or 'No' to cancel: ";
 $proceed=responseYesNoDie($msg_proceed);
@@ -164,7 +164,7 @@ if ($REPLACE_DB) {
 	include_once "create_nsr_db/state_province_std.inc";
 	include_once "create_nsr_db/fix_errors.inc";
 	include_once "create_nsr_db/populate_gadm_admin_1_raw.inc";
-	include_once "create_nsr_db/update_state_province.inc.inc";
+	include_once "create_nsr_db/update_state_province.inc";
 	include_once "create_nsr_db/gf_lookup.inc";
 } else {
 	include "db_connect.inc";
@@ -206,8 +206,12 @@ include_once "generic_operations/update_poldiv_source.inc";
 include_once "generic_operations/taxon_country_sources.inc";
 include_once "generic_operations/endemic_taxon_sources.inc";
 include_once "generic_operations/optimize.inc";
-if ( $META_IMPORT ) include_once "load_core_db/import_meta.inc";
-include_once "load_core_db/load_meta.inc";
+
+include_once "generic_operations/update_source_citations.inc";
+include_once 'load_core_db/load_dd_tables.inc';
+
+if ( $META_IMPORT ) include "load_core_db/import_meta.inc";
+include "load_core_db/load_meta.inc";
 
 //////////////////////////////////////////////////////////////////
 // Complete misc updates on core db
@@ -222,10 +226,9 @@ include_once "generic_operations/set_permissions.inc";
 //////////////////////////////////////////////////////////////////
 
 echo "\n#############################################\n";
-echo "Cleaning up";
+echo "Cleaning up:\n\n";
 
 if ( $TEMP_TABLE_ACTION == "move" || $TEMP_TABLE_ACTION == "drop" ) {
-	echo ":\n";
 	include "db_connect.inc"; // Reconnect to the new DB 
 	
 	if ( $TEMP_TABLE_ACTION == "move" ) {
@@ -234,10 +237,11 @@ if ( $TEMP_TABLE_ACTION == "move" || $TEMP_TABLE_ACTION == "drop" ) {
 		include_once "cleanup_drop.inc";
 	}
 } else if ( $TEMP_TABLE_ACTION == "none" || $TEMP_TABLE_ACTION == "nothing" ) {
-	echo "...no action taken (\$TEMP_TABLE_ACTION='$TEMP_TABLE_ACTION')";
+	echo "No action taken (\$TEMP_TABLE_ACTION='$TEMP_TABLE_ACTION')";
 } else {
-	die("...ERROR: Unknown option '$TEMP_TABLE_ACTION' for parameter \$TEMP_TABLE_ACTION! \n");
+	die("ERROR: Unknown option '$TEMP_TABLE_ACTION' for parameter \$TEMP_TABLE_ACTION!");
 }
+echo "\n";
 
 //////////////////////////////////////////////////////////////////
 // Close connection and report total time elapsed 

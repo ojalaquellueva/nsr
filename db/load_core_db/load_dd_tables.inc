@@ -10,7 +10,7 @@ echo "  dd_output...";
 $sql="
 INSERT INTO dd_output (col_name, ordinal_position, data_type, description)
 VALUES 
-('ID',1,'Positive integer','Integer idenfier (primary key) of each observation; preserves order submitted'),
+('ID',1,'Positive integer','Integer idenfier (primary key) of each observation, preserves order submitted'),
 ('family',2,'Text','Family submitted (or inferred from genus or species)'),
 ('genus',3,'Text','Genus submitted (or inferred from species)'),
 ('species',4,'Text','Species name submitted'),
@@ -25,8 +25,8 @@ VALUES
 ('native_status',13,'Text','Native status within lowest political division for which checklist opinion is available'),
 ('native_status_reason',14,'Text','Reason native_status code was assigned'),
 ('native_status_sources',15,'Text','Checklist sources consulted'),
-('isIntroduced',16,'Integer (0|1)','Simplified overall native status (1=introduced;  0=native; blank=status unknown)'),
-('is_cultivated_taxon',17,'Integer (0|1)','Is species known to be cultivated in region of observation?  (1=cultivated;  0=wild or status unknown)')
+('isIntroduced',16,'Integer (0|1)','Simplified overall native status (1=introduced,  0=native, blank=status unknown)'),
+('is_cultivated_taxon',17,'Integer (0|1)','Is species known to be cultivated in region of observation?  (1=cultivated,  0=wild or status unknown)')
 ;
 ";
 sql_execute_multiple($dbh, $sql);
@@ -42,7 +42,7 @@ VALUES
 ('A',4,'Absent from all checklists for region of observation'),
 ('I',5,'Introduced, as declared in checklist for region of observation'),
 ('Ie',6,'Endemic to other region and therefore introduced in region of observation'),
-('UNK',7,'Unknown; no checklists available for region of observation and taxon not known to be endemic elsewhere')
+('UNK',7,'Unknown, no checklists available for region of observation and taxon not known to be endemic elsewhere')
 ;
 ";
 sql_execute_multiple($dbh, $sql);

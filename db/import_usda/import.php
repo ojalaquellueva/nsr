@@ -20,7 +20,8 @@ include "create_raw_data_tables.inc";
 include "import.inc";
 
 // unpack raw download into multiple state checklists
-include "parse_usda_plants.inc";
+//include "parse_usda_plants.inc";
+include "parse_usda_plants_revised.inc";
 
 echo "Standardizing $tbl_raw:\r\n";
 

@@ -33,9 +33,6 @@ if (exists_table($dbh,'cultspp_staging')) {
 include 'standardize_status.inc';
 include 'standardize_country.inc';
 
-// Populated data dictionaries
-include 'load_dd_tables.inc';
-
 // Rename staging table with source-specific suffix
 include 'rename_staging.inc';
 

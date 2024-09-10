@@ -4,16 +4,9 @@
 // Populate metadata table
 ///////////////////////////////////////////////////////////////
 
-echo "Populating metadata table:\r\n";
+echo "Loading metadata for updated database...";
 
-echo "  Clearing table...";
-$sql="
-TRUNCATE meta;
-";
-sql_execute_multiple($dbh, $sql);
-echo $done;
-
-// Set dates
+// Set values
 if ( $META_DB_MODIFIED_DATE == 'current' ) {
 	$db_modified_date = date_create()->format('Y-m-d');
 } else {
@@ -30,7 +23,7 @@ if ( $META_CODE_VERSION_RELEASE_DATE == 'current' ) {
 	$code_version_release_date = $META_CODE_VERSION_RELEASE_DATE;
 }
 
-echo "  Inserting version information...";
+// Insert metadata record
 $sql="
 INSERT INTO meta (
 app_version,

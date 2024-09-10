@@ -7,13 +7,16 @@
 // By: Brad Boyle
 // Contact: bboyle@email.arizona.edu
 // Date created: 18 Feb. 2014
-// Date last revised: 13 Dec. 2017
+// Last revised: 9 Sept. 2024
 //
-// Everything you need to set is here and in local
-// params.inc file in each import directory
-//
-// Read the readme files in this directory and 
-// all main subdirectories!
+// Notes:
+// 1. Everything you need to set is here and in local
+// 		params.inc file in each import directory
+// 2. Read the readme files in this directory and 
+// 		all main subdirectories!
+// 3. Some critical but sensitive parameters such as $DB
+// 		are defined the config files kept outside this repo. 
+// 		Be sure to check them!
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
 
@@ -30,7 +33,7 @@
 // the source(s) listed in $src_array.
 //
 //////////////////////////////////////////////////
-$REPLACE_DB = TRUE;
+$REPLACE_DB = FALSE;
 
 //////////////////////////////////////////////////
 // Distribution sources
@@ -61,10 +64,11 @@ $src_array=array(
 	"newguinea"
 );
 
+/* 
 $src_array=array(
-	"mexico",
 	"usda"
 );
+ */
 
 
 //////////////////////////////////////////////////
@@ -131,6 +135,7 @@ $META_LOGO_PATH="images/";
 // The old table MUST have and identical schema to the new one for this to work.
 // If not, set $META_IMPORT=FALSE to load only the single metadata record for the 
 // new database, then rebuild historical table manually after DB build is complete.
+// Always set to TRUE if possible preserve metadata history
 $META_IMPORT=TRUE;
 
 // Name of previous database in which historical meta table is found
@@ -236,7 +241,7 @@ $TEMP_TABLE_ACTION='move';
 // TRUE: Replaces staging DB, if already exists
 // FALSE: Move tables into existing staging DB, if exists
 //   if doesn't exist, creates new DB
-$DB_STAGING_REPLACE=TRUE;
+$DB_STAGING_REPLACE=FALSE;
 
 //////////////////////////////////////////////////
 // API parameters

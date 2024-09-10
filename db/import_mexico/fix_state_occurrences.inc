@@ -15,5 +15,6 @@ AND native_status='endemic'
 ;
 ";
 sql_execute_multiple($dbh, $sql);
+echo $done;
 
 ?>

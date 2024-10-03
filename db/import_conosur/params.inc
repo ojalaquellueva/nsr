@@ -20,7 +20,11 @@ $source_name_full="Catálogo de las plantas vasculares del Cono Sur (Argentina, 
 // Primary url for this source (optional)
 $source_url="http://www.darwin.edu.ar/Proyectos/FloraArgentina/fa.htm";	
 
+// Load citation from bibtex file?
+$citation_from_bibtex=TRUE;
+
 // bibtext formatted citation for thsi source
+// Over-ridden by bibtex file if $citation_from_bibtex==TRUE
 $citation="";
 
 // Person who provided access to source (optional)
@@ -29,7 +33,7 @@ $source_contact_email="fzuloaga@darwin.edu.ar";
 
 // Date accessed
 // yyyy-mm-dd format
-$date_accessed="2017-09-12";
+$date_accessed="2024-09-01";
 
 // Short list of regions covered by this source, to 250 characters
 $focal_regions="Argentina, Chile, Paraguay, Uruguay and southern Brazil";
@@ -108,6 +112,7 @@ $file_raw = "conosur.parsed.csv";
 
 // Directory in which data for this source are stored
 $datapath = $data_dir . $source_name."/"."BIEN4.2/";		
+$datapath = $data_dir . $source_name."/";		
 
 // extension of raw data files. Must be the same for all
 $file_ext = ".csv";

@@ -15,13 +15,17 @@ $regions_raw_file = $datapath . "nsr_regions.csv";
 // END For development only
 */
 
-// Parameter: set to true to echo sample of GNRS results to terminal
-// Should normally be set to false
-$echo_reponse=false;
+////////////////////////////////////////////////////////
+// GNRS parameters
+////////////////////////////////////////////////////////
 
 // GNRS options
 $mode="resolve";		// Resolve names
 $batches=20;			// parallel processing batches
+
+// Set to true to echo sample of GNRS results to terminal
+// For testing only, set to false for production
+$echo_reponse=false;
 
 ////////////////////////////////////////////////////////
 // Main
@@ -29,44 +33,52 @@ $batches=20;			// parallel processing batches
 
 echo "Scrubbing regions:\r\n";
 
+echo "  Populating column poldiv_full in table $tbl_region_codes...";
+$sql="
+UPDATE $tbl_region_codes
+SET poldiv_full=CONCAT_WS('@',
+country,
+IFNULL(state_province,''),
+''
+)
+WHERE country IS NOT NULL
+;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
 echo "  Populating verbatim political divisions in `$tbl_raw`...";
-// Must create new table to allow inserting multiple records in place of one
-// All fields included except autoincrement primary key, which is generated
-// anew
+// Populate political divisions (one or more countries/states) associated
+// with a given TDWG l3 code in the combined distribution table.
+// MUST create new table to allow inserting multiple records in 
+// place of one. All fields included except autoincrement primary 
+// key (id), which is generated anew.
 $tbl_raw_temp = $tbl_raw . "_temp";
 $sql="
 DROP TABLE IF EXISTS $tbl_raw_temp;
 CREATE TABLE $tbl_raw_temp LIKE $tbl_raw;
 INSERT INTO $tbl_raw_temp (
-fqId,
-query,
-modified,
-bibliographicCitation,
-genus,
-taxonomicStatus,
-kingdom,
-phylum,
-family,
-source,
-namePublishedInYear,
-name,
-authors,
-species,
-`rank`,
-reference,
-accepted_fqId,
-accepted_name,
-accepted_author,
-accepted_rank,
-accepted_taxonomicStatus,
-establishment,
-featureId,
-tdwgCode,
-tdwgLevel,
+powo_plant_locality_id,
+tdwgCodeL3,
 area_name,
-infraspecies,
-occurrenceStatus,
-threatStatus,
+introduced,
+extinct,
+location_doubtful,
+plant_name_id,
+parent_plant_name_id,
+accepted_plant_name_id,
+powo_id,
+family,
+name,
+taxon_authors,
+hybrid_formula,
+`rank`,
+taxonomicStatus,
+nomenclatural_remarks,
+geographic_area,
+homotypic_synonym,
+accepted_rank,
+establishment,
 poldiv_full_verbatim,
 country_verbatim,
 state_province_verbatim,
@@ -82,39 +94,31 @@ poldiv_matched,
 match_status
 )
 SELECT 
-a.fqId,
-a.query,
-a.modified,
-a.bibliographicCitation,
-a.genus,
-a.taxonomicStatus,
-a.kingdom,
-a.phylum,
-a.family,
-a.source,
-a.namePublishedInYear,
-a.name,
-a.authors,
-a.species,
-a.`rank`,
-a.reference,
-a.accepted_fqId,
-a.accepted_name,
-a.accepted_author,
-a.accepted_rank,
-a.accepted_taxonomicStatus,
-a.establishment,
-a.featureId,
-a.tdwgCode,
-a.tdwgLevel,
+a.powo_plant_locality_id,
+a.tdwgCodeL3,
 a.area_name,
-a.infraspecies,
-a.occurrenceStatus,
-a.threatStatus,
-a.poldiv_full_verbatim,
+a.introduced,
+a.extinct,
+a.location_doubtful,
+a.plant_name_id,
+a.parent_plant_name_id,
+a.accepted_plant_name_id,
+a.powo_id,
+a.family,
+a.name,
+a.taxon_authors,
+a.hybrid_formula,
+a.`rank`,
+a.taxonomicStatus,
+a.nomenclatural_remarks,
+a.geographic_area,
+a.homotypic_synonym,
+a.accepted_rank,
+a.establishment,
+b.poldiv_full,
 b.country,
 b.state_province,
-a.county_parish_verbatim,
+NULL,
 a.poldiv_full,
 a.country_id,
 a.state_province_id,
@@ -125,7 +129,7 @@ a.county_parish,
 a.poldiv_matched,
 a.match_status
 FROM $tbl_raw a JOIN $tbl_region_codes b
-ON a.tdwgCode=b.code
+ON a.tdwgCodeL3=b.code
 ;
 DROP TABLE $tbl_raw;
 RENAME TABLE $tbl_raw_temp TO $tbl_raw;
@@ -164,7 +168,7 @@ SELECT DISTINCT
 CONCAT('DBLQUOTE', country_verbatim, 'DBLQUOTE') AS country_verbatim,
 CONCAT('DBLQUOTE', state_province_verbatim, 'DBLQUOTE') AS state_province_verbatim,
 CONCAT('DBLQUOTE', county_parish_verbatim, 'DBLQUOTE') AS county_parish_verbatim
-FROM powo_raw
+FROM $tbl_raw
 WHERE country_verbatim IS NOT NULL
 ORDER BY country_verbatim, state_province_verbatim, county_parish_verbatim
 ;
@@ -174,7 +178,6 @@ echo $done;
 
 echo "  Dumping to file...";
 $regions_raw_file = $datapath . "nsr_regions.csv";
-
 //$cmd="export MYSQL_PWD=$PWD; mysql -u $USER -e 'SELECT \"before\" AS user_id, area_name  AS country, \"after\" AS state_province, NULL AS county_parish FROM temp_regions' $DB > $regions_raw_file ";
 $cmd="export MYSQL_PWD=$PWD; mysql -u $USER -e 'SELECT * FROM $tbl_poldivs' $DB > $regions_raw_file ";
 //echo "\n\$cmd:\n$cmd\n";

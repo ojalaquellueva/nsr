@@ -8,6 +8,7 @@ echo "Populating data dictionary table:\n";
 
 echo "  dd_output...";
 $sql="
+TRUNCATE dd_output;
 INSERT INTO dd_output (col_name, ordinal_position, data_type, description)
 VALUES 
 ('ID',1,'Positive integer','Integer idenfier (primary key) of each observation, preserves order submitted'),
@@ -34,6 +35,7 @@ echo $done;
 
 echo "  dd_native_status...";
 $sql="
+TRUNCATE dd_native_status;
 INSERT INTO dd_native_status (val, ordinal_position, description)
 VALUES 
 ('P',1,'Present in checklist for region of observation but no explicit status assigned'),

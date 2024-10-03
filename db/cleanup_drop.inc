@@ -9,7 +9,8 @@ echo "  Dropping raw data tables...";
 $sql="
 SELECT CONCAT( 'DROP TABLE ', GROUP_CONCAT(table_name) , ';' ) 
 AS statement FROM information_schema.tables 
-WHERE table_schema = '$DB' AND table_name LIKE '%_raw'
+WHERE table_schema = '$DB' 
+AND ( table_name LIKE '%_raw' OR table_name LIKE '%_raw_%' )
 ;
 ";
 
@@ -24,7 +25,10 @@ echo "  Dropping staging tables...";
 $sql="
 SELECT CONCAT( 'DROP TABLE ', GROUP_CONCAT(table_name) , ';' ) 
 AS statement FROM information_schema.tables 
-WHERE table_schema = '$DB' AND table_name LIKE '%_staging';
+WHERE table_schema = '$DB' 
+AND ( table_name LIKE '%_staging' OR table_name LIKE '%_staging_%' 
+OR table_name LIKE '%_temp' OR table_name LIKE 'temp_%' )
+;
 ";
 
 if ( is_null( $qy=sql_get_first_result($dbh, $sql, 'statement') ) ) {

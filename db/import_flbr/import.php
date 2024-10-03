@@ -3,7 +3,8 @@
 
 include "params.inc";	// everything you need to set is here and in global_params.inc
 
-////////////// Import raw data file //////////////////////
+////////////// Import raw data //////////////////////
+echo "Data path: '" . $datapath . "'\n";
 
 // create empty import table
 // These must be identical in structure to raw data file
@@ -36,6 +37,7 @@ include "fix_hybrid_x.inc";
 // load data from combined raw data table to standardized staging table
 include "create_distribution_staging.inc";
 include "load_staging.inc";
+if ($citation_from_bibtex) include "load_source_citation_staging.inc";
 
 // load metadata on regions covered by this source
 include "prepare_cclist_states.inc";

@@ -20,8 +20,12 @@ $source_name_full="Endemic genera and families from Mabberley";
 // Primary url for this source (optional)
 $source_url="";	
 
-// bibtext formatted citation for thsi source
-$citation='\"@book{mabberley2008mabberley,title={Mabberleys plant-book: a portable dictionary of plants, their classifications and uses.},author={Mabberley, David John and others},number={Ed. 3},year={2008},publisher={Cambridge University Press}}\"';
+// Load citation from bibtex file?
+$citation_from_bibtex=FALSE;
+
+// Bibtext-formatted citation for this source
+// Over-ridden by bibtex file if $citation_from_bibtex==TRUE
+$citation="@book{mab,title={Mabberley''s plant-book: a portable dictionary of plants, their classifications and uses.},author={Mabberley, David John and others},number={Ed. 3},year={2008},publisher={Cambridge University Press}}";
 
 // Person who provided access to source (optional)
 $source_contact_name="";

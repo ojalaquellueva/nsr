@@ -20,7 +20,11 @@ $source_name_full="Checklist of the native vascular plants of Mexico";
 // Primary url for this source (optional)
 $source_url="http://www.sciencedirect.com/science/article/pii/S1870345316300707";	
 
-// bibtext formatted citation for thsi source
+// Load citation from bibtex file?
+$citation_from_bibtex=TRUE;
+
+// Bibtext-formatted citation for this source
+// Over-ridden by bibtex file if $citation_from_bibtex==TRUE
 $citation="";
 
 // Person who provided access to source (optional)

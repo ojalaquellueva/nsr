@@ -59,7 +59,11 @@ $source_name_full="Plants of the World Online";
 // Primary url for this source (optional)
 $source_url="http://www.plantsoftheworldonline.org/";	
 
-// bibtext formatted citation for thsi source
+// Load citation from bibtex file?
+$citation_from_bibtex=TRUE;
+
+// Bibtext-formatted citation for this source
+// Over-ridden by bibtex file if $citation_from_bibtex==TRUE
 $citation="";
 
 // Person who provided access to source (optional)
@@ -68,7 +72,7 @@ $source_contact_email="";
 
 // Date accessed
 // yyyy-mm-dd format
-$date_accessed="2020-08-01";
+$date_accessed="2024-05-21";
 
 // Short list of regions covered by this source, to 250 characters
 $focal_regions="Global";
@@ -90,18 +94,25 @@ $drop_raw=false;
 // See README in data directory for details
 //////////////////////////////////////////////////
 // Name of main file you will be importing
-$file_raw = "POW_combined.20200731.final.txt";
-//$file_raw = "POWO_sample.txt";	// For testing
+$file_dist_raw = "wcvp_distribution.csv";
+$file_names_raw = "wcvp_names.csv";
 
 // TDWG region codes
 $file_raw_codes = "TDWG_region_codes_edited.csv";
 
 // names of destination mysql table
-$tbl_raw=$src."_raw";
+$tbl_dist_raw=$src."_distribution_raw";
+$tbl_names_raw=$src."_names_raw";
+$tbl_region_codes=$src."_region_codes";
+$tbl_poldivs = $src . "_poldivs";
+$tbl_poldivs_scrubbed = $src . "_poldivs_gnrs";
+
+// Final "raw" table combining names and distributions tables
+$tbl_raw=$src."_combined_raw";
 
 // Directory in which data for this source are stored
-$datapath = $data_dir . $source_name."/";		
-$datapath = $data_dir . $source_name."/"."BIEN4.2/";	// for testing with old data
+$datapath = $data_dir . $source_name."/"."2020-09/";	
+$datapath = $data_dir . $source_name."/"."2024-09/";	
 
 //////////////////////////////////////////////////
 // LOAD DATA INFILE parameters
@@ -111,11 +122,10 @@ $datapath = $data_dir . $source_name."/"."BIEN4.2/";	// for testing with old dat
 // Needed for 'LOAD DATA INFILE' statement
 // Set any variable to empty string to remove entirely
 $local = " LOCAL ";	// LOCAL keyword
-//$fields_terminated_by = " FIELDS TERMINATED BY ',' ";
-$fields_terminated_by = " FIELDS TERMINATED BY '\t' ";
-$optionally_enclosed_by = " OPTIONALLY ENCLOSED BY '\"' ";  // use if text surrounded by quotes
-//$optionally_enclosed_by = "";
-$lines_terminated_by = " LINES TERMINATED BY '\n' ";
+$fields_terminated_by = " FIELDS TERMINATED BY '|' ";
+//$optionally_enclosed_by = " OPTIONALLY ENCLOSED BY '\"' ";  // use if text surrounded by quotes
+$optionally_enclosed_by = "";
+$lines_terminated_by = " LINES TERMINATED BY '\r\n' ";
 $ignore_lines = " IGNORE 1 LINES ";	// Ignore header line?
 
 //////////////////////////////////////////////////
@@ -126,6 +136,9 @@ $ignore_lines = " IGNORE 1 LINES ";	// Ignore header line?
 // associated with this source, with each table
 // name in single quotes, no comma after last element
 // For use in SQL IN list when deleting or moving tables
+// Tables ending in "_bak" and "_staging" are optional as they
+// will be moved or dropped automatically, but all other temp
+// tables must be listed here
 $temp_tbl_list="
 'powo_cclist_states',
 'powo_poldivs',

@@ -23,14 +23,16 @@
 //////////////////////////////////////////////////
 // Replace database? (true/false)
 //
-// IMPORTANT! Set to true to replace database entirely
-// all tables will be dropped and replaced with new,
-// empty tables. Application will automatically prompt
-// for confirmation if this option is set to true.
+// CRITICAL! 
 //
-// Set to false keep existing database and
-// add (if new) or replace (if already present) only
-// the source(s) listed in $src_array.
+// TRUE: replace database entirely. All tables will 
+// be dropped and replaced with new, empty tables. 
+// Application will automatically prompt for 
+// confirmation if this option is set to true.
+//
+// FALSE: keep existing database and add (if new) 
+// or replace (if already present) only the 
+// source(s) listed in $src_array.
 //
 //////////////////////////////////////////////////
 $REPLACE_DB = FALSE;
@@ -50,26 +52,23 @@ $REPLACE_DB = FALSE;
 //////////////////////////////////////////////////
 
 $src_array=array(
-	"ipane",
-	"weakley",
-	"mab",
-	"powo",
-	"flbr",
 	"conosur",
+	"flbr",
 	"fwi",
+	"ipane",
+	"mab",
 	"mexico",
+	"newguinea",
+	"powo",
 	"tropicos",
 	"usda",
 	"vascan",
-	"newguinea"
+	"weakley"
 );
-
-/* 
 $src_array=array(
-	"usda"
+	"vascan",
+	"flbr"
 );
- */
-
 
 //////////////////////////////////////////////////
 // Limit rows loaded per source?
@@ -78,8 +77,8 @@ $src_array=array(
 //////////////////////////////////////////////////
 
 # Integer # of rows to import, "" imports all
-$ROW_LIMIT="";
 $ROW_LIMIT=200;
+$ROW_LIMIT="";
 
 //////////////////////////////////////////////////
 // NSR metadata
@@ -97,7 +96,7 @@ $META_APP_VERSION="3.0";
 // Database version
 // This should only increment when the database changes
 $META_DB_VERSION="3.0";
-$META_DB_VERSION_COMMENTS="Remove enquist, update powo, flbr, conosur, vascan";
+$META_DB_VERSION_COMMENTS="Integrate past hotfixes, remove enquist, update powo, flbr, conosur, vascan";
 
 // Date of the latest DB modification, however slight
 // Either enter manually as "YYYY-MM-DD", or use keyword 'current'
@@ -112,12 +111,12 @@ $META_DB_FULL_BUILD_DATE='current';
 // Application code version
 // = tag # for latest commit associated with this DB version
 $META_CODE_VERSION="3.0";
-$META_CODE_VERSION_COMMENTS="Modifications to support changed schema for powo and more complete metadata";
+$META_CODE_VERSION_COMMENTS="Modifications to support more complete metadata and schema changes to source powo";
 
 // Date associated with most recent tagged commit
 // Either enter manually as "YYYY-MM-DD", or use keyword 'current'
 // to set to todays date using MySQL function CURRENT_DATE()
-$META_CODE_VERSION_RELEASE_DATE="2024-08-31";
+$META_CODE_VERSION_RELEASE_DATE="current";
 
 // Example citation of this application, as bibtex
 $META_CITATION="@misc{nsr.app, author = {Boyle, B. L. and Maitner, B. and Barbosa, G. C. and Rethvick, S. Y. B. and Enquist, B. J.}, journal = {Botanical Information and Ecology Network}, title = {Native Species Resolver}, year = {2024}, url = {https://nsr.biendata.org/}, note = {Accessed <date_of_access>} }";
@@ -241,7 +240,7 @@ $TEMP_TABLE_ACTION='move';
 // TRUE: Replaces staging DB, if already exists
 // FALSE: Move tables into existing staging DB, if exists
 //   if doesn't exist, creates new DB
-$DB_STAGING_REPLACE=FALSE;
+$DB_STAGING_REPLACE=TRUE;
 
 //////////////////////////////////////////////////
 // API parameters

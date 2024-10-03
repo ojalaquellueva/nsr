@@ -62,7 +62,6 @@ END,
 FROM $tbl_taxon_raw a JOIN $tbl_dist_raw b
 ON a.taxonID=b.id
 WHERE b.countryCode IS NOT NULL
-AND phylum IS NULL
 AND taxonRank IN ('ESPECIE','SUB_ESPECIE','VARIEDADE')
 ;
 ";

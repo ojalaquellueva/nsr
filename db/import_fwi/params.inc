@@ -20,7 +20,11 @@ $source_name_full="Flora of the West Indies";
 // Primary url for this source (optional)
 $source_url="http://botany.si.edu/antilles/westindies/";	
 
+// Load citation from bibtex file?
+$citation_from_bibtex=TRUE;
+
 // bibtext formatted citation for thsi source
+// Over-ridden by bibtex file if $citation_from_bibtex==TRUE
 $citation="";
 
 // Person who provided access to source (optional)

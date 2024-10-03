@@ -4,8 +4,9 @@
 include "params.inc";	// source-specific parameters
 
 //////////////////////////////////////////
-// Import raw data file 
+// Import raw data  
 //////////////////////////////////////////
+echo "Data path: '" . $datapath . "'\n";
 
 // create empty import table
 // These must be identical in structure to raw data file
@@ -64,6 +65,7 @@ include "insert_implied_absences.inc";
 // load data from combined raw data table to standardized staging table
 include "create_distribution_staging.inc";
 include "load_distribution_staging.inc";
+if ($citation_from_bibtex) include "load_source_citation_staging.inc";
 
 // load metadata on regions covered by this source
 include "create_poldiv_source_staging.inc";

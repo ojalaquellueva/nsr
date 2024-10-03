@@ -20,7 +20,11 @@ $source_name_full="Database of Vascular Plants of Canada";
 // Primary url for this source (optional)
 $source_url="http://www.canadensys.net/activities/development/vascan";	
 
-// bibtext formatted citation for thsi source
+// Load citation from bibtex file?
+$citation_from_bibtex=TRUE;
+
+// Bibtext-formatted citation for this source
+// Over-ridden by bibtex file if $citation_from_bibtex==TRUE
 $citation="";
 
 // Person who provided access to source (optional)
@@ -29,7 +33,7 @@ $source_contact_email="";
 
 // Date accessed
 // yyyy-mm-dd format
-$date_accessed="2014-03-10";
+$date_accessed="2024-09-16";
 
 // Short list of regions covered by this source, to 250 characters
 $focal_regions="Canada";
@@ -124,7 +128,6 @@ $ignore_lines = " IGNORE 1 LINES ";	// Ignore header line?
 // For use in SQL IN list when deleting or moving tables
 $temp_tbl_list="
 'vascan_distribution_raw',
-'vascan_raw',
 'vascan_raw'
 ";
 

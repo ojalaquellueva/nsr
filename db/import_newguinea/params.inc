@@ -52,10 +52,14 @@ $source_name_full="Flora of New Guinea";
 // Primary url for this source (optional)
 $source_url="https://www.nature.com/articles/s41586-020-2549-5";	
 
+// Load citation from bibtex file?
+$citation_from_bibtex=TRUE;
+
 // bibtext formatted citation for thsi source
+// Over-ridden by bibtex file if $citation_from_bibtex==TRUE
 $citation="
 @article{camara2020new,
-  title={New Guinea has the world’s richest island flora},
+  title={New Guinea has the world\’s richest island flora},
   author={C{\'a}mara-Leret, Rodrigo and Frodin, David G and Adema, Frits and Anderson, Christiane and Appelhans, Marc S and Argent, George and Guerrero, Susana Arias and Ashton, Peter and Baker, William J and Barfod, Anders S and others},
   journal={Nature},
   pages={1--5},
@@ -126,6 +130,10 @@ $optionally_enclosed_by = " OPTIONALLY ENCLOSED BY '\"' ";  // use if text surro
 $lines_terminated_by = " LINES TERMINATED BY '\n' ";
 $ignore_lines = " IGNORE 1 LINES ";	// Ignore header line?
 
+//////////////////////////////////////////////////
+// Cleanup parameters
+//////////////////////////////////////////////////
+
 // Comma-delimited list of temporary tables 
 // associated with this source, with each table
 // name in single quotes, no comma after last element
@@ -134,6 +142,5 @@ $temp_tbl_list="
 'newguinea_cclist_states',
 'newguinea_raw_final'
 ";
-
 
 ?>

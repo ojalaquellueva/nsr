@@ -20,7 +20,11 @@ $source_name_full="Invasive Plant Atlas of New England";
 // Primary url for this source (optional)
 $source_url="http://www.eddmaps.org/ipane/index.html";	
 
-// bibtext formatted citation for thsi source
+// Load citation from bibtex file?
+$citation_from_bibtex=FALSE;
+
+// Bibtext-formatted citation for this source
+// Over-ridden by bibtex file if $citation_from_bibtex==TRUE
 $citation="";
 
 // Person who provided access to source (optional)

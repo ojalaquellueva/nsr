@@ -3,14 +3,8 @@
 
 include "params.inc";	// everything you need to set is here and in global_params.inc
 
-/* 
-// For development only
-echo "WARNING: sections of import_usda/import.php commented out!\n";
-exit("Exiting...\n\n");
-//  END For development only
- */
-
-////////////// Import raw data file //////////////////////
+////////////// Import raw data //////////////////////
+echo "Data path: '" . $datapath . "'\n";
 
 // create empty import table
 // These must be identical in structure to raw data file
@@ -46,6 +40,7 @@ include "standardize_status.inc";
 // load data from combined raw data table to standardized staging table
 include "create_distribution_staging.inc";
 include "load_staging.inc";
+if ($citation_from_bibtex) include "load_source_citation_staging.inc";
 
 // load metadata on regions covered by this source
 include "create_poldiv_source_staging.inc";

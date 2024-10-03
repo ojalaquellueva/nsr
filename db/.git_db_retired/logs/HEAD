@@ -1,6 +1,0 @@
-0000000000000000000000000000000000000000 c2d275035cbf382573226b22427bfb80d2fe163e Brad Boyle <ojalaquellueva@gmail.com> 1607372373 -0800	clone: from git@github.com:ojalaquellueva/nsr_db.git
-c2d275035cbf382573226b22427bfb80d2fe163e b1c37a16caa0f94f8ea45438b25c3fb879e36864 Brad Boyle <ojalaquellueva@gmail.com> 1607387009 -0800	commit: First test commit from new local master
-b1c37a16caa0f94f8ea45438b25c3fb879e36864 048d67f6a54c26983db1e84bb1d173c655474371 Brad Boyle <ojalaquellueva@gmail.com> 1614106983 -0800	commit: create_nsr_db/create_tables.inc: remove NOT NULL constraint on observation.batch
-048d67f6a54c26983db1e84bb1d173c655474371 2ae349e7b6b3f07b9a23fa7e66ecd7cb2d1b1a7b Brad Boyle <ojalaquellueva@gmail.com> 1691005391 -0700	commit: Source-specific import updates & add gid columns to poldiv_source
-2ae349e7b6b3f07b9a23fa7e66ecd7cb2d1b1a7b a45a8bbf7506deab060867444e1e6fd13a6fa642 Brad Boyle <ojalaquellueva@gmail.com> 1691020335 -0700	commit: Addl updates to poldiv_source
-a45a8bbf7506deab060867444e1e6fd13a6fa642 a3a17bb943dabcc21f81e3067be37eb947b6aa71 Brad Boyle <ojalaquellueva@gmail.com> 1712773263 -0700	commit: Update metadata: final version before merge repo in core/api code

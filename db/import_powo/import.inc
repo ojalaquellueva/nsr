@@ -5,6 +5,8 @@
 
 echo "Loading raw data:\r\n";
 
+# Just sample the distribution file if applicable
+$file_raw=$file_dist_raw;
 $data_raw="$datapath$file_raw";
 if ( ! $ROW_LIMIT=="" ) {
 	$data_raw_sample = $datapath . "raw_data_sample";
@@ -15,10 +17,12 @@ if ( ! $ROW_LIMIT=="" ) {
 	$data_raw=$data_raw_sample;
 }
 
-echo "  '$file_raw' --> `$tbl_raw`...";
+// Distribution file
+$file_raw=$file_dist_raw;
+echo "  '$file_raw' --> `$tbl_dist_raw`...";
 $sql = "
 LOAD DATA $local INFILE '$data_raw' 
-INTO TABLE $tbl_raw 
+INTO TABLE $tbl_dist_raw
 $fields_terminated_by 
 $optionally_enclosed_by 
 $lines_terminated_by 
@@ -28,11 +32,33 @@ sql_execute_multiple($dbh, $sql);
 echo $done;
 
 echo "    Setting empty strings to NULL...";
-if (!(empty_string_to_null($dbh, $tbl_raw))) die("Error\r\n.");
+if (!(empty_string_to_null($dbh, $tbl_dist_raw))) die("Error\r\n.");
 echo $done;
 echo "    Setting NA to NULL...";
-if (!(NA_to_null($dbh, $tbl_raw))) die("Error\r\n.");
+if (!(NA_to_null($dbh, $tbl_dist_raw))) die("Error\r\n.");
 echo $done;
+
+// Names file
+$file_raw=$file_names_raw;
+echo "  '$file_raw' --> `$tbl_names_raw`...";
+$sql = "
+LOAD DATA $local INFILE '$datapath$file_raw' 
+INTO TABLE $tbl_names_raw 
+$fields_terminated_by 
+$optionally_enclosed_by 
+$lines_terminated_by 
+$ignore_lines;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
+echo "    Setting empty strings to NULL...";
+if (!(empty_string_to_null($dbh, $tbl_names_raw))) die("Error\r\n.");
+echo $done;
+echo "    Setting NA to NULL...";
+if (!(NA_to_null($dbh, $tbl_names_raw))) die("Error\r\n.");
+echo $done;
+
 
 echo "  `$tbl_region_codes`...";
 $sql = "

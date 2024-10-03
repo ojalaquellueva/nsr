@@ -7,18 +7,20 @@
 
 echo "  Standardizing ranks:\r\n";
 
-echo "    Column `rank`...";
+echo "    Standardizing values of `rank`...";
+// Many more rank values than shown, but these can be used as-is
 $sql="
 UPDATE $tbl_raw
 SET `rank`=
 CASE
+WHEN `rank`='Convariety' THEN 'convariety'
 WHEN `rank`='Form' THEN 'forma'
-WHEN `rank`='GENUS' THEN 'genus'
-WHEN `rank`='InfraspecificName' THEN 'infraspecific'
-WHEN `rank`='SPECIES' THEN 'species'
-WHEN `rank`='SUBSPECIES' THEN 'subspecies'
-WHEN `rank`='VARIETY' THEN 'variety'
+WHEN `rank`='Genus' THEN 'genus'
+WHEN `rank`='Species' THEN 'species'
+WHEN `rank`='Subform' THEN 'subforma'
+WHEN `rank`='Subspecies' THEN 'subspecies'
 WHEN `rank`='Subvariety' THEN 'subvariety'
+WHEN `rank`='Variety' THEN 'variety'
 ELSE `rank`
 END
 ;
@@ -26,21 +28,12 @@ END
 sql_execute_multiple($dbh, $sql);
 echo $done;
 
-echo "    Column `accepted_rank`...";
+echo "    Filling missing values of `rank`...";
+// just guess
 $sql="
 UPDATE $tbl_raw
-SET accepted_rank=
-CASE
-WHEN accepted_rank='Form' THEN 'forma'
-WHEN accepted_rank='GENUS' THEN 'genus'
-WHEN accepted_rank='InfraspecificName' THEN 'infraspecific'
-WHEN accepted_rank='SPECIES' THEN 'species'
-WHEN accepted_rank='SUBSPECIES' THEN 'subspecies'
-WHEN accepted_rank='VARIETY' THEN 'variety'
-WHEN accepted_rank='Subvariety' THEN 'subvariety'
-ELSE accepted_rank
-END
-;
+SET `rank`='species'
+WHERE `rank` IS NULL;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;

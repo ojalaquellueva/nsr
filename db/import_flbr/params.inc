@@ -20,7 +20,11 @@ $source_name_full="Brazilian Flora 2020 project";
 // Primary url for this source (optional)
 $source_url="http://ipt.jbrj.gov.br/jbrj/resource?r=lista_especies_flora_brasil#downloads";	
 
+// Load citation from bibtex file?
+$citation_from_bibtex=TRUE;
+
 // bibtext formatted citation for thsi source
+// Over-ridden by bibtex file if $citation_from_bibtex==TRUE
 $citation="@article{b14,
 author = {Brazil Flora, G.},
 journal = {Instituto de Pesquisas Jardim Botanico do Rio de Janeiro},
@@ -40,7 +44,7 @@ $source_contact_email="floradobrasil2020@jbrj.gov.br";
 
 // Date accessed
 // yyyy-mm-dd format
-$date_accessed="2017-11-27";
+$date_accessed="2024-08-01";
 
 // Short list of regions covered by this source, to 250 characters
 $focal_regions="Brazil";
@@ -96,7 +100,7 @@ $file_taxon = "taxon.txt";
 
 // Directory in which data for this source are stored
 // Update as needed
-$datapath = $data_dir . $source_name."/"."BIEN4.2/";		
+$datapath = $data_dir . $source_name."/";		
 
 // names of destination mysql tables
 $tbl_dist_raw=$source_name."_dist_raw";

@@ -205,9 +205,9 @@ include_once "generic_operations/country_sources.inc";
 include_once "generic_operations/update_poldiv_source.inc";
 include_once "generic_operations/taxon_country_sources.inc";
 include_once "generic_operations/endemic_taxon_sources.inc";
+include_once "generic_operations/standardize_cult_status.inc";
 include_once "generic_operations/optimize.inc";
-
-include_once "generic_operations/update_source_citations.inc";
+//include_once "generic_operations/update_source_citations.inc";
 include_once 'load_core_db/load_dd_tables.inc';
 
 if ( $META_IMPORT ) include "load_core_db/import_meta.inc";

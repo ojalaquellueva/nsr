@@ -16,7 +16,7 @@ stateProvince,
 native_status
 )
 SELECT DISTINCT
-t.id,
+t.taxonID,
 species,
 taxonRank,
 CASE 
@@ -28,8 +28,8 @@ END,
 locality,
 IF(establishmentMeans='','non-native',establishmentMeans)
 FROM $tbl_vascan_distribution_raw d JOIN $tbl_vascan_taxon_raw t
-ON d.id=t.id
-WHERE t.acceptedNameUsageID=t.id
+ON d.id=t.taxonID
+WHERE t.acceptedNameUsageID=t.taxonID
 AND t.species IS NOT NULL AND species NOT LIKE '% % %'
 ;
 ";

@@ -4,8 +4,8 @@
 //	and $ignore_lines are set in parameters file
 
 echo "Loading raw data:\r\n";
-
 $data_raw="$datapath$file_raw";
+
 if ( ! $ROW_LIMIT=="" ) {
 	$data_raw_sample = $datapath . "raw_data_sample";
 	$cmd="head -{$ROW_LIMIT} $datapath$file_raw > $data_raw_sample";	

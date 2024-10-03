@@ -4,46 +4,66 @@
 
 echo "Creating raw data tables\r\n";
 
-$tbl_raw=$src."_raw";
-echo "  `$tbl_raw`...";
+echo "  `$tbl_names_raw`...";
 $sql="
-DROP TABLE IF EXISTS `$tbl_raw`;
-CREATE TABLE $tbl_raw (
-fqId VARCHAR(250) DEFAULT NULL,
-query VARCHAR(250) DEFAULT NULL,
-modified VARCHAR(250) DEFAULT NULL,
-bibliographicCitation VARCHAR(1000) DEFAULT NULL,
-genus VARCHAR(250) DEFAULT NULL,
-taxonomicStatus VARCHAR(250) DEFAULT NULL,
-kingdom VARCHAR(250) DEFAULT NULL,
-phylum VARCHAR(250) DEFAULT NULL,
-family VARCHAR(250) DEFAULT NULL,
-source VARCHAR(250) DEFAULT NULL,
-namePublishedInYear VARCHAR(250) DEFAULT NULL,
-name VARCHAR(250) DEFAULT NULL,
-authors VARCHAR(250) DEFAULT NULL,
-species VARCHAR(250) DEFAULT NULL,
-`rank` VARCHAR(250) DEFAULT NULL,
-reference VARCHAR(250) DEFAULT NULL,
-accepted_fqId VARCHAR(250) DEFAULT NULL,
-accepted_name VARCHAR(250) DEFAULT NULL,
-accepted_author VARCHAR(250) DEFAULT NULL,
-accepted_rank VARCHAR(250) DEFAULT NULL,
-accepted_taxonomicStatus VARCHAR(250) DEFAULT NULL,
-establishment VARCHAR(250) DEFAULT NULL,
-featureId VARCHAR(250) DEFAULT NULL,
-tdwgCode VARCHAR(250) DEFAULT NULL,
-tdwgLevel VARCHAR(250) DEFAULT NULL,
-area_name VARCHAR(500) DEFAULT NULL,
-infraspecies VARCHAR(250) DEFAULT NULL,
-occurrenceStatus VARCHAR(250) DEFAULT NULL,
-threatStatus VARCHAR(250) DEFAULT NULL
+DROP TABLE IF EXISTS $tbl_names_raw;
+CREATE TABLE $tbl_names_raw (
+`plant_name_id` VARCHAR(50) DEFAULT NULL,
+`ipni_id` VARCHAR(50) DEFAULT NULL,
+`taxon_rank` VARCHAR(50) DEFAULT NULL,
+`taxon_status` VARCHAR(50) DEFAULT NULL,
+`family` VARCHAR(50) DEFAULT NULL,
+`genus_hybrid` VARCHAR(50) DEFAULT NULL,
+`genus` VARCHAR(50) DEFAULT NULL,
+`species_hybrid` VARCHAR(50) DEFAULT NULL,
+`species` VARCHAR(50) DEFAULT NULL,
+`infraspecific_rank` VARCHAR(50) DEFAULT NULL,
+`infraspecies` VARCHAR(50) DEFAULT NULL,
+`parenthetical_author` VARCHAR(50) DEFAULT NULL,
+`primary_author` VARCHAR(50) DEFAULT NULL,
+`publication_author` VARCHAR(50) DEFAULT NULL,
+`place_of_publication` VARCHAR(150) DEFAULT NULL,
+`volume_and_page` VARCHAR(50) DEFAULT NULL,
+`first_published` VARCHAR(50) DEFAULT NULL,
+`nomenclatural_remarks` VARCHAR(250) DEFAULT NULL,
+`geographic_area` VARCHAR(100) DEFAULT NULL,
+`lifeform_description` VARCHAR(100) DEFAULT NULL,
+`climate_description` VARCHAR(100) DEFAULT NULL,
+`taxon_name` VARCHAR(100) DEFAULT NULL,
+`taxon_authors` VARCHAR(150) DEFAULT NULL,
+`accepted_plant_name_id` VARCHAR(50) DEFAULT NULL,
+`basionym_plant_name_id` VARCHAR(50) DEFAULT NULL,
+`replaced_synonym_author` VARCHAR(150) DEFAULT NULL,
+`homotypic_synonym` VARCHAR(50) DEFAULT NULL,
+`parent_plant_name_id` VARCHAR(50) DEFAULT NULL,
+`powo_id` VARCHAR(150) DEFAULT NULL,
+`hybrid_formula` VARCHAR(50) DEFAULT NULL,
+`reviewed` VARCHAR(50) DEFAULT NULL
 )  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ";
 sql_execute_multiple($dbh, $sql);
 echo $done;
 
-$tbl_region_codes=$src."_region_codes";
+echo "  `$tbl_dist_raw`...";
+$sql="
+DROP TABLE IF EXISTS $tbl_dist_raw;
+CREATE TABLE $tbl_dist_raw (
+`plant_locality_id` VARCHAR(150) DEFAULT NULL,
+`plant_name_id` VARCHAR(150) DEFAULT NULL,
+`continent_code_l1` VARCHAR(50) DEFAULT NULL,
+`continent` VARCHAR(150) DEFAULT NULL,
+`region_code_l2` VARCHAR(50) DEFAULT NULL,
+`region` VARCHAR(150) DEFAULT NULL,
+`tdwgCodeL3` VARCHAR(50) DEFAULT NULL,
+`area` VARCHAR(150) DEFAULT NULL,
+`introduced` TINYINT DEFAULT NULL,
+`extinct` TINYINT DEFAULT NULL,
+`location_doubtful` TINYINT DEFAULT NULL
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+";
+sql_execute_multiple($dbh, $sql);
+echo $done;
+
 echo "  `$tbl_region_codes`...";
 $sql="
 DROP TABLE IF EXISTS `$tbl_region_codes`;
@@ -64,7 +84,6 @@ INDEX(region)
 sql_execute_multiple($dbh, $sql);
 echo $done;
 
-$tbl_poldivs = $src . "_poldivs";
 echo "  `$tbl_poldivs`...";
 $sql="
 DROP TABLE IF EXISTS $tbl_poldivs;
@@ -80,7 +99,6 @@ PRIMARY KEY (user_id)
 sql_execute_multiple($dbh, $sql);
 echo $done;
 
-$tbl_poldivs_scrubbed = $src . "_poldivs_gnrs";
 echo "  `$tbl_poldivs_scrubbed`...";
 $sql="
 DROP TABLE IF EXISTS $tbl_poldivs_scrubbed;

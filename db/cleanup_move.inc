@@ -47,7 +47,11 @@ $sql_temp_tables="
 SELECT table_name
 FROM information_schema.tables 
 WHERE table_schema = '$old_db' 
-AND (table_name LIKE '%_raw' OR table_name LIKE '%_staging')
+AND (table_name LIKE '%_raw' OR table_name LIKE '%_raw_%'
+OR table_name LIKE '%_staging' OR table_name LIKE '%_staging_%' 
+OR table_name LIKE '%_temp' OR table_name LIKE 'temp_%' )
+;
+
 ;
 ";
 

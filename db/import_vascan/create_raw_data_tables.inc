@@ -9,6 +9,7 @@ $sql="
 DROP TABLE IF EXISTS `$tbl_vascan_taxon_raw`;
 CREATE TABLE $tbl_vascan_taxon_raw (
 id INT(11) UNSIGNED NOT NULL,
+taxonID INT(11) UNSIGNED NOT NULL,
 acceptedNameUsageID INT(11) UNSIGNED NOT NULL,
 parentNameUsageID INT(11) UNSIGNED NOT NULL,
 nameAccordingToID VARCHAR(250) DEFAULT NULL,
@@ -28,6 +29,7 @@ taxonRank VARCHAR(250) DEFAULT NULL,
 scientificNameAuthorship VARCHAR(250) DEFAULT NULL,
 taxonomicStatus VARCHAR(250) DEFAULT NULL,
 modified VARCHAR(250) DEFAULT NULL,
+license VARCHAR(250) DEFAULT NULL,
 bibliographicCitation VARCHAR(250) DEFAULT NULL,
 `references` VARCHAR(250) DEFAULT NULL,
 PRIMARY KEY (id),

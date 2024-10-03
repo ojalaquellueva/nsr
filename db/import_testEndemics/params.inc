@@ -20,7 +20,11 @@ $source_name_full="Test list of country endemics";
 // Primary url for this source (optional)
 $source_url="";	
 
-// bibtext formatted citation for thsi source
+// Load citation from bibtex file?
+$citation_from_bibtex=FALSE;
+
+// Bibtext-formatted citation for this source
+// Over-ridden by bibtex file if $citation_from_bibtex==TRUE
 $citation="";
 
 // Person who provided access to source (optional)

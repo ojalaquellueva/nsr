@@ -7,7 +7,8 @@
 // Parameters specific to this source
 include "params.inc";	
 
-////////////// Import raw data file //////////////////////
+////////////// Import raw data //////////////////////
+echo "Data path: '" . $datapath . "'\n";
 
 // create empty import table
 include "create_raw_data_tables.inc";
@@ -32,6 +33,7 @@ include "index_tables.inc";
 // load data from combined raw data table to standardized staging table
 include "create_distribution_staging.inc";
 include "load_staging.inc";
+if ($citation_from_bibtex) include "load_source_citation_staging.inc";
 
 // load metadata on regions covered by this source
 include "prepare_cclist_states.inc";

@@ -3,7 +3,8 @@
 
 include "params.inc";	// everything you need to set is here and in global_params.inc
 
-////////////// Import raw data file //////////////////////
+////////////// Import raw data //////////////////////
+echo "Data path: '" . $datapath . "'\n";
 
 // create empty import table
 // These must be identical in structure to raw data file
@@ -30,6 +31,7 @@ include "detect_rank.inc";
 include "create_distribution_staging.inc";
 //include "load_staging.inc";
 include "load_staging_alt.inc";
+if ($citation_from_bibtex) include "load_source_citation_staging.inc";
 
 // Fix source-specific issue: change native_status for state-
 // level occurrences from 'endemic' to 'native'
